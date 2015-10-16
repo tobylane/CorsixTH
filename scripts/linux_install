@@ -1,0 +1,8 @@
+#!/bin/bash
+set -ev
+CMAKE_INCLUDE_PATH=$HOME/deps/gnu-linux-x64/include
+CMAKE_LIBRARY_PATH=$HOME/deps/gnu-linux-x64/lib
+cd $TRAVIS_BUILD_DIR
+# Create unix makefiles
+cp $HOME/deps/travisci/cmake/FindFreetype.cmake CMake/FindFreetype.cmake
+cmake -DCMAKE_CXX_COMPILER="g++-5" -DLUA_PROGRAM_PATH=`which lua` -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DCMAKE_INCLUDE_PATH="$CMAKE_INCLUDE_PATH;$CMAKE_INCLUDE_PATH/SDL2" -DCMAKE_LIBRARY_PATH="$CMAKE_LIBRARY_PATH" -DLUA_LIBRARY="$CMAKE_LIBRARY_PATH/liblua.so" -Bfresh -H. --debug-output

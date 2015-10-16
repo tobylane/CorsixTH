@@ -1,0 +1,25 @@
+#!/bin/bash
+set -ev
+# Build LevelEdit
+cd $TRAVIS_BUILD_DIR/LevelEdit && ant dist
+# Package LevelEdit
+cp $TRAVIS_BUILD_DIR/LevelEdit/dist/LevelEdit.jar $TRAVIS_BUILD_DIR/CorsixTH/
+cd $TRAVIS_BUILD_DIR/fresh
+# Check if there are trailing whitespaces.
+${TRAVIS_BUILD_DIR}/scripts/check_trailing_whitespaces.py $TRAVIS_BUILD_DIR
+# Check for incorrectly encoded language files.
+python ${TRAVIS_BUILD_DIR}/scripts/check_language_files_not_BOM.py $TRAVIS_BUILD_DIR/CorsixTH/Lua/languages
+# Check if there are lua classes with invalid/improper declarations.
+python ${TRAVIS_BUILD_DIR}/scripts/check_lua_classes.py
+# Validate lua files
+(LUA_FAILURE=0; for file in `find CorsixTH -name '*.lua' -not -path "CorsixTH/Lua/languages/*"`; do luac -p $file; if [ $? != 0 ]; then LUA_FAILURE=1; fi; done; exit $LUA_FAILURE)
+# Run lua lint check
+(LUA_FAILURE=0; for file in `find CorsixTH -name '*.lua' -not -path "CorsixTH/Lua/languages/*"`; do /home/travis/.luarocks/bin/luacheck $file; if [ $? != 0 ]; then LUA_FAILURE=1; fi; done; exit $LUA_FAILURE)
+# Run lua unit tests
+cd $TRAVIS_BUILD_DIR/CorsixTH/Luatest
+eval `luarocks --local path`
+LUA_PATH="../Lua/?.lua;$LUA_PATH" /home/travis/.luarocks/bin/busted
+# Build documentation
+cd ${TRAVIS_BUILD_DIR}/fresh && make doc
+# Upload new docs
+if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" && $TRAVIS_BRANCH == "master" ]; then sshpass -p "$SCP_PASS" scp -r -v -P12349 $TRAVIS_BUILD_DIR/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/; fi;

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -ev
+# Get build dependencies
+brew update
+brew install lua53 ffmpeg freetype sdl2 sdl2_mixer
+brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+sudo ln -vf /usr/local/bin/luarocks-5.3 /usr/local/bin/luarocks
+sudo luarocks install lpeg
+sudo luarocks install luafilesystem
+#sudo luarocks install luasocket

@@ -1,5 +1,8 @@
 sudo: required
 dist: trusty
+os:
+ - linux
+ - osx
 language: cpp
 compiler: gcc
 addons:
@@ -14,52 +17,38 @@ addons:
       - sshpass
 
 before_install:
-  # Required for LDocGen
-  - luarocks --local install lpeg
-  - luarocks --local install luafilesystem
-  - luarocks --local install luasocket  
-  # Required for lua unit tests
-  - luarocks --local install luasec OPENSSL_DIR=/usr OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu/
-  - luarocks --local install busted
-  - git clone --depth=1 https://github.com/CorsixTH/deps.git $HOME/deps
-  - mkdir libs
-  - pushd libs
-  - mkdir $TRAVIS_BUILD_DIR/LevelEdit/bin
-  - popd
+ - chmod +x $TRAVIS_BUILD_DIR/scripts/*
+ - if [[ $TRAVIS_OS_NAME = linux ]]; then scripts/linux_before_install; fi
+ - if [[ $TRAVIS_OS_NAME = osx   ]]; then scripts/osx_before_install; fi
 install:
-  - CMAKE_INCLUDE_PATH=$HOME/deps/gnu-linux-x64/include
-  - CMAKE_LIBRARY_PATH=$HOME/deps/gnu-linux-x64/lib
-  - cd $TRAVIS_BUILD_DIR
-  # Create unix makefiles
-  - cp $HOME/deps/travisci/cmake/FindFreetype.cmake CMake/FindFreetype.cmake
-  - cmake -DCMAKE_CXX_COMPILER="g++-5" -DLUA_PROGRAM_PATH=`which lua` -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DWITH_LUAJIT=OFF -DCMAKE_INCLUDE_PATH="$CMAKE_INCLUDE_PATH;$CMAKE_INCLUDE_PATH/SDL2" -DCMAKE_LIBRARY_PATH="$CMAKE_LIBRARY_PATH" -DLUA_LIBRARY="$CMAKE_LIBRARY_PATH/liblua.so" -Bfresh -H. --debug-output
+ - if [[ $TRAVIS_OS_NAME = linux ]]; then scripts/linux_install; fi
+ - if [[ $TRAVIS_OS_NAME = osx   ]]; then scripts/osx_install; fi
 before_script:
-  # Don't ask for confirmation when using scp
-  - echo -e "Host armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - echo -e "Host server2.armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - cd fresh
+ # Don't ask for confirmation when using scp
+ - echo -e "Host armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+ - echo -e "Host server2.armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script:
-  # Check if there are trailing whitespaces.
-  - ${TRAVIS_BUILD_DIR}/scripts/check_trailing_whitespaces.py $TRAVIS_BUILD_DIR
-  # Check for incorrectly encoded language files.
-  - python ${TRAVIS_BUILD_DIR}/scripts/check_language_files_not_BOM.py $TRAVIS_BUILD_DIR/CorsixTH/Lua/languages
-  # Check if there are lua classes with invalid/improper declarations.
-  - python ${TRAVIS_BUILD_DIR}/scripts/check_lua_classes.py
-  # Build CorsixTH
-  - make VERBOSE=1
-  # Validate lua files
-  - (LUA_FAILURE=0; for file in `find CorsixTH -name '*.lua' -not -path "CorsixTH/Lua/languages/*"`; do luac -p $file; if [ $? != 0 ]; then LUA_FAILURE=1; fi; done; exit $LUA_FAILURE)
-  # Run lua unit tests
-  - cd $TRAVIS_BUILD_DIR/CorsixTH/Luatest
-  - eval `luarocks --local path`
-  - LUA_PATH="../Lua/?.lua;$LUA_PATH" /home/travis/.luarocks/bin/busted
-  # Build LevelEdit
-  - cd $TRAVIS_BUILD_DIR/LevelEdit && ant dist
-  # Build documentation
-  - cd ${TRAVIS_BUILD_DIR}/fresh && make doc
+ # Build cross platform targets on linux only - Leveledit, documentation, whitespace checks, lua validation and unit tests
+ - if [[ $TRAVIS_OS_NAME = linux ]]; then $TRAVIS_BUILD_DIR/scripts/build_cross_platform_targets; fi
 after_success:
-  # Upload new docs
-  - if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" -a $TRAVIS_BRANCH == "master" ]; then sshpass -p "$SCP_PASS" scp -r -v -P12349 $TRAVIS_BUILD_DIR/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/; fi;
+ # Copy over files based on the existing rsync filters file, plus the human readable files
+ - cd $TRAVIS_BUILD_DIR/CorsixTH/
+ - if [[ $TRAVIS_OS_NAME = osx   ]]; then mv -f ../fresh/CorsixTH/Release/CorsixTH.app .; fi
+ - rsync -rv --delete-excluded --include-from=RequiredResources.txt --exclude="*" . ../fresh/CorsixTH
+ - cp ../README.txt ../LICENSE.txt ../CONTRIBUTING.txt ../fresh/CorsixTH
+ - if [[ $TRAVIS_OS_NAME = osx   ]]; then mv *.txt CorsixTH.app && mv -f CorsixTH.app/Contents/Resources/* CorsixTH.app/Contents/MacOS && rm -rf CorsixTH.lua Bitmap Campaigns Levels Lua Graphics; fi
+ # Prepare ZIP archive
+ - cd $TRAVIS_BUILD_DIR/fresh/CorsixTH
+ - if [[ $TRAVIS_OS_NAME = osx   ]]; then OS=mac; else OS=linux; fi
+ - ZIPNAME=CTH-`date +"%Y%m%d"`-$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:50}-$OS.zip
+ - if [ $TRAVIS_PULL_REQUEST != "false" ]; then ZIPNAME=CTH-pull-$TRAVIS_PULL_REQUEST-`date +"%Y%m%d"`-${TRAVIS_COMMIT:0:50}-$OS.zip; fi;
+ - zip -ro9 $ZIPNAME *
+ - openssl dgst -sha256 $ZIPNAME > $ZIPNAME.sha256
+ - cat $ZIPNAME.sha256
+ - # Alt server for development
+ - if [ $TRAVIS_REPO_SLUG != "CorsixTH/CorsixTH" ]; then curl --upload-file $ZIPNAME https://transfer.sh/$ZIPNAME; fi
+ - # Upload to server
+ - if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" && $TRAVIS_PULL_REQUEST == "false" ]; then sshpass -p "$SCP_PASS" scp -v -P12349 $ZIPNAME cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/builds/; fi;
 env:
   global:
     secure: "mPtzSeDJKVeUu6KHJEbmHa91O+QK2XM0advYdr+13yr83w3C7cGFFjWgqzirsFUHVqPgdtSJIkom0DIxX7JtRoBZmt/xon+zfLq+Q4aSkJoYezWBqp2gavS8o1kSjtW7XuIuq995yjWvn7nehyoTYkKNtz/EzX5ZIVZ/iX73iyo="
