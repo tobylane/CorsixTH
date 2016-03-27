@@ -17,6 +17,14 @@ for _, arg in ipairs({...}) do
   end
 end
 
+-- On Mac OS X add the local luarocks folder to package.cpath.
+if (io.popen"uname":read'*l' == "Darwin") then
+  local luarocks_path = debug.getinfo(1, "S").source:sub(2):match("(.*/)") ..
+      "luarocks/lib/lua/" .. string.sub(_VERSION,5)
+  package.cpath = luarocks_path .. "/?.so;" .. luarocks_path .. "/mime/?.so;" ..
+      luarocks_path .. "/socket/?.so;" .. package.cpath
+end
+
 -- Redefine dofile such that it adds the direction name and file extension, and
 -- won't redo a file which it has previously done.
 local pathsep = package.config:sub(1, 1)
