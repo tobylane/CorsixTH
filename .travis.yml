@@ -15,40 +15,36 @@ addons:
       - doxygen
       - g++-5
       - sshpass
+      - valgrind
 
 before_install:
- - chmod +x $TRAVIS_BUILD_DIR/scripts/*
- - if [[ $TRAVIS_OS_NAME = linux ]]; then scripts/linux_before_install; fi
- - if [[ $TRAVIS_OS_NAME = osx   ]]; then scripts/osx_before_install; fi
+ - mkdir -p "$TRAVIS_BUILD_DIR"/fresh/CorsixTH
+ - if [[ $TRAVIS_OS_NAME == linux ]]; then $TRAVIS_BUILD_DIR/scripts/linux_before_install; fi
+ - if [[ $TRAVIS_OS_NAME == osx   ]]; then $TRAVIS_BUILD_DIR/scripts/osx_before_install; fi
 install:
- - if [[ $TRAVIS_OS_NAME = linux ]]; then scripts/linux_install; fi
- - if [[ $TRAVIS_OS_NAME = osx   ]]; then scripts/osx_install; fi
+ - if [[ $TRAVIS_OS_NAME == linux ]]; then $TRAVIS_BUILD_DIR/scripts/linux_install; fi
+ - if [[ $TRAVIS_OS_NAME == osx   ]]; then $TRAVIS_BUILD_DIR/scripts/osx_install; fi
 before_script:
  # Don't ask for confirmation when using scp
  - echo -e "Host armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
  - echo -e "Host server2.armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script:
- # Build cross platform targets on linux only - Leveledit, documentation, whitespace checks, lua validation and unit tests
- - if [[ $TRAVIS_OS_NAME = linux ]]; then $TRAVIS_BUILD_DIR/scripts/build_cross_platform_targets; fi
+ # Build Leveledit, documentation. Run python check scripts, lua validation, lint check and unit tests
+ - if [[ $TRAVIS_OS_NAME == linux ]]; then $TRAVIS_BUILD_DIR/scripts/build_cross_platform_targets; fi
 after_success:
- # Copy over files based on the existing rsync filters file, plus the human readable files
- - cd $TRAVIS_BUILD_DIR/CorsixTH/
- - if [[ $TRAVIS_OS_NAME = osx   ]]; then mv -f ../fresh/CorsixTH/Release/CorsixTH.app .; fi
- - rsync -rv --delete-excluded --include-from=RequiredResources.txt --exclude="*" . ../fresh/CorsixTH
- - cp ../README.txt ../LICENSE.txt ../CONTRIBUTING.txt ../fresh/CorsixTH
- - if [[ $TRAVIS_OS_NAME = osx   ]]; then mv *.txt CorsixTH.app && mv -f CorsixTH.app/Contents/Resources/* CorsixTH.app/Contents/MacOS && rm -rf CorsixTH.lua Bitmap Campaigns Levels Lua Graphics; fi
- # Prepare ZIP archive
- - cd $TRAVIS_BUILD_DIR/fresh/CorsixTH
- - if [[ $TRAVIS_OS_NAME = osx   ]]; then OS=mac; else OS=linux; fi
- - ZIPNAME=CTH-`date +"%Y%m%d"`-$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:50}-$OS.zip
- - if [ $TRAVIS_PULL_REQUEST != "false" ]; then ZIPNAME=CTH-pull-$TRAVIS_PULL_REQUEST-`date +"%Y%m%d"`-${TRAVIS_COMMIT:0:50}-$OS.zip; fi;
- - zip -ro9 $ZIPNAME *
+ # Create fresh minimal game folder, plus the human readable files
+ - cd "$TRAVIS_BUILD_DIR"
+ - if [[ $TRAVIS_OS_NAME == linux ]]; then rsync -rv --include-from=CorsixTH/RequiredResources.txt CorsixTH/ fresh/CorsixTH; fi
+ - cp README.txt LICENSE.txt CONTRIBUTING.txt CorsixTH/changelog.txt fresh/CorsixTH
+ # Prepare ZIP archive and sha256 checksum
+ - cd "$TRAVIS_BUILD_DIR"/fresh/CorsixTH
+ - if [ $TRAVIS_PULL_REQUEST != "false" ]; then ZIPNAME=CTH-$(date +"%Y%m%d")-pull-$TRAVIS_PULL_REQUEST-${TRAVIS_COMMIT:0:7}-$TRAVIS_OS_NAME.zip; elif [[ $TRAVIS_TAG != "" && $TRAVIS_BRANCH == "master" ]]; then ZIPNAME=CTH-$(date +"%Y%m%d")-$TRAVIS_TAG-$TRAVIS_OS_NAME.zip; else ZIPNAME=CTH-$(date +"%Y%m%d")-$TRAVIS_BRANCH-${TRAVIS_COMMIT:0:7}-$TRAVIS_OS_NAME.zip; fi
+ - zip -ro9 $ZIPNAME ./*
+ - ls -lh $ZIPNAME | cut -f5- -d' '
  - openssl dgst -sha256 $ZIPNAME > $ZIPNAME.sha256
  - cat $ZIPNAME.sha256
- - # Alt server for development
- - if [ $TRAVIS_REPO_SLUG != "CorsixTH/CorsixTH" ]; then curl --upload-file $ZIPNAME https://transfer.sh/$ZIPNAME; fi
- - # Upload to server
- - if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" && $TRAVIS_PULL_REQUEST == "false" ]; then sshpass -p "$SCP_PASS" scp -v -P12349 $ZIPNAME cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/builds/; fi;
+ # CorsixTH repo Mac builds are uploaded to armedpineapple.co.uk/cth/builds/, all else to transfer.sh
+ - if [[ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" && $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_OS_NAME == osx ]]; then sshpass -p "$SCP_PASS" scp -v -P12349 $ZIPNAME cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/builds/ && echo http://www.armedpineapple.co.uk/cth/builds/$ZIPNAME; else curl --upload-file $ZIPNAME https://transfer.sh/$ZIPNAME; fi
 env:
   global:
     secure: "mPtzSeDJKVeUu6KHJEbmHa91O+QK2XM0advYdr+13yr83w3C7cGFFjWgqzirsFUHVqPgdtSJIkom0DIxX7JtRoBZmt/xon+zfLq+Q4aSkJoYezWBqp2gavS8o1kSjtW7XuIuq995yjWvn7nehyoTYkKNtz/EzX5ZIVZ/iX73iyo="

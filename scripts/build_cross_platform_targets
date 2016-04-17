@@ -1,25 +1,37 @@
 #!/bin/bash
 set -ev
-# Build LevelEdit
-cd $TRAVIS_BUILD_DIR/LevelEdit && ant dist
-# Package LevelEdit
-cp $TRAVIS_BUILD_DIR/LevelEdit/dist/LevelEdit.jar $TRAVIS_BUILD_DIR/CorsixTH/
-cd $TRAVIS_BUILD_DIR/fresh
+# Build and package LevelEdit
+mkdir -p "$TRAVIS_BUILD_DIR"/LevelEdit/bin
+cd "$TRAVIS_BUILD_DIR"/LevelEdit
+ant dist
+cp dist/LevelEdit.jar "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/
 # Check if there are trailing whitespaces.
-${TRAVIS_BUILD_DIR}/scripts/check_trailing_whitespaces.py $TRAVIS_BUILD_DIR
+cd "$TRAVIS_BUILD_DIR"/fresh
+"$TRAVIS_BUILD_DIR"/scripts/check_trailing_whitespaces.py "$TRAVIS_BUILD_DIR"
 # Check for incorrectly encoded language files.
-python ${TRAVIS_BUILD_DIR}/scripts/check_language_files_not_BOM.py $TRAVIS_BUILD_DIR/CorsixTH/Lua/languages
+python "$TRAVIS_BUILD_DIR"/scripts/check_language_files_not_BOM.py "$TRAVIS_BUILD_DIR"/CorsixTH/Lua/languages
 # Check if there are lua classes with invalid/improper declarations.
-python ${TRAVIS_BUILD_DIR}/scripts/check_lua_classes.py
+python "$TRAVIS_BUILD_DIR"/scripts/check_lua_classes.py
 # Validate lua files
-(LUA_FAILURE=0; for file in `find CorsixTH -name '*.lua' -not -path "CorsixTH/Lua/languages/*"`; do luac -p $file; if [ $? != 0 ]; then LUA_FAILURE=1; fi; done; exit $LUA_FAILURE)
-# Run lua lint check
-(LUA_FAILURE=0; for file in `find CorsixTH -name '*.lua' -not -path "CorsixTH/Lua/languages/*"`; do /home/travis/.luarocks/bin/luacheck $file; if [ $? != 0 ]; then LUA_FAILURE=1; fi; done; exit $LUA_FAILURE)
+set +e
+cd "$TRAVIS_BUILD_DIR"/CorsixTH
+LUA_FAILURE=0
+find . -name '*.lua' -not -path "CorsixTH/Lua/languages/*" -exec bash -c 'file="$1"; luac -p "$file"; LUA_FAILURE+=$?' _ {} \;
+echo $LUA_FAILURE
+# Run lua lint check (dependent on https://github.com/CorsixTH/CorsixTH/pull/972)
+find . -name '*.lua' -not -path "CorsixTH/Lua/languages/*" -exec /home/travis/.luarocks/bin/luacheck --no-color -qqq {} \; > luacheck
+echo Warnings: $(awk '{sum+=$2} END {print sum}' luacheck). Errors $(awk '{sum+=$5} END {print sum}' luacheck). Files $(wc -l < luacheck).
+set -e
 # Run lua unit tests
-cd $TRAVIS_BUILD_DIR/CorsixTH/Luatest
-eval `luarocks --local path`
+cd "$TRAVIS_BUILD_DIR"/CorsixTH/Luatest
+$(luarocks --local path)
 LUA_PATH="../Lua/?.lua;$LUA_PATH" /home/travis/.luarocks/bin/busted
 # Build documentation
-cd ${TRAVIS_BUILD_DIR}/fresh && make doc
-# Upload new docs
-if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" && $TRAVIS_BRANCH == "master" ]; then sshpass -p "$SCP_PASS" scp -r -v -P12349 $TRAVIS_BUILD_DIR/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/; fi;
+cd "$TRAVIS_BUILD_DIR"/fresh
+make doc
+# Upload new docs to armedpineapple.co.uk/cth/docs/
+if [ "$TRAVIS_REPO_SLUG" = "CorsixTH/CorsixTH" ] && [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" = "false" ]
+  then sshpass -p "$SCP_PASS" scp -r -v -P12349 "$TRAVIS_BUILD_DIR"/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/
+fi
+# Run Valgrind
+valgrind --leak-check=full -v --vgdb=no

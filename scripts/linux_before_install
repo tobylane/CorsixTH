@@ -1,16 +1,12 @@
 #!/bin/bash
 set -ev
+luarocks --local install luafilesystem
+luarocks --local install luasocket
 # Required for LDocGen
 luarocks --local install lpeg
-luarocks --local install luafilesystem
-luarocks --local install luasocket  
 # Required for lua lint check
 luarocks --local install luacheck
 # Required for lua unit tests
 luarocks --local install luasec OPENSSL_DIR=/usr OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu/
 luarocks --local install busted
-git clone --depth=1 https://github.com/CorsixTH/deps.git $HOME/deps
-mkdir libs
-pushd libs
-mkdir $TRAVIS_BUILD_DIR/LevelEdit/bin
-popd
+git clone --depth=1 https://github.com/CorsixTH/deps.git "$TRAVIS_BUILD_DIR"/deps
