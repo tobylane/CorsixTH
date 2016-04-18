@@ -16,6 +16,7 @@ addons:
       - g++-5
       - sshpass
       - valgrind
+      - wxwidgets
 
 before_install:
  - mkdir -p "$TRAVIS_BUILD_DIR"/fresh/CorsixTH

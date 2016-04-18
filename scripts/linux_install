@@ -5,10 +5,13 @@ CMAKE_LIBRARY_PATH="$TRAVIS_BUILD_DIR"/deps/gnu-linux-x64/lib
 cd "$TRAVIS_BUILD_DIR"
 # Create unix makefiles
 cp "$TRAVIS_BUILD_DIR"/deps/travisci/cmake/FindFreetype.cmake CMake/FindFreetype.cmake
-cmake -DCMAKE_CXX_COMPILER="g++-5" -DLUA_PROGRAM_PATH="$(which lua)" -DWITH_AUDIO=ON -DWITH_MOVIES=ON -Bfresh -H. --debug-output \
+cmake .. -DCMAKE_CXX_COMPILER="g++-5" -DLUA_PROGRAM_PATH="$(which lua)" -DWITH_AUDIO=ON -DWITH_MOVIES=ON -Bfresh -H. --debug-output \
  -DCMAKE_INCLUDE_PATH="$CMAKE_INCLUDE_PATH;$CMAKE_INCLUDE_PATH/SDL2" -DCMAKE_LIBRARY_PATH="$CMAKE_LIBRARY_PATH" -DLUA_LIBRARY="$CMAKE_LIBRARY_PATH/liblua.so"
 # Build CorsixTH
 cd "$TRAVIS_BUILD_DIR"/fresh/
+ls
 make VERBOSE=1
 cd "$TRAVIS_BUILD_DIR"/fresh/CorsixTH
-rm -rf Src/ cmake_install.cmake CMakeFiles/
+ls
+lua -v
+#rm -rf Src/ *.cmake CMakeFiles/ makefile

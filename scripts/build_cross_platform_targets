@@ -3,7 +3,7 @@ set -ev
 # Build and package LevelEdit
 mkdir -p "$TRAVIS_BUILD_DIR"/LevelEdit/bin
 cd "$TRAVIS_BUILD_DIR"/LevelEdit
-ant dist
+ant dist -Xlint:unchecked
 cp dist/LevelEdit.jar "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/
 # Check if there are trailing whitespaces.
 cd "$TRAVIS_BUILD_DIR"/fresh
@@ -35,3 +35,4 @@ if [ "$TRAVIS_REPO_SLUG" = "CorsixTH/CorsixTH" ] && [ "$TRAVIS_BRANCH" = "master
 fi
 # Run Valgrind
 valgrind --leak-check=full -v --vgdb=no "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/CorsixTH
+valgrind --leak-check=full -v --vgdb=no "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/AnimView

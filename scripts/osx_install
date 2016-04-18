@@ -2,7 +2,7 @@
 set -ev
 # Create Xcode projects
 cd "$TRAVIS_BUILD_DIR"
-cmake .. -G Xcode -Bbuild -H. -DWITH_AUDIO=ON -DWITH_MOVIES=ON --debug-output  -DBUILD_ANIMVIEWER=ON -DwxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wx-config \
+cmake .. -G Xcode -Bbuild -H. -DWITH_AUDIO=ON -DWITH_MOVIES=ON --debug-output -DBUILD_ANIMVIEWER=ON -DwxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wx-config \
 -DFREETYPE_INCLUDE_DIR_freetype2=/usr/local/include/freetype2/ -DFREETYPE_INCLUDE_DIR_ft2build=/usr/local/include/freetype2/ -DFREETYPE_LIBRARY=/usr/local/lib/libfreetype.dylib \
 -DFFMPEG_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVFORMAT_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVUTIL_INCLUDE_DIRS=/usr/local/include/ffmpeg -DSWSCALE_INCLUDE_DIRS=/usr/local/include/ffmpeg \
 -DWITH_LUAJIT=OFF -DLUA_PROGRAM_PATH=/usr/local/bin/lua5.3 -DLUA_INCLUDE_DIR=/usr/local/include/lua5.3/ -DLUA_LIBRARY=/usr/local/lib/liblua.5.3.dylib
@@ -15,4 +15,4 @@ mv CorsixTH/Release/CorsixTH.app/ "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/
 cd "$TRAVIS_BUILD_DIR"/build/
 xcodebuild -configuration Release -target AnimView -target install_animview
 # xctool -configuration Release -scheme CorsixTH
-mv AnimView/Release/CorsixTH.app/ "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/
+mv AnimView/Release/AnimView.app/ "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/

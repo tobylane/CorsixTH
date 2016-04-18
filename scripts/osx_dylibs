@@ -74,7 +74,7 @@ lzma=$(otool -L libavformat.dylib | grep lzma | cut -f1 -d' ' | tr -d '[[:space:
 cat "$x264" > libx264.dylib
 cat "$lame" > libmp3lame.dylib
 cat "$png" > libpng.dylib
-cat "$lzma" > liblzma.dylib
+if [ -f "$lzma" ]; then cat "$lzma" > liblzma.dylib; fi
 
 install_name_tool -change "$sdl" @executable_path/libSDL2.dylib libSDL2_mixer.dylib
 
