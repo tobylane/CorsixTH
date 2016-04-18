@@ -1,0 +1,112 @@
+#!/bin/bash
+: ' Copyright (c) 2016 Toby "tobylane"
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.'
+
+set -ea
+[ "$CTH_VERBOSE" ] || [ "$CI" ] && set -x
+# Script to copy in all required dylibs and make them used by CorsixTH
+
+dir="$(brew --prefix)" # Adjust for your package manager or manual install
+if [ -d CorsixTH ]; then cd CorsixTH; fi
+if [ -d Release ]; then cd Release; fi
+if [ -d CorsixTH.app ]; then cd CorsixTH.app/Contents/MacOS/; fi
+
+lua=$(otool -L CorsixTH | grep lua | cut -f1 -d' ' | tr -d '[[:space:]]')
+lua2=$(basename $lua)
+sdl=$(otool -L CorsixTH | grep SDL2- | cut -f1 -d' ' | tr -d '[[:space:]]')
+mixer=$(otool -L CorsixTH | grep SDL2_mixer | cut -f1 -d' ' | tr -d '[[:space:]]')
+swresample=$(otool -L CorsixTH | grep swresample  | cut -f1 -d' ' | tr -d '[[:space:]]')
+avutil=$(otool -L CorsixTH | grep avutil | cut -f1 -d' ' | tr -d '[[:space:]]')
+avcodec=$(otool -L CorsixTH | grep avcodec | cut -f1 -d' ' | tr -d '[[:space:]]')
+avformat=$(otool -L CorsixTH | grep avformat | cut -f1 -d' ' | tr -d '[[:space:]]')
+avcodec=$(otool -L CorsixTH | grep avcodec | cut -f1 -d' ' | tr -d '[[:space:]]')
+freetype=$(otool -L CorsixTH | grep freetype | cut -f1 -d' ' | tr -d '[[:space:]]')
+swscale=$(otool -L CorsixTH | grep freetype | cut -f1 -d' ' | tr -d '[[:space:]]')
+
+# Cat is used to set correct file permissions without sudo
+cat "$sdl" > libSDL2.dylib
+cat "$lua" > "$lua2"
+cat "$mixer" > libSDL2_mixer.dylib
+cat "$avformat" > libavformat.dylib
+cat "$avcodec" > libavcodec.dylib
+cat "$avutil" > libavutil.dylib
+cat "$swscale" > libswscale.dylib
+cat "$swresample" > libswresample.dylib
+cat "$freetype" > libfreetype.dylib
+
+otool -L CorsixTH  | grep -v System | grep -v /usr/lib | grep -v @executable_path
+otool -L ./*.dylib | grep -v System | grep -v /usr/lib | grep -v @executable_path
+
+install_name_tool -change "$lua" @executable_path/"$lua2" CorsixTH
+install_name_tool -change "$sdl" @executable_path/libSDL2.dylib CorsixTH
+install_name_tool -change "$mixer" @executable_path/libSDL2_mixer.dylib CorsixTH
+install_name_tool -change "$mixer" @executable_path/libSDL2_mixer.dylib CorsixTH
+install_name_tool -change "$avformat" @executable_path/libavformat.dylib CorsixTH
+install_name_tool -change "$avcodec" @executable_path/libavcodec.dylib CorsixTH
+install_name_tool -change "$avutil" @executable_path/libavutil.dylib CorsixTH
+install_name_tool -change "$dir"/opt/ffmpeg/lib/libswscale.4.dylib @executable_path/libswscale.dylib CorsixTH
+install_name_tool -change "$dir"/opt/ffmpeg/lib/libswresample.2.dylib @executable_path/libswresample.dylib CorsixTH
+install_name_tool -change "$dir"/lib/libfreetype.6.dylib @executable_path/libfreetype.dylib CorsixTH
+install_name_tool -change "$dir"/opt/freetype/lib/libfreetype.6.dylib @executable_path/libfreetype.dylib CorsixTH
+
+swresample2=$(otool -L libavformat.dylib | grep swresample  | cut -f1 -d' ' | tr -d '[[:space:]]')
+avutil2=$(otool -L libavformat.dylib | grep avutil | cut -f1 -d' ' | tr -d '[[:space:]]')
+avcodec2=$(otool -L libavformat.dylib | grep avcodec | cut -f1 -d' ' | tr -d '[[:space:]]')
+x264=$(otool -L libavformat.dylib | grep x264 | cut -f1 -d' ' | tr -d '[[:space:]]')
+lame=$(otool -L libavformat.dylib | grep lame | cut -f1 -d' ' | tr -d '[[:space:]]')
+png=$(otool -L libfreetype.dylib | grep png | cut -f1 -d' ' | tr -d '[[:space:]]')
+lzma=$(otool -L libavformat.dylib | grep lzma | cut -f1 -d' ' | tr -d '[[:space:]]')
+
+cat "$x264" > libx264.dylib
+cat "$lame" > libmp3lame.dylib
+cat "$png" > libpng.dylib
+cat "$lzma" > liblzma.dylib
+
+install_name_tool -change "$sdl" @executable_path/libSDL2.dylib libSDL2_mixer.dylib
+
+install_name_tool -change "$swresample2" @executable_path/libswresample.dylib libavcodec.dylib
+install_name_tool -change "$avutil2" @executable_path/libavutil.dylib libavcodec.dylib
+install_name_tool -change "$x264" @executable_path/libx264.dylib libavcodec.dylib
+install_name_tool -change "$lame" @executable_path/libmp3lame.dylib libavcodec.dylib
+install_name_tool -change "$lzma" @executable_path/liblzma.dylib libavcodec.dylib
+
+install_name_tool -change "$avcodec" @executable_path/libavcodec.dylib libavformat.dylib
+install_name_tool -change "$swresample2" @executable_path/libswresample.dylib libavformat.dylib
+install_name_tool -change "$avutil2" @executable_path/libavutil.dylib libavformat.dylib
+install_name_tool -change "$avcodec2" @executable_path/libavcodec.dylib libavformat.dylib
+install_name_tool -change "$x264" @executable_path/libx264.dylib libavformat.dylib
+install_name_tool -change "$lame" @executable_path/libmp3lame.dylib libavformat.dylib
+install_name_tool -change "$lzma" @executable_path/liblzma.dylib libavformat.dylib
+
+install_name_tool -change "$x264" @executable_path/libx264.dylib libavutil.dylib
+install_name_tool -change "$lame" @executable_path/libmp3lame.dylib libavutil.dylib
+install_name_tool -change "$lzma" @executable_path/liblzma.dylib libavutil.dylib
+
+install_name_tool -change "$avutil2" @executable_path/libavutil.dylib libswresample.dylib
+install_name_tool -change "$x264" @executable_path/libx264.dylib libswresample.dylib
+install_name_tool -change "$lame" @executable_path/libmp3lame.dylib libswresample.dylib
+install_name_tool -change "$lzma" @executable_path/liblzma.dylib libswresample.dylib
+
+install_name_tool -change "$avutil2" @executable_path/libavutil.dylib libswscale.dylib
+install_name_tool -change "$x264" @executable_path/libx264.dylib libswscale.dylib
+install_name_tool -change "$lame" @executable_path/libmp3lame.dylib libswscale.dylib
+install_name_tool -change "$png" @executable_path/libpng.dylib libswscale.dylib
+
+install_name_tool -change "$png" @executable_path/libpng.dylib libfreetype.dylib
+
+otool -L CorsixTH  | grep -v System | grep -v /usr/lib | grep -v @executable_path
+otool -L ./*.dylib | grep -v System | grep -v /usr/lib | grep -v @executable_path

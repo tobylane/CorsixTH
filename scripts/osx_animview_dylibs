@@ -1,0 +1,52 @@
+#!/bin/bash
+: ' Copyright (c) 2016 Toby "tobylane"
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.'
+
+set -ea
+[ "$CTH_VERBOSE" ] || [ "$CI" ] && set -x
+# Script to copy in all required dylibs and make them used by AnimView
+
+if [ -d AnimView ]; then cd AnimView; fi
+if [ -d Release ]; then cd Release; fi
+if [ -d AnimView.app ]; then cd AnimView.app/Contents/MacOS/; fi
+
+core=$(otool -L AnimView | grep core | cut -f1 -d' ' | tr -d '[[:space:]]')
+cat "$core" > libwx_osx_cocoau_core.dylib
+base=$(otool -L AnimView | grep base | cut -f1 -d' ' | tr -d '[[:space:]]')
+cat "$base" > libwx_baseu.dylib
+png=$( otool -L "$core"  | grep png  | cut -f1 -d' ' | tr -d '[[:space:]]')
+cat "$png" > libpng.dylib
+jpeg=$(otool -L "$core"  | grep jpeg | cut -f1 -d' ' | tr -d '[[:space:]]')
+cat "$jpeg" > libjpeg.dylib
+tiff=$(otool -L "$core"  | grep tiff | cut -f1 -d' ' | tr -d '[[:space:]]')
+cat "$tiff" > libtiff.dylib
+
+otool -L AnimView | grep -v System | grep -v /usr/lib | grep -v @executable_path
+otool -L *.dylib  | grep -v System | grep -v /usr/lib | grep -v @executable_path
+
+install_name_tool -change "$core" @executable_path/libwx_osx_cocoau_core.dylib AnimView
+install_name_tool -change "$base" @executable_path/libwx_baseu.dylib AnimView
+
+install_name_tool -change "$png" @executable_path/libpng.dylib libwx_osx_cocoau_core.dylib
+install_name_tool -change "$jpeg" @executable_path/libjpeg.dylib libwx_osx_cocoau_core.dylib
+install_name_tool -change "$tiff" @executable_path/libtiff.dylib libwx_osx_cocoau_core.dylib
+install_name_tool -change $(otool -L "$core" | grep base | cut -f1 -d' ' | tr -d '[[:space:]]') @executable_path/libwx_baseu.dylib libwx_osx_cocoau_core.dylib
+
+install_name_tool -change $(otool -L "$tiff" | grep jpeg | cut -f1 -d' ' | tr -d '[[:space:]]') @executable_path/libjpeg.dylib libtiff.dylib
+
+otool -L AnimView | grep -v System | grep -v /usr/lib | grep -v @executable_path
+otool -L *.dylib  | grep -v System | grep -v /usr/lib | grep -v @executable_path

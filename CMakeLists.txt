@@ -1,15 +1,15 @@
 # Cmake File for CorsixTH
-# OPTIONS AVAILABLE:
-# At most, one of the following:
-#   - WITH_SDL     : Activate SDL Renderer (default)
+# OPTIONS AVAILABLE: (default state)
+# Required:
+#   - WITH_SDL		: Activate SDL Renderer (enabled)
 # Any of the following:
-#   - WITH_AUDIO   : Activate Sound (enabled by default)
-#   - WITH_FREETYPE2
-#   - WITH_MOVIES  : Activate movies (requires Sound)
-#   - BUILD_ANIMVIEWER
-#   - WITH_LUAJIT  : Whether to use LuaJIT 2 instead of Lua51 (default is LuaJIT 2)
-#   - WITH_LIBAV   : Whether to use LibAV (as opposed to FFMEPG) when building movies
-#   - WITH_VLD     : Build with Visual Leak Detector (requires Visual Studio)
+#   - WITH_AUDIO	: Activate Sound through SDL2_mixer. Compile SDL2_mixer with smpeg to play mp3s ingame (enabled)
+#   - WITH_FREETYPE2	: Activate non-Latin-based languages through FreeType2 (enabled)
+#   - WITH_MOVIES	: Activate movies through ffmpeg (enabled) or libav (requires WITH_AUDIO)
+#   - BUILD_ANIMVIEWER : Also create build files for AnimView (disabled)
+#   - WITH_LUAJIT	: Whether to use LuaJIT instead of Lua (disabled)
+#   - WITH_LIBAV	: Whether to use LibAV (as opposed to FFMEPG) when building movies (disabled) (requires WITH_AUDIO)
+#   - WITH_VLD		: Build with Visual Leak Detector (Windows only, requires Visual Studio) (disabled)
 
 PROJECT(CorsixTH_Top_Level)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
@@ -29,8 +29,8 @@ INCLUDE(CheckIncludeFiles)
 SET(CORSIX_TH_DONE_TOP_LEVEL_CMAKE ON)
 
 # Define our options
-OPTION(WITH_SDL "Activate SDL Renderer" ON) # our default option
-OPTION(WITH_AUDIO "Activate Sound" ON) # enabled by default
+OPTION(WITH_SDL "Activate SDL Renderer" ON)
+OPTION(WITH_AUDIO "Activate Sound" ON)
 OPTION(WITH_MOVIES "Activate in game movies" ON)
 OPTION(WITH_FREETYPE2 "Enhanced Font Support" ON)
 OPTION(WITH_LUAJIT "Use LuaJIT instead of Lua" OFF)
@@ -211,3 +211,22 @@ IF (DOXYGEN_FOUND OR LUA_PROGRAM_FOUND)
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/doc/index.html "</body>\n")
   file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/doc/index.html "</html>\n")
 ENDIF (DOXYGEN_FOUND OR LUA_PROGRAM_FOUND)
+
+IF (APPLE)
+  add_custom_target(install_corsixth
+    COMMAND bash ${CMAKE_SOURCE_DIR}/scripts/osx_dylibs
+    COMMENT "Including and linking dylibs for CorsixTH")
+  add_custom_target(dist)
+  add_dependencies(dist install_corsixth)
+
+  IF(BUILD_ANIMVIEWER)
+    add_custom_target(install_animview
+	    COMMAND bash ${CMAKE_SOURCE_DIR}/scripts/osx_animview_dylibs
+	    COMMENT "Including and linking dylibs for AnimView")
+	  add_dependencies(dist install_animview)
+  ENDIF(BUILD_ANIMVIEWER)
+
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=core2")
+  set(CMAKE_CONFIGURATION_TYPES Release Debug RelWithDebInfo CACHE "Release as default build configuration" INTERNAL FORCE)
+ENDIF (APPLE)
+
