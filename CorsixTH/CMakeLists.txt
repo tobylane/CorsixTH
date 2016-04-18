@@ -75,9 +75,10 @@ IF(APPLE)
 
   #Add an extra step at the end of the build process to copy the resources into the bundle.
   add_custom_command(TARGET CorsixTH
-  					 POST_BUILD
-					 COMMAND rsync -rv --include-from ${CMAKE_SOURCE_DIR}/CorsixTH/RequiredResources.txt ${CMAKE_SOURCE_DIR}/CorsixTH/ \${TARGET_BUILD_DIR}/\${FULL_PRODUCT_NAME}/Contents/MacOS
-					 COMMAND rsync -rv ${CMAKE_SOURCE_DIR}/CorsixTH/Icon.icns \${TARGET_BUILD_DIR}/\${FULL_PRODUCT_NAME}/Contents/Resources/)
+		POST_BUILD
+			COMMAND rsync -rv --include-from ${CMAKE_SOURCE_DIR}/CorsixTH/RequiredResources.txt ${CMAKE_SOURCE_DIR}/CorsixTH/ \${TARGET_BUILD_DIR}/\${FULL_PRODUCT_NAME}/Contents/MacOS
+			COMMAND rsync -rv ${CMAKE_SOURCE_DIR}/CorsixTH/Icon.icns \${TARGET_BUILD_DIR}/\${FULL_PRODUCT_NAME}/Contents/Resources/
+			COMMAND bash ${CMAKE_SOURCE_DIR}/scripts/osx_luarocks)
 
   target_link_libraries(CorsixTH SDL2main)
   INCLUDE_DIRECTORIES(${CMAKE_BINARY_DIR}/CorsixTH/SDLMain/)
@@ -198,15 +199,6 @@ ENDIF(MSVC AND CORSIX_TH_USE_VLD)
 
 # Declaration of the install process
 IF(APPLE)
-  #Just use the prefix as it's sufficient to just set the prefix to /Applications on Mac.
-  install(TARGETS CorsixTH BUNDLE DESTINATION .)
-
-  # Fix the OS X bundle to include required libraries (create a redistributable app)
-  install(CODE "
-    INCLUDE(BundleUtilities)
-    SET(BU_CHMOD_BUNDLE_ITEMS ON)
-    FIXUP_BUNDLE(${CMAKE_INSTALL_PREFIX}/CorsixTH.app \"\" \"\")
-    ")
 ELSE()
   install(TARGETS CorsixTH RUNTIME DESTINATION CorsixTH)
   install(DIRECTORY Lua Levels DESTINATION CorsixTH PATTERN "*.svn" EXCLUDE)

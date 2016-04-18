@@ -1,0 +1,48 @@
+#!/bin/bash
+: ' Copyright (c) 2016 Toby "tobylane"
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.'
+
+set -ea
+[ "$CTH_VERBOSE" ] || [ "$CI" ] && set -x
+
+if [ -d Release ]; then cd Release; fi
+if [ -d CorsixTH.app ]; then cd CorsixTH.app/Contents/MacOS/; fi
+
+dir="$(brew --prefix)" # Adjust for your package manager or manual install
+lua=$(otool -L CorsixTH | grep lua | cut -d'.' -f2-3)
+if [ ${#lua} -lt "3" ] || [ ${#lua} -gt "6" ]; then lua=$(lua -v | cut -d'.' -f1-2 | cut -d' ' -f2)
+elif [ "$lua" = "" ]; then lua=5.3
+fi
+
+if [ -d luarocks/share/lua/"$lua" ]
+  then echo "Luarocks for Lua"$lua" in place."
+  exit
+elif [ -d "$dir/share/lua/$lua/socket/" ] && [ -z "$1" ]
+  then echo "Copying luarocks from global installation."
+  mkdir -p luarocks/share/lua
+  cp -R "$dir/share/lua/$lua" luarocks/share/lua/
+  # -L would follow symlinks but we don't want to
+else
+  echo "Installing local luarocks "$lua"."
+	lrx="luarocks-$lua"
+	$lrx install --tree luarocks luafilesystem
+	$lrx install --tree luarocks lpeg
+	$lrx install --tree luarocks luasocket
+	curl -fLsS https://patch-diff.githubusercontent.com/raw/diegonehab/luasocket/pull/69.diff \
+	  | patch -bfN --verbose luarocks/share/lua/$lua/socket/http.lua
+	rm -rf luarocks/lib/luarocks/
+fi
