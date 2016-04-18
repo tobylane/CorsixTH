@@ -34,4 +34,4 @@ if [ "$TRAVIS_REPO_SLUG" = "CorsixTH/CorsixTH" ] && [ "$TRAVIS_BRANCH" = "master
   then sshpass -p "$SCP_PASS" scp -r -v -P12349 "$TRAVIS_BUILD_DIR"/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/
 fi
 # Run Valgrind
-valgrind --leak-check=full -v --vgdb=no
+valgrind --leak-check=full -v --vgdb=no "$TRAVIS_BUILD_DIR"/fresh/CorsixTH/CorsixTH
