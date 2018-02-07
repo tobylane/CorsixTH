@@ -11,7 +11,6 @@ addons:
       - luarocks
       - doxygen
       - g++-5
-      - sshpass
 
 before_install:
   - luarocks --local install --server=http://luarocks.org luasec OPENSSL_DIR=/usr OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu/
@@ -34,12 +33,8 @@ install:
   # Create unix makefiles
   - cp $HOME/deps/travisci/cmake/FindFreetype.cmake CMake/FindFreetype.cmake
   - cmake -DCMAKE_CXX_COMPILER="g++-5" -DLUA_PROGRAM_PATH=`which lua` -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DWITH_LUAJIT=OFF -DCMAKE_INCLUDE_PATH="$CMAKE_INCLUDE_PATH;$CMAKE_INCLUDE_PATH/SDL2" -DCMAKE_LIBRARY_PATH="$CMAKE_LIBRARY_PATH" -DLUA_LIBRARY="$CMAKE_LIBRARY_PATH/liblua.so" -Bfresh -H. --debug-output
-before_script:
-  # Don't ask for confirmation when using scp
-  - echo -e "Host armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - echo -e "Host server2.armedpineapple.co.uk\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - cd fresh
 script:
+  - cd fresh
   # Check if there are trailing whitespaces.
   - ${TRAVIS_BUILD_DIR}/scripts/check_trailing_whitespaces.py $TRAVIS_BUILD_DIR
   # Check for incorrectly encoded language files.
@@ -60,9 +55,20 @@ script:
   - cd $TRAVIS_BUILD_DIR/LevelEdit && ant dist
   # Build documentation
   - cd ${TRAVIS_BUILD_DIR}/fresh && make doc
-after_success:
-  # Upload new docs
-  - if [ $TRAVIS_REPO_SLUG == "CorsixTH/CorsixTH" -a $TRAVIS_BRANCH == "master" ]; then sshpass -p "$SCP_PASS" scp -r -v -P12349 $TRAVIS_BUILD_DIR/fresh/doc/* cthbuilder@server2.armedpineapple.co.uk:/home/cthbuilder/docs/; fi;
-env:
-  global:
-    secure: "mPtzSeDJKVeUu6KHJEbmHa91O+QK2XM0advYdr+13yr83w3C7cGFFjWgqzirsFUHVqPgdtSJIkom0DIxX7JtRoBZmt/xon+zfLq+Q4aSkJoYezWBqp2gavS8o1kSjtW7XuIuq995yjWvn7nehyoTYkKNtz/EzX5ZIVZ/iX73iyo="
+before_deploy:
+  - cd ${TRAVIS_BUILD_DIR}
+  - mkdir -p docs
+  - rsync -r fresh/doc docs/
+  - touch docs/.nojekyll
+deploy:
+  - provider: pages
+    on:
+      repo: CorsixTH/CorsixTH
+      branch: master
+    repo: CorsixTH/CorsixTH.github.io
+    target-branch: master
+    github-token: $CorsixTHDocsDeploy
+    local-dir: docs/
+    skip-cleanup: true
+    keep-history: true
+    verbose: true
