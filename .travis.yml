@@ -61,6 +61,8 @@ before_deploy:
   - rsync -r fresh/doc docs/
   - touch docs/.nojekyll
   - openssl dgst -sha256 fresh/CorsixTH/corsix-th > corsix-th.sha256
+  - git archive -o "CorsixTH-$TRAVIS_TAG".zip HEAD
+  - git archive -o "CorsixTH-$TRAVIS_TAG".tar.gz HEAD
 deploy:
   - provider: pages
     on:
@@ -81,6 +83,7 @@ deploy:
      - "fresh/CorsixTH/corsix-th"
      - "corsix-th.sha256"
      - "fresh/LevelEdit.jar"
+     - "CorsixTH-*"
     skip_cleanup: true
     on:
       branch: docs2
