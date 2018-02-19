@@ -64,9 +64,9 @@ before_deploy:
 deploy:
   - provider: pages
     on:
-      repo: CorsixTH/CorsixTH
-      branch: master
-    repo: CorsixTH/CorsixTH.github.io
+      repo: tobylane/CorsixTH
+      branch: docs2
+    repo: tobylane/tobylane.github.io
     target-branch: master
     github-token: $CorsixTHDocsDeploy
     local-dir: docs/
@@ -83,9 +83,9 @@ deploy:
      - "fresh/LevelEdit.jar"
     skip_cleanup: true
     on:
-      branch: master
-      repo: CorsixTH/CorsixTH
-      tags: true
+      branch: docs2
+      #repo: CorsixTH/CorsixTH
+      #tags: true
     name: "CorsixTH $TRAVIS_TAG"
     draft: true
     verbose: true
