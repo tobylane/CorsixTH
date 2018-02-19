@@ -60,6 +60,7 @@ before_deploy:
   - mkdir -p docs
   - rsync -r fresh/doc docs/
   - touch docs/.nojekyll
+  - openssl dgst -sha256 fresh/CorsixTH/corsix-th > corsix-th.sha256
 deploy:
   - provider: pages
     on:
@@ -71,4 +72,20 @@ deploy:
     local-dir: docs/
     skip-cleanup: true
     keep-history: true
+    verbose: true
+
+  - provider: releases
+    api-key: $CorsixTHDocsDeploy
+    file_glob: true
+    file:
+     - "fresh/CorsixTH/corsix-th"
+     - "corsix-th.sha256"
+     - "fresh/LevelEdit.jar"
+    skip_cleanup: true
+    on:
+      branch: master
+      repo: CorsixTH/CorsixTH
+      tags: true
+    name: "CorsixTH $TRAVIS_TAG"
+    draft: true
     verbose: true
