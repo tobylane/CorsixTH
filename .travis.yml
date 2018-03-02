@@ -11,6 +11,7 @@ addons:
       - luarocks
       - doxygen
       - g++-5
+      - pandoc
 
 before_install:
   - luarocks --local install --server=http://luarocks.org luasec OPENSSL_DIR=/usr OPENSSL_LIBDIR=/usr/lib/x86_64-linux-gnu/
@@ -59,6 +60,7 @@ before_deploy:
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir -p docs
   - rsync -r fresh/doc docs/
+  - pandoc -f markdown -t html -o docs/index.html ${TRAVIS_BUILD_DIR}/DoxyGen/index.md
   - touch docs/.nojekyll
   - openssl dgst -sha256 fresh/CorsixTH/corsix-th > corsix-th.sha256
   - git archive -o "CorsixTH-$TRAVIS_TAG".zip HEAD
