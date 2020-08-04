@@ -36,7 +36,7 @@ Param(
 $anim_view_libs = "wxwidgets"
 $corsixth_libs = "ffmpeg", "freetype", "lua", "luafilesystem", "lpeg", "sdl2", "sdl2-mixer[dynamic-load,libflac,mpg123,libmodplug,libvorbis]", "luasocket", "catch2"
 
-$vcpkg_git_url = "https://github.com/CorsixTH/vcpkg"
+$vcpkg_git_url = "https://github.com/microsoft/vcpkg"
 
 $dest_folder_name = "vcpkg"
 $dest_folder_path = ".\vcpkg"
@@ -95,7 +95,7 @@ function run_script {
     # Build the triplet flag e.g. --triplet "x64-windows"
     $triplet = "--triplet `""
     $triplet += $VcpkgTriplet
-    $triplet += '"'
+    $triplet += '" '
 
     $libs_list = ""
 
@@ -110,6 +110,10 @@ function run_script {
             $libs_list += $library + ' '
         }
     }
+
+    # Install yasm-tool first
+    $install_command = ".\vcpkg install --triplet x86-windows yasm-tool:x86-windows"
+    run_command -command $install_command
 
     # Compile them locally
     $install_command = ".\vcpkg install " + $triplet + $libs_list
