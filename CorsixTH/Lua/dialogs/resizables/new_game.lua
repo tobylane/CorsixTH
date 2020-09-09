@@ -55,7 +55,7 @@ local col_shadow = {
 }
 
 function UINewGame:UINewGame(ui)
-  self:UIResizable(ui, 320, 220, col_bg)
+  self:UIResizable(ui, 320, 250, col_bg)
 
   local app = ui.app
   self.esc_closes = true
@@ -129,9 +129,15 @@ function UINewGame:UINewGame(ui)
   self:addBevelPanel(165, 115, 140, 30, col_bg):setLabel(self.available_difficulties[self.difficulty].text)
     :makeToggleButton(0, 0, 135, 30, nil, self.dropdownDifficulty):setTooltip(_S.tooltip.new_game_window.difficulty)
 
+  -- Competition
+  self:addBevelPanel(20, 150, 140, 30, col_shadow, col_bg, col_bg)
+    :setLabel(_S.new_game_window.competition).lowered = true
+  self:addBevelPanel(165, 150, 140, 30, col_bg):setLabel(_S.new_game_window.option_off)
+    :makeToggleButton(0, 0, 135, 30, nil, self.buttonCompetition):setTooltip(_S.tooltip.new_game_window.competition)
+
   -- Start and Cancel
-  self:addBevelPanel(20, 165, 140, 40, col_bg):setLabel(_S.new_game_window.start):makeButton(0, 0, 135, 40, nil, self.buttonStart):setTooltip(_S.tooltip.new_game_window.start)
-  self:addBevelPanel(165, 165, 140, 40, col_bg):setLabel(_S.new_game_window.cancel):makeButton(0, 0, 135, 40, nil, self.buttonCancel):setTooltip(_S.tooltip.new_game_window.cancel)
+  self:addBevelPanel(20, 195, 140, 40, col_bg):setLabel(_S.new_game_window.start):makeButton(0, 0, 135, 40, nil, self.buttonStart):setTooltip(_S.tooltip.new_game_window.start)
+  self:addBevelPanel(165, 195, 140, 40, col_bg):setLabel(_S.new_game_window.cancel):makeButton(0, 0, 135, 40, nil, self.buttonCancel):setTooltip(_S.tooltip.new_game_window.cancel)
 end
 
 function UINewGame:saveToConfig()
@@ -173,6 +179,10 @@ function UINewGame:buttonTutorial(checked, button)
   button.panel_for_sprite:setLabel(checked and _S.new_game_window.option_on or _S.new_game_window.option_off)
 end
 
+function UINewGame:buttonCompetition(checked, button)
+  button.panel_for_sprite:setLabel(checked and _S.new_game_window.option_on or _S.new_game_window.option_off)
+end
+
 function UINewGame:dropdownDifficulty(activate, button)
   if activate and #self.available_difficulties > 1 then
     self.difficulty_dropdown = UIDropdown(self.ui, self, button, self.available_difficulties, self.selectDifficulty)
@@ -191,7 +201,7 @@ end
 
 function UINewGame:buttonStart()
   self.name_textbox:confirm()
-  print("starting game with difficulty " .. self.available_difficulties[self.difficulty].param)
+  print("Starting game with difficulty " .. self.available_difficulties[self.difficulty].param)
   self:startGame(self.available_difficulties[self.difficulty].param)
 end
 

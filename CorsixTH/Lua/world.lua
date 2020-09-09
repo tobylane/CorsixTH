@@ -207,18 +207,27 @@ function World:World(app)
   }
 
   self:gameLog("Created game with savegame version " .. self.savegame_version .. ".")
+
+  -- Competition/time trial mode
+  if self.app.config.competition then
+    self.competition = os.time()
+    self:gameLog("Competition mode on. Level " .. self.map.level_name ..
+      " started at " .. os.date("%H:%M"))
+  end
 end
 
 --! Register key shortcuts for controlling the world (game speed, etc.)
 function World:setUI(ui)
   self.ui = ui
 
-  self.ui:addKeyHandler("ingame_pause", self, self.pauseOrUnpause, "Pause")
-  self.ui:addKeyHandler("ingame_gamespeed_slowest", self, self.setSpeed, "Slowest")
-  self.ui:addKeyHandler("ingame_gamespeed_slower", self, self.setSpeed, "Slower")
-  self.ui:addKeyHandler("ingame_gamespeed_normal", self, self.setSpeed, "Normal")
-  self.ui:addKeyHandler("ingame_gamespeed_max", self, self.setSpeed, "Max speed")
-  self.ui:addKeyHandler("ingame_gamespeed_thensome", self, self.setSpeed, "And then some more")
+  if not self.competition then
+    self.ui:addKeyHandler("ingame_pause", self, self.pauseOrUnpause, "Pause")
+    self.ui:addKeyHandler("ingame_gamespeed_slowest", self, self.setSpeed, "Slowest")
+    self.ui:addKeyHandler("ingame_gamespeed_slower", self, self.setSpeed, "Slower")
+    self.ui:addKeyHandler("ingame_gamespeed_normal", self, self.setSpeed, "Normal")
+    self.ui:addKeyHandler("ingame_gamespeed_max", self, self.setSpeed, "Max speed")
+    self.ui:addKeyHandler("ingame_gamespeed_thensome", self, self.setSpeed, "And then some more")
+  end
 
   self.ui:addKeyHandler("ingame_zoom_in", self, self.adjustZoom,  1)
   self.ui:addKeyHandler("ingame_zoom_in_more", self, self.adjustZoom, 5)

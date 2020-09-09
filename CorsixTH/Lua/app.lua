@@ -627,6 +627,7 @@ function App:loadLevel(level, difficulty, level_name, level_file, level_intro, m
       world = {
         room_built = self.world.room_built,
         campaign_info = self.world.campaign_info,
+        competition = self.world.competition
         },
       hospital = {
         player_salary = self.ui.hospital.player_salary,

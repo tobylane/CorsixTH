@@ -83,12 +83,16 @@ function UICustomGame:UICustomGame(ui)
     return
   end
 
-  self:addBevelPanel(280, 230, 140, 20, self.col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
-  local button =  self:addPanel(12, 430, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
+  self:addBevelPanel(220, 230, 80, 20, self.col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
+  local button =  self:addPanel(12, 305, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
     :setTooltip(_S.tooltip.custom_game_window.free_build)
   if self.ui.app.config.free_build_mode then
     button:toggle()
   end
+
+  self:addBevelPanel(350, 230, 80, 20, self.col_bg):setLabel(_S.new_game_window.competition).lowered = true
+  self:addPanel(12, 435, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonCompetition)
+    :setTooltip(_S.tooltip.new_game_window.competition)
 
   -- Finally the load button
   self:addBevelPanel(480, 220, 100, 40, self.col_bg)
@@ -135,10 +139,6 @@ function UICustomGame:buttonLoadLevel()
     end
     app:loadLevel(item.level_file, nil, self.chosen_level_name, item.map_file, self.chosen_level_description)
   end
-end
-
-function UICustomGame:buttonFreebuild(checked)
-  self.ui.app.config.free_build_mode = checked
 end
 
 function UICustomGame:draw(canvas, x, y)

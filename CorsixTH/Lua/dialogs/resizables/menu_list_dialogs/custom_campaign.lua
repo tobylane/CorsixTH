@@ -84,6 +84,17 @@ function UICustomCampaign:UICustomCampaign(ui)
 
   self.description_offset = 0
 
+  self:addBevelPanel(210, 230, 80, 20, self.col_bg):setLabel(_S.custom_game_window.free_build).lowered = true
+  --[[local button = self:addPanel(12, 305, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonFreebuild)
+    :setTooltip(_S.tooltip.custom_game_window.free_build)
+  if self.ui.app.config.free_build_mode then
+    button:toggle()
+  end]]
+
+  self:addBevelPanel(320, 230, 80, 20, self.col_bg):setLabel(_S.new_game_window.competition).lowered = true
+  --local button2 = UIMenuList:addPanel(12, 435, 225):makeToggleButton(0, 0, 29, 29, 11, self.buttonCompetition)
+   -- :setTooltip(_S.tooltip.new_game_window.competition)
+
   -- Finally the load button
   self:addBevelPanel(420, 220, 160, 40, self.col_bg)
     :setLabel(_S.custom_campaign_window.start_selected_campaign)

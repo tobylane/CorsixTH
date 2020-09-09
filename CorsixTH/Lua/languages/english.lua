@@ -284,6 +284,10 @@ fax = {
         "A very well run hospital. Watch out for the recession though! Right... you don't have to worry about that.",
       }
     }
+  },
+  competition = {
+    main = "the main campaign",
+    message = "Well done! Competition mode: beat %s in %s minutes and %s seconds.",
   }
 }
 
@@ -650,6 +654,7 @@ new_game_window = {
   medium = "Doctor (Medium)",
   hard = "Consultant (Hard)",
   tutorial = "Tutorial",
+  competition = "Time Trial",
   start = "Start",
   cancel = "Cancel",
 }
@@ -661,6 +666,7 @@ tooltip.new_game_window = {
   medium = "This is the middle way to go if you are unsure what to choose",
   hard = "If you are used to this kind of game and want more of a challenge, pick this option",
   tutorial = "Click here to turn on some help to get you started once in the game",
+  competition = "Click here to start a time trial with fixed speed and no pausing",
   start = "Start the game with the chosen settings",
   cancel = "Oh, I didn't really mean to start a new game!",
 }

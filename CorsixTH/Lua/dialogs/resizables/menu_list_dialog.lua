@@ -87,8 +87,8 @@ function UIMenuList:UIMenuList(ui, mode, title, items, num_rows, extra_beside_li
     self.item_buttons[num] = self.item_panels[num]:makeButton(0, 0, 220, 17, nil, button_clicked(num))
   end
 
-  self:addBevelPanel(20, 220, 240, 40, self.col_bg):setLabel(_S.menu_list_window.back)
-    :makeButton(0, 0, 240, 40, nil, self.buttonBack):setTooltip(_S.tooltip.menu_list_window.back)
+  self:addBevelPanel(20, 220, 180, 40, self.col_bg):setLabel(_S.menu_list_window.back)
+    :makeButton(0, 0, 180, 40, nil, self.buttonBack):setTooltip(_S.tooltip.menu_list_window.back)
 
   self:updateButtons()
 end
@@ -121,6 +121,14 @@ function UIMenuList:updateButtons()
       button:enable(false)
     end
   end
+end
+
+function UIMenuList:buttonFreebuild(checked)
+  self.ui.app.config.free_build_mode = checked
+end
+
+function UIMenuList:buttonCompetition(checked)
+  self.ui.app.config.competition = checked
 end
 
 function UIMenuList:buttonBack()

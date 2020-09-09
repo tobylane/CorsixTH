@@ -224,8 +224,22 @@ function UIFax:choice(choice_number)
       end
     end
   elseif choice == "return_to_main_menu" then
-    self.ui.app.moviePlayer:playWinMovie()
-    self.ui.app:loadMainMenu()
+    local app, map = self.ui.app, self.ui.app.world.map
+    local message
+    if app.world.competition then
+      local timediff = os.difftime(os.time(), self.ui.app.world.competition)
+      -- Is this the main campaign, a custom campaign, or a single scenario
+      local playing = tonumber(map.level_number) and _S.fax.competition.main or
+        app.world.campaign_info and app.world.campaign_info.name or map.level_name
+      message = _S.fax.competition.message:format(playing, math.floor(timediff / 60),
+        math.floor(timediff % 60))
+    end
+    app.moviePlayer:playWinMovie()
+    if message then
+      app:loadMainMenu({message})
+    else
+      app:loadMainMenu()
+    end
   end
   self.icon:removeMessage()
   self:close()
