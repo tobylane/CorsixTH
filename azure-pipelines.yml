@@ -1,0 +1,55 @@
+# Trigger on all branches and PRs
+# Parallel windows, mac and linux - prepare and build
+# Run tests and upload new documentation on linux
+---
+jobs:
+  - job: Windows
+    pool:
+      vmImage: windows-2019
+    steps:
+      - task: Cache@2
+        inputs:
+          key: $(Agent.OS) | CMake/VcpkgDeps.cmake | 1
+          path: vcpkg/
+        displayName: Cache vcpkg builds
+      - task: CMake@1
+        inputs:
+          cmakeArgs: '.. -DUSE_VCPKG_DEPS=ON -DCMAKE_INSTALL_PREFIX=CorsixTH/RelWithDebInfo/'
+      - task: CMake@1
+        inputs:
+          cmakeArgs: '--build . --config RelWithDebInfo --verbose --target install'
+        displayName: Build CorsixTH
+      - template: scripts/upload.yml
+        parameters:
+          path: 'build/CorsixTH/RelWithDebInfo/'
+
+  - job: macOS
+    pool:
+      vmImage: macOS-10.15
+    steps:
+      - task: Cache@2
+        inputs:
+          key: $(Agent.OS) | scripts/macos_before_install | 1
+          path: build_files/
+          cacheHitVar: CACHE_RESTORED
+        displayName: Cache ffmpeg build
+      - script: scripts/macos_before_install
+        displayName: Install requirements
+      - script: scripts/macos_install
+        displayName: Build CorsixTH
+      - template: scripts/upload.yml
+        parameters:
+          path: 'fresh/CorsixTH/'
+
+  - job: Linux_and_Tests
+    pool:
+      vmImage: ubuntu-20.04
+    steps:
+      - checkout: self
+        persistCredentials: true  # Keeps the git OAuth token after checkout
+      - script: scripts/linux_before_tests
+        displayName: Install requirements
+      - script: scripts/linux_install
+        displayName: Build CorsixTH
+      - script: scripts/build_cross_platform_targets
+        displayName: Run code tests and upload changes to documentation

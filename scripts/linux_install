@@ -1,0 +1,9 @@
+#!/bin/bash
+set -ev
+
+# Create CorsixTH makefiles
+cmake . -G"Unix Makefiles" -Bbuild -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DBUILD_ANIMVIEWER=ON \
+  --debug-output -DENABLE_UNIT_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+# Build CorsixTH and AnimView
+cmake --build build/ -- VERBOSE=1
+sudo cmake --build build/ -- install

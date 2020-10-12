@@ -1,0 +1,53 @@
+#!/bin/bash
+set -eva
+
+# Find the oldest version of macOS SDK supported by the selected version of Xcode and fetch it
+# 11.7, the latest to support macos 10.13, from https://github.com/actions/virtual-environments/blob/main/images/macos/macos-10.15-Readme.md#xcode
+sudo xcode-select --switch /Applications/Xcode_11.7.app/Contents/Developer
+xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+MACOSX_DEPLOYMENT_TARGET="$(/usr/libexec/PlistBuddy -c 'print MinimumSDKVersion' "$xcode/Info.plist")"
+echo "$MACOSX_DEPLOYMENT_TARGET"
+curl -JLO "https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk.tar.xz"
+tar -C "$xcode/Developer/SDKs/" -xf "MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk.tar.xz"
+SDKROOT="$xcode/Developer/SDKs/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk"
+export CFLAGS="-isysroot $SDKROOT -march=nehalem -O2 -pipe"
+export CXXFLAGS="$CFLAGS"
+
+mkdir -p build_files
+cd build_files
+sudo mkdir -p /usr/local/man
+sudo chown -R "$(id -u):$(id -g)" /usr/local/man
+
+# Build the dependencies if the cache is not restored or up to date (expires after a week)
+if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lua-$(brew info lua | head -1 | cut -f3 -d' ')" ]; then
+  # Fetch source of latest version in homebrew and unarchive into the current folder
+  brew unpack lua luarocks sdl2 sdl2_mixer freetype ffmpeg #wxwidgets
+  brew uninstall php curl-openssl brotli # Fix ffmpeg error at CorsixTH build time
+  HOMEBREW_NO_AUTO_UPDATE=1 brew install yasm
+  (cd lua-*; make macosx test install)
+  (cd luarocks*; ./configure; make)
+  (cd sdl2-*; ./configure --disable-static --disable-dependency-tracking; make install)
+  (cd sdl2_mixer*; ./configure --disable-music-opus --disable-dependency-tracking; make)
+  (cd freetype*; ./configure --without-png --without-zlib --without-bzip2 --without-harfbuzz; make)
+  (cd ffmpeg*; ./configure --disable-everything --disable-doc --disable-debug --disable-programs \
+    --enable-decoder=smacker --enable-decoder=smackaud --enable-demuxer=smacker \
+    --enable-runtime-cpudetect --enable-protocol=file --enable-protocol=cache \
+    --enable-asm --enable-x86asm --enable-small
+  CFLAGS="$CFLAGS -DHAVE_UNISTD_H=0" LDFLAGS=-headerpad_max_install_names LDLIBS=-headerpad_max_install_names make "-j$(nproc)")
+  #(cd wx*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
+  #  --without-libjpeg --without-libtiff; make)
+fi
+
+# Install each from the cache to /usr/local/
+(cd lua-*; make install)
+(cd luarocks*; make install)
+(cd sdl2-*; make install)
+(cd sdl2_mixer*; make install)
+(cd freetype*; make install)
+(cd ffmpeg*; make install)
+#(cd wx*; make install)
+
+luarocks install lpeg
+luarocks install luafilesystem
+luarocks install luasocket --from=http://luarocks.org/dev
+luarocks install luasec OPENSSL_DIR=/usr/local/opt/openssl

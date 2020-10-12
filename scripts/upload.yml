@@ -1,0 +1,21 @@
+# Zip, upload, announce to the secret variable discord_webhook
+# The upload site can be anywhere that returns the upload url
+---
+parameters:
+  path: 'build'
+
+steps:
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: ${{ parameters.path }}
+      archiveFile: 'cth-$(Agent.JobName)-$(Build.SourceVersion).zip'
+      verbose: true
+    displayName: Archive build
+    continueOnError: true
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: 'cth-$(Agent.JobName)-$(Build.SourceVersion).zip'
+      artifactName: '$(Agent.JobName)'
+    timeoutInMinutes: 1
+    continueOnError: true
+    displayName: Upload build

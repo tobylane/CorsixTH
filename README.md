@@ -1,5 +1,5 @@
 ![](http://i.imgur.com/fYp148T.jpg)
-### Latest Release [![Release](https://img.shields.io/github/release/CorsixTH/CorsixTH.svg?colorB=green)](https://github.com/CorsixTH/CorsixTH/releases) [![Travis Build Status](https://travis-ci.org/CorsixTH/CorsixTH.svg?branch=master)](https://travis-ci.org/CorsixTH/CorsixTH) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/CorsixTH/CorsixTH?branch=master&svg=true)](https://ci.appveyor.com/project/TheCycoONE/corsixth)
+### Latest Release [![Release](https://img.shields.io/github/release/CorsixTH/CorsixTH.svg?colorB=green)](https://github.com/CorsixTH/CorsixTH/releases) [![Azure Pipelines Build Status](https://dev.azure.com/CorsixTH/CorsixTH/_apis/build/status/CorsixTH.CorsixTH?branchName=master)](https://dev.azure.com/CorsixTH/CorsixTH/_build/latest?definitionId=1&branchName=master)
 
 ##### [IRC Chat](http://webchat.freenode.net/?channels=corsix-th) | [Report Issue](https://github.com/CorsixTH/CorsixTH/issues/new) | [Reddit](http://www.reddit.com/r/corsixth) | [Discord](https://discord.gg/Mxeztvh)
 
@@ -20,7 +20,7 @@ You will need the following:
    - A download from [GOG.com](http://www.gog.com/game/theme_hospital) or [Origin](https://www.origin.com/en-gb/store/buy/theme-hospital-origin/pc-download/base-game/standard-edition)
 
  Head over to our [getting started](https://github.com/CorsixTH/CorsixTH/wiki/Getting-Started) page for more detail.
- 
+
 ## Developers
 ### Coders and non-coders we want you!
 

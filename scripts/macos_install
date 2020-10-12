@@ -1,0 +1,31 @@
+#!/bin/bash
+set -eva
+
+# Use the downloaded macOS SDK
+xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+MACOSX_DEPLOYMENT_TARGET="$(/usr/libexec/PlistBuddy -c 'print MinimumSDKVersion' "$xcode/Info.plist")"
+echo "$MACOSX_DEPLOYMENT_TARGET"
+SDKROOT="$xcode/Developer/SDKs/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk"
+export CFLAGS="-isysroot $SDKROOT -march=nehalem -O2 -pipe"
+export CXXFLAGS="$CFLAGS"
+
+mkdir -p "$BUILD_SOURCESDIRECTORY"/fresh/CorsixTH/
+
+# Create makefiles
+cmake . -G"Unix Makefiles" -Bbuild -DCMAKE_INSTALL_PREFIX=/Applications --debug-output -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+  -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DBUILD_ANIMVIEWER=OFF -DWITH_LUAROCKS=ON \
+  -DFREETYPE_INCLUDE_DIR_freetype2=/usr/local/include/freetype2/ -DFREETYPE_INCLUDE_DIR_ft2build=/usr/local/include/freetype2/ -DFREETYPE_LIBRARY=/usr/local/lib/libfreetype.dylib \
+  -DFFMPEG_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVFORMAT_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVUTIL_INCLUDE_DIRS=/usr/local/include/ffmpeg -DSWSCALE_INCLUDE_DIRS=/usr/local/include/ffmpeg \
+  -DWITH_LUAJIT=OFF -DLUA_PROGRAM_PATH=/usr/local/bin/lua -DLUA_INCLUDE_DIR=/usr/local/include/ -DLUA_LIBRARY=/usr/local/lib/liblua.a
+
+# Build CorsixTH
+cd "$BUILD_SOURCESDIRECTORY"/build/CorsixTH
+make VERBOSE=1
+make install
+mv /Applications/CorsixTH.app "$BUILD_SOURCESDIRECTORY"/fresh/CorsixTH/
+
+# Build AnimView (requires wxwidgets and -DBUILD_ANIMVIEWER=ON)
+#cd "$BUILD_SOURCESDIRECTORY"/build/AnimView
+#make VERBOSE=1
+#make install
+#mv /Applications/Animview.app "$BUILD_SOURCESDIRECTORY"/fresh/CorsixTH/

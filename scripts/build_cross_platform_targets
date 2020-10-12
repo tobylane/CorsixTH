@@ -1,0 +1,58 @@
+#!/bin/bash
+set -ev
+# Enable use of local luarocks
+eval "$(luarocks --local path)"
+# Check if there are trailing whitespaces.
+python3 scripts/check_trailing_whitespaces.py
+# Check for incorrectly encoded files.
+python3 scripts/check_language_files_not_BOM.py
+# Check if there are lua classes with invalid/improper declarations.
+python3 scripts/check_lua_classes.py
+# Validate lua files
+find CorsixTH -name '*.lua' -print0 | xargs -0 -I{} luac5.3 -p {}
+# Run lua lint check
+"$HOME"/.luarocks/bin/luacheck --quiet --codes --ranges CorsixTH
+# Run lua unit tests
+"$HOME"/.luarocks/bin/busted --directory=CorsixTH/Luatest
+# Check cpp format
+clang-format-9 -i CorsixTH/Src/*.cpp CorsixTH/Src/*.h AnimView/*.cpp \
+  AnimView/*.h libs/rnc/*.cpp libs/rnc/*.h CorsixTH/SrcUnshared/main.cpp
+git diff --exit-code
+# Clang-tidy linter
+clang-tidy-9 -p build --warnings-as-errors=\* \
+  CorsixTH/Src/*.c CorsixTH/Src/*.cpp libs/rnc/*.cpp CorsixTH/SrcUnshared/main.cpp
+# Run CPP Tests
+cd build/CorsixTH
+ctest --extra-verbose --build-config Release --output-on-failure
+cd ../..
+# Build and package LevelEdit
+ant -buildfile LevelEdit/build.xml dist
+# Run codespell
+codespell --enable-colors --quiet-level 2 -L sav,unexpect,persistance,defin,uint,inout,currenty \
+  --skip="languages,corsix-th.6" AnimView CorsixTH CorsixTH/Lua/languages/english.lua LevelEdit libs
+# Cmake file linter
+cmakelint --filter=-linelength AnimView/CMakeLists.txt CMakeLists.txt CorsixTH/CMakeLists.txt \
+  CorsixTH/CppTest/CMakeLists.txt CorsixTH/Src/CMakeLists.txt CorsixTH/SrcUnshared/CMakeLists.txt \
+  libs/CMakeLists.txt libs/rnc/CMakeLists.txt \
+  CMake/GenerateDoc.cmake CMake/PrecompiledDeps.cmake CMake/VcpkgDeps.cmake
+# Validate these build files
+yamllint --config-data "rules: {line-length: disable}" azure-pipelines.yml scripts/upload.yml
+shellcheck --shell sh scripts/linux_before_tests scripts/linux_install scripts/macos_luarocks \
+  scripts/macos_before_install scripts/macos_install scripts/build_cross_platform_targets
+# Create documentation
+cmake --build build/ --target -- doc
+# Upload changes to the gh-pages branch for the CorsixTH.github.io/CorsixTH website
+if [ "$BUILD_REPOSITORY_NAME" = "CorsixTH/CorsixTH" ] && [ "$BUILD_SOURCEBRANCHNAME" = "master" ]
+then
+  git config user.email "documentationbot@corsixth.com"
+  git config user.name "Docs Bot"
+  git checkout --force gh-pages
+  rsync --recursive build/doc/ .
+  git add animview/ corsixth_engine/ corsixth_lua/ index.html leveledit/
+  if ! git diff --cached --exit-code; then
+    git commit --message "Documentation from $(git rev-parse --short master) [no CI]"
+    git push origin gh-pages
+  else
+    echo "No change to documentation."
+  fi
+fi
