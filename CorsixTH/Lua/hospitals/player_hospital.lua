@@ -40,6 +40,24 @@ function PlayerHospital:PlayerHospital(world, avail_rooms, name)
   }
 end
 
+local function warnForLongQueues(self)
+  -- Once a month the advisor will warn about long queues.
+  -- Warnings are less likely for the diagnosis rooms to keep the quantity of warnings down
+  local busy_rooms = {}
+  for _, room in pairs(self.world.rooms) do
+    if #room.door.queue > 5 then
+      busy_rooms[#busy_rooms + 1] = room.room_info
+    end
+  end
+  if #busy_rooms == 0 then return end
+  local chosen_room = busy_rooms[math.random(1, #busy_rooms)]
+  if chosen_room.required_staff["Doctor"] and chosen_room.categories["diagnosis"] and math.random(1, 3) == 1 then
+    self:giveAdvice({_A.warnings.queue_too_long_send_doctor:format(chosen_room.name)})
+  elseif chosen_room.categories["treatment"] or chosen_room.categories["clinics"] then
+    self:giveAdvice({_A.warnings.queues_too_long})
+  end
+end
+
 --! Give advice to the player at the end of a day.
 function PlayerHospital:dailyAdviceChecks()
   local current_date = self.world:date()
@@ -208,6 +226,8 @@ function PlayerHospital:monthlyAdviceChecks()
   end
 
   self:checkReceptionAdvice(current_month, current_year)
+
+  warnForLongQueues(self)
 end
 
 --! Make players aware of the need for a receptionist and desk.
