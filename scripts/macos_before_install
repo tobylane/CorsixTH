@@ -24,6 +24,9 @@ if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lu
   brew unpack lua luarocks sdl2 sdl2_mixer freetype ffmpeg #wxwidgets
   brew uninstall php curl-openssl brotli # Fix ffmpeg error at CorsixTH build time
   HOMEBREW_NO_AUTO_UPDATE=1 brew install yasm
+  ## temp until homebrew updates to 5.4, see https://github.com/Homebrew/homebrew-core/pull/57133
+  rm -rf lua-*
+  wget -O- https://www.lua.org/ftp/lua-5.4.1.tar.gz | tar xz
   (cd lua-*; make macosx test install)
   (cd luarocks*; ./configure; make)
   (cd sdl2-*; ./configure --disable-static --disable-dependency-tracking; make install)
