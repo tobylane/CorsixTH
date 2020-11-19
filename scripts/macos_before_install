@@ -37,8 +37,9 @@ if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lu
     --enable-runtime-cpudetect --enable-protocol=file --enable-protocol=cache \
     --enable-asm --enable-x86asm --enable-small
   CFLAGS="$CFLAGS -DHAVE_UNISTD_H=0" LDFLAGS=-headerpad_max_install_names LDLIBS=-headerpad_max_install_names make "-j$(nproc)")
-  #(cd wx*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
-  #  --without-libjpeg --without-libtiff; make)
+  wget https://github.com/wxWidgets/wxWidgets/archive/v3.1.4.tar.gz | tar xz # 3.1 is dev, 3.2 will be in homebrew
+  (cd wx*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
+    --without-libjpeg --without-libtiff; make)
 fi
 
 # Install each from the cache to /usr/local/
@@ -48,7 +49,7 @@ fi
 (cd sdl2_mixer*; make install)
 (cd freetype*; make install)
 (cd ffmpeg*; make install)
-#(cd wx*; make install)
+(cd wx*; make install)
 
 luarocks install lpeg
 luarocks install luafilesystem
