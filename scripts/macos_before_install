@@ -38,7 +38,7 @@ if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lu
     --enable-runtime-cpudetect --enable-protocol=file --enable-protocol=cache \
     --enable-asm --enable-x86asm --enable-small
   CFLAGS="$CFLAGS -DHAVE_UNISTD_H=0" LDFLAGS=-headerpad_max_install_names LDLIBS=-headerpad_max_install_names make "-j$(nproc)")
-  (cd v*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
+  (cd wx*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
     --without-libjpeg --without-libtiff; make)
 fi
 
