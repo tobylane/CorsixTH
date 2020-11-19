@@ -27,6 +27,7 @@ if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lu
   ## temp until homebrew updates to 5.4, see https://github.com/Homebrew/homebrew-core/pull/57133
   rm -rf lua-*
   wget -O- https://www.lua.org/ftp/lua-5.4.1.tar.gz | tar xz
+  wget -O- https://github.com/wxWidgets/wxWidgets/archive/v3.1.4.tar.gz | tar xz # 3.1 is dev, 3.2 will be in homebrew
   (cd lua-*; make macosx test install)
   (cd luarocks*; ./configure; make)
   (cd sdl2-*; ./configure --disable-static --disable-dependency-tracking; make install)
@@ -37,7 +38,6 @@ if [ "$CACHE_RESTORED" = "false" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lu
     --enable-runtime-cpudetect --enable-protocol=file --enable-protocol=cache \
     --enable-asm --enable-x86asm --enable-small
   CFLAGS="$CFLAGS -DHAVE_UNISTD_H=0" LDFLAGS=-headerpad_max_install_names LDLIBS=-headerpad_max_install_names make "-j$(nproc)")
-  wget https://github.com/wxWidgets/wxWidgets/archive/v3.1.4.tar.gz | tar xz # 3.1 is dev, 3.2 will be in homebrew
   (cd v*; ./configure --disable-shared --disable-debug --with-osx_cocoa --with-macosx-version-min=10.13 \
     --without-libjpeg --without-libtiff; make)
 fi
