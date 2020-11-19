@@ -24,7 +24,7 @@ make VERBOSE=1
 make install
 mv /Applications/CorsixTH.app "$BUILD_SOURCESDIRECTORY"/fresh/CorsixTH/
 
- Build AnimView (requires wxwidgets and -DBUILD_ANIMVIEWER=ON)
+# Build AnimView (requires wxwidgets and -DBUILD_ANIMVIEWER=ON)
 cd "$BUILD_SOURCESDIRECTORY"/build/AnimView
 make VERBOSE=1
 make install
