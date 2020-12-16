@@ -17,15 +17,13 @@ jobs:
           - lua: LuaJIT
             luac: luac5.1
             packages: libluajit-5.1-dev luajit
-            cmakejit: on
+            cmakejit: '-DWITH_LUAJIT=ON -DLUA_LIBRARY=/usr/lib/x86_64-linux-gnu/libluajit-5.1.so'
           - lua: Lua 5.1
             luac: luac5.1
             packages: liblua5.1-dev lua5.1
-            cmakejit: off
           - lua: Lua 5.3
             luac: luac5.3
             packages: liblua5.3-dev lua5.3
-            cmakejit: off
     name: Linux and Tests on ${{ matrix.lua }}
     steps:
       - uses: actions/checkout@v2  # Keeps the git OAuth token after checkout
@@ -60,7 +58,7 @@ jobs:
           cmake . -G"Unix Makefiles" -Bbuild --debug-output \
            -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DBUILD_ANIMVIEWER=ON \
            -DENABLE_UNIT_TESTS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-           -DWITH_LUAJIT=${{ matrix.cmakejit }}
+           ${{ matrix.cmakejit }}
       - name: Build CorsixTH with ${{ matrix.lua }} and AnimView
         run: |
           cmake --build build/ -- VERBOSE=1
