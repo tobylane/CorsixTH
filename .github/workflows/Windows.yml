@@ -1,0 +1,39 @@
+---
+name: Windows
+
+on:  # yamllint disable-line rule:trurhy
+  push:
+    branches-ignore:
+      - 'gh-pages'
+  pull_request:
+
+jobs:
+  Windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache vcpkg builds
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }} | ${{ hashFiles('CMake/VcpkgDeps.cmake') }} | 1
+          path: vcpkg/
+      - name: Install requirements via vcpkg (cacheable)
+        run: cmake . -DUSE_VCPKG_DEPS=ON -DENABLE_UNIT_TESTS=ON -DCMAKE_INSTALL_PREFIX=CorsixTH/RelWithDebInfo/
+      - name: Build CorsixTH
+        run: cmake --build . --config RelWithDebInfo --verbose --target install
+      - name: Run Ctest
+        run: cd CorsixTH/; ctest --extra-verbose --build-config RelWithDebInfo --output-on-failure
+      - name: List built files
+        shell: bash
+        run: ls -R CorsixTH/RelWithDebInfo/
+      - name: Name artifact
+        shell: bash
+        run: |
+          repo=$(echo $GITHUB_REPOSITORY-$GITHUB_REF | sed -e 's/\//-/g' -e 's/refs-heads-//')
+          echo "NAME=CTH-$(date +'%Y-%m-%d-%H-%M-%S')-Windows-$repo-${GITHUB_SHA:0:10}" >> $GITHUB_ENV
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        with:
+          path: CorsixTH/RelWithDebInfo/
+          name: ${{ env.NAME }}
+        continue-on-error: true

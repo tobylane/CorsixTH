@@ -95,7 +95,7 @@ function run_script {
     # Build the triplet flag e.g. --triplet "x64-windows"
     $triplet = "--triplet `""
     $triplet += $VcpkgTriplet
-    $triplet += '"'
+    $triplet += '" '
 
     $libs_list = ""
 

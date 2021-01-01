@@ -118,7 +118,8 @@ jobs:
             libs/CMakeLists.txt libs/rnc/CMakeLists.txt \
             CMake/GenerateDoc.cmake CMake/PrecompiledDeps.cmake CMake/VcpkgDeps.cmake
           # Validate these build files
-          yamllint --config-data "rules: {line-length: disable}" .github/workflows/Linux.yml
+          yamllint --config-data "rules: {line-length: disable}" .github/workflows/Linux.yml \
+            .github/workflows/Windows.yml
           shellcheck --shell sh scripts/macos_luarocks
       - name: Run clang code tests
         if: matrix.static_analysis
