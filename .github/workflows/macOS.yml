@@ -1,0 +1,152 @@
+---
+name: macOS
+
+on:  # yamllint disable-line rule:trurhy
+  push:
+    branches-ignore:
+      - 'gh-pages'
+  pull_request:
+
+jobs:
+  macOS:
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-10.15]  #, macos-11]
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download macOS SDK
+        if: matrix.os == 'macos-10.15'
+        run: |
+          # Find the oldest version of macOS SDK supported by the selected version of Xcode and fetch it
+          xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+          MACOSX_DEPLOYMENT_TARGET="$(/usr/libexec/PlistBuddy -c 'print MinimumSDKVersion' "$xcode/Info.plist")"
+          curl -JLO "https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk.tar.xz"
+          tar -C "$xcode/Developer/SDKs/" -xf "MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk.tar.xz"
+          echo "TARGET=$MACOSX_DEPLOYMENT_TARGET" >> $GITHUB_ENV
+      - name: Select latest Xcode and SDK
+        if: matrix.os == 'macos-11'
+        run: |
+          # Use the latest Xcode and macos SDK
+          # from https://github.com/actions/virtual-environments/blob/main/images/macos/macos-11.0-Readme.md#xcode
+          xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+          MACOSX_DEPLOYMENT_TARGET=11.1
+          echo "TARGET=$MACOSX_DEPLOYMENT_TARGET" >> $GITHUB_ENV
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          key: ${{ matrix.os }} | 1 #| scripts/macos_before_install | 1
+          path: build_files/
+      - name: Build dependencies
+        env:
+          CACHE_RESTORED: ${{ steps.cache.outputs.cache-hit }}
+        run: |
+          sudo mkdir -p /usr/local/man
+          sudo chown -R "$(id -u):$(id -g)" /usr/local/man
+          export MACOSX_DEPLOYMENT_TARGET="${{ env.TARGET }}"
+          xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+          export SDKROOT="$xcode/Developer/SDKs/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk"
+          export CFLAGS="-isysroot $SDKROOT -march=nehalem -O2 -pipe"
+          export CXXFLAGS="$CFLAGS"
+          echo Cache: $CACHE_RESTORED Target: $MACOSX_DEPLOYMENT_TARGET
+          mkdir -p build_files
+          cd build_files
+
+          # Build the dependencies if the cache is not restored or up to date (expires after a week unused)
+          if [ ${CACHE_RESTORED} != "true" ] || ! ls -d lua-* || [ "$(ls -d lua-*)" != "lua-$(brew info lua | head -1 | cut -f3 -d' ')" ]; then
+            # Fetch source of latest version in homebrew and unarchive into the current folder
+            brew unpack lua luarocks sdl2 mpg123 sdl2_mixer freetype ffmpeg #wxwidgets
+            brew uninstall --ignore-dependencies brotli # Fix ffmpeg error at CorsixTH build time
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install yasm
+            #wget -O- https://github.com/wxWidgets/wxWidgets/archive/v3.1.4.tar.gz | tar xz # 3.1 is dev, 3.2 will be in homebrew
+
+            echo ::group::Lua; (cd lua-*; make macosx test install); echo ::endgroup::
+            echo ::group::Luarocks; (cd luarocks*; ./configure; make); echo ::endgroup::
+            echo ::group::SDL2; (cd sdl2-*; ./configure --disable-static --disable-dependency-tracking; make install); echo ::endgroup::
+            sed -i '' 's/memset_pattern/\/\//' /usr/local/include/SDL2/SDL_stdinc.h # Fix SDL2-origin compile error
+            echo ::group::MPG123; (cd mpg123-*; ./configure --with-cpu=avx --with-optimization=4 --enable-yasm --with-audio=coreaudio,sdl \
+              --disable-id3v2 --disable-network --disable-dependency-tracking; make install); echo ::endgroup::
+            echo ::group::SDL2 Mixer; (cd sdl2_mixer*; ./configure --disable-music-opus --disable-dependency-tracking; make); echo ::endgroup::
+            echo ::group::Freetype; (cd freetype*; ./configure --without-png --without-zlib --without-bzip2 --without-harfbuzz --disable-dependency-tracking; make); echo ::endgroup::
+            echo ::group::FFmpeg; (cd ffmpeg*; ./configure --disable-everything --disable-doc --disable-debug --disable-programs \
+              --enable-decoder=smacker --enable-decoder=smackaud --enable-demuxer=smacker \
+              --enable-runtime-cpudetect --enable-protocol=file --enable-protocol=cache \
+              --enable-asm --enable-x86asm --enable-small
+            CFLAGS="$CFLAGS -DHAVE_UNISTD_H=0" LDFLAGS=-headerpad_max_install_names LDLIBS=-headerpad_max_install_names make "-j$(nproc)"); echo ::endgroup::
+            #echo ::group::Wxwidgets; (cd wx*; ./configure --disable-shared --disable-debug --disable-tests --with-osx_cocoa --with-macosx-version-min=10.13 \
+            # --without-libjpeg --without-libtiff --without-libpng --disable-svg --disable-dependency-tracking; make); echo ::endgroup::
+          fi
+      - name: Install dependencies (from cache?), install luarocks
+        run: |
+          # Install each from the cache to /usr/local/
+          cd build_files
+          echo ::group::Lua; (cd lua-*; make install); echo ::endgroup::
+          echo ::group::Luarocks; (cd luarocks*; make install); echo ::endgroup::
+          echo ::group::SDL2; (cd sdl2-*; make install); echo ::endgroup::
+          echo ::group::MPG123; (cd mpg123-*; make install); echo ::endgroup::
+          echo ::group::SDL2 Mixer; (cd sdl2_mixer*; make install); echo ::endgroup::
+          echo ::group::Freetype; (cd freetype*; make install); echo ::endgroup::
+          echo ::group::FFmpeg; (cd ffmpeg*; make install); echo ::endgroup::
+          #echo ::group::Wxwidgets; (cd wx*; make install); echo ::endgroup::
+
+          echo ::group::Luarocks rocks
+          luarocks install lpeg
+          luarocks install luafilesystem
+          luarocks install luasocket --from=https://luarocks.org/dev
+          luarocks install luasec OPENSSL_DIR=/usr/local/opt/openssl
+          echo ::endgroup::
+      - name: Make build files
+        run: |
+          # Use the downloaded macOS SDK
+          export MACOSX_DEPLOYMENT_TARGET="${{ env.TARGET }}"
+          xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+          export SDKROOT="$xcode/Developer/SDKs/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk"
+          export CFLAGS="-isysroot $SDKROOT -march=nehalem -O2 -pipe"
+          export CXXFLAGS="$CFLAGS"
+
+          mkdir -p fresh/CorsixTH/
+          # Create makefiles
+          cmake . -G"Unix Makefiles" -Bbuild -DCMAKE_INSTALL_PREFIX=/Applications --debug-output -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DWITH_AUDIO=ON -DWITH_MOVIES=ON -DBUILD_ANIMVIEWER=OFF -DWITH_LUAROCKS=ON \
+            -DFREETYPE_INCLUDE_DIR_freetype2=/usr/local/include/freetype2/ -DFREETYPE_INCLUDE_DIR_ft2build=/usr/local/include/freetype2/ -DFREETYPE_LIBRARY=/usr/local/lib/libfreetype.dylib \
+            -DFFMPEG_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVFORMAT_INCLUDE_DIRS=/usr/local/include/ffmpeg -DAVUTIL_INCLUDE_DIRS=/usr/local/include/ffmpeg -DSWSCALE_INCLUDE_DIRS=/usr/local/include/ffmpeg \
+            -DWITH_LUAJIT=OFF -DLUA_PROGRAM_PATH=/usr/local/bin/lua -DLUA_INCLUDE_DIR=/usr/local/include/ -DLUA_LIBRARY=/usr/local/lib/liblua.a
+      - name: Build and install CorsixTH
+        run: |
+          export MACOSX_DEPLOYMENT_TARGET="${{ env.TARGET }}"
+          xcode="$(xcode-select -p)/Platforms/MacOSX.platform"
+          export SDKROOT="$xcode/Developer/SDKs/MacOSX$MACOSX_DEPLOYMENT_TARGET.sdk"
+          export CFLAGS="-isysroot $SDKROOT -march=nehalem -O2 -pipe"
+          export CXXFLAGS="$CFLAGS"
+
+          mkdir -p release/CorsixTH
+          # Build CorsixTH
+          cd "$GITHUB_WORKSPACE"/build/CorsixTH
+          make VERBOSE=1
+          make install
+          mv /Applications/CorsixTH.app "$GITHUB_WORKSPACE"/release/CorsixTH/
+
+          #echo ::group::Animview
+          # Build AnimView (requires wxwidgets and -DBUILD_ANIMVIEWER=ON)
+          #cd "$GITHUB_WORKSPACE"/build/AnimView
+          #make VERBOSE=1
+          #make install
+          #mv /Applications/Animview.app "$GITHUB_WORKSPACE"/release/CorsixTH/
+          #echo ::endgroup::
+      - name: Create build artifact
+        shell: bash
+        run: |
+          repo=$(echo $GITHUB_REPOSITORY-$GITHUB_REF | sed -e 's/\//-/g' -e 's/refs-heads-//')
+          name="CTH-$(date +'%Y-%m-%d-%H-%M-%S')-macos$TARGET-$repo-${GITHUB_SHA:0:10}.tar.gz"
+          echo "NAME=$name" >> $GITHUB_ENV
+          tar -cvzf "$name" -C release/CorsixTH/ CorsixTH.app/ #Animview.app/
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ env.NAME }}
+          name: ${{ env.NAME }}
+        continue-on-error: true
