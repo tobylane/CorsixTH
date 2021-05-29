@@ -53,28 +53,26 @@ extern "C" {
 #endif
 }
 
-#if (defined(CORSIX_TH_USE_FFMEPG) &&                        \
-     LIBAVUTIL_VERSION_INT < AV_VERSION_INT(51, 74, 100)) || \
-    (defined(CORSIX_TH_USE_LIBAV) &&                         \
-     LIBAVUTIL_VERSION_INT < AV_VERSION_INT(51, 42, 0))
-#define AVPixelFormat PixelFormat
-#define AV_PIX_FMT_RBG24 PIX_FMT_RGB24
-#endif
-
-#if (defined(CORSIX_TH_USE_LIBAV) &&                         \
-     LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 16, 0)) || \
-    (defined(CORSIX_TH_USE_FFMPEG) &&                        \
-     LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(57, 37, 100))
-#define CORSIX_TH_MOVIE_USE_SEND_PACKET_API
-#endif
-
-//! \brief Drop in replacement for AVPacketList
+//! \brief Functor for deleting AVPackets
 //!
-//! AVPacketList which was deprecated with FFMpeg 4.4.
-struct th_packet_list {
-  AVPacket pkt;
-  th_packet_list* next;
+//! Deletes AVPacket pointers that are allocated with av_malloc
+class av_packet_deleter {
+ public:
+  void operator()(AVPacket* p) {
+    av_packet_unref(p);
+    av_free(p);
+  }
 };
+
+//! \brief unique_ptr for AVPackets
+using av_packet_unique_ptr = std::unique_ptr<AVPacket, av_packet_deleter>;
+
+class av_frame_deleter {
+ public:
+  void operator()(AVFrame* f) { av_frame_free(&f); }
+};
+
+using av_frame_unique_ptr = std::unique_ptr<AVFrame, av_frame_deleter>;
 
 //! \brief A picture in movie_picture_buffer
 //!
@@ -206,24 +204,25 @@ class av_packet_queue {
   ~av_packet_queue() = default;
 
   //! Push a new packet on the back of the queue
-  void push(AVPacket* packet);
+  void push(av_packet_unique_ptr packet);
 
   //! Pull the packet from the front of the queue
   //!
   //! \param block Whether to block if the queue is empty or immediately
   //! return a nullptr
-  AVPacket* pull(bool block);
+  av_packet_unique_ptr pull(bool block);
 
   //! Return the number of packets in the queue
-  int get_count() const;
+  std::size_t get_count() const;
 
   //! Release a blocking pull without writing a new packet to the queue.
   void release();
 
+  //! Release and free the entire contents of the queue
+  void clear();
+
  private:
-  th_packet_list* first_packet;  ///< The packet at the front of the queue
-  th_packet_list* last_packet;   ///< The packet at the end of the queue
-  int count;                     ///< The number of packets in the queue
+  std::queue<av_packet_unique_ptr> data;  ///< The packets in the queue
   std::mutex mutex;  ///< A mutex restricting access to the packet queue to a
                      ///< single thread
   std::condition_variable
@@ -245,7 +244,11 @@ class movie_player {
   //! Destroy the movie_player
   ~movie_player();
 
-  //! Assign the renderer on which to draw the movie
+  //! Assign the renderer on which to draw the movie.
+  //!
+  //! movie_player does not take ownership of the render, it is up to the
+  //! caller to delete it, after deleting movie_player or setting a different
+  //! renderer.
   void set_renderer(SDL_Renderer* pRenderer);
 
   //! Return whether movies were compiled into CorsixTH
@@ -344,7 +347,6 @@ class movie_player {
   //! Decode audio from the movie into a format suitable for playback
   int decode_audio_frame(bool fFirst);
 
-#ifdef CORSIX_TH_MOVIE_USE_SEND_PACKET_API
   //! Convert packet data into frames
   //!
   //! \param stream The index of the stream to get the frame for
@@ -352,14 +354,6 @@ class movie_player {
   //! packet queue.
   //! \returns FFMPEG result of avcodec_recieve_frame
   int get_frame(int stream, AVFrame* pFrame);
-#else
-  //! Convert video packet data into a frame.
-  //!
-  //! \param pFrame An empty frame which gets populated by the data in the
-  //! video packet queue.
-  //! \returns 1 if the frame was received, 0 if it was not, and < 0 on error
-  int get_video_frame(AVFrame* pFrame);
-#endif
 
   SDL_Renderer* renderer;  ///< The renderer to draw to
 
@@ -384,8 +378,8 @@ class movie_player {
                                         ///< related to audio
 
   // queues for transferring data between threads
-  av_packet_queue* video_queue;  ///< Packets from the video stream
-  av_packet_queue* audio_queue;  ///< Packets from the audio stream
+  av_packet_queue video_queue;  ///< Packets from the video stream
+  av_packet_queue audio_queue;  ///< Packets from the audio stream
   ::movie_picture_buffer* movie_picture_buffer;  ///< Buffer of processed video
 
   // clock sync parameters
@@ -410,13 +404,7 @@ class movie_player {
                               ///< size)
   uint8_t* audio_buffer;      ///< An audio buffer for playback
 
-  AVPacket* audio_packet;  ///< The current audio packet being decoded (audio
-                           ///< frames don't necessarily line up with packets)
-  int audio_packet_size;   ///< The size of #m_pbAudioPacketData
-  uint8_t* audio_packet_data;  ///< Original data for #m_pAudioPacket, kept so
-                               ///< that it can be freed after the packet is
-                               ///< processed
-  AVFrame* audio_frame;        ///< The frame we are decoding audio into
+  av_frame_unique_ptr audio_frame;  ///< The frame we are decoding audio into
 
   Mix_Chunk* empty_audio_chunk;  ///< Empty chunk needed for SDL_mixer
   uint8_t* audio_chunk_buffer;   ///< 0'd out buffer for the SDL_Mixer chunk
@@ -425,11 +413,6 @@ class movie_player {
   int mixer_channels;   ///< How many channels to play on (1 - mono, 2 -
                         ///< stereo)
   int mixer_frequency;  ///< The frequency of audio expected by SDL_Mixer
-
-#ifndef CORSIX_TH_MOVIE_USE_SEND_PACKET_API
-  AVPacket* flush_packet;  ///< A representative packet indicating a flush is
-                           ///< required.
-#endif
 
   std::thread stream_thread;  ///< The thread responsible for reading the
                               ///< movie streams
