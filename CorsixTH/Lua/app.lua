@@ -505,6 +505,10 @@ function App:loadMainMenu(message)
   if message then
     self.ui:addWindow(UIInformation(self.ui, message))
   end
+
+  if self.config.audio and self.config.play_music and self:isAudioEnabled() then
+    self.ui:addWindow(UIJukebox(self.ui.app))
+  end
 end
 
 --! Sets the mouse capture to the state set within
