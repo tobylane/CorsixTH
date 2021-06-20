@@ -321,6 +321,7 @@ main_menu = {
   load_game = "Load Game",
   options = "Settings",
   map_edit = "Map Editor",
+  jukebox = "Jukebox",
   savegame_version = "Savegame version: ",
   version = "Version: ",
   exit = "Exit",
@@ -334,6 +335,7 @@ tooltip.main_menu = {
   load_game = "Load a saved game",
   options = "Tweak various settings",
   map_edit = "Create a custom map",
+  jukebox = "Open the Jukebox to play music",
   exit = "No, no, please don't leave!",
   quit = "You are about to quit from CorsixTH. Are you sure this is what you want to do?",
 }
