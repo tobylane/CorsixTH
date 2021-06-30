@@ -370,7 +370,7 @@ function Room:onHumanoidEnter(humanoid)
         self.humanoids[humanoid] = true
         humanoid:setNextAction(self:createLeaveAction())
         humanoid:queueAction(MeanderAction())
-        humanoid:adviseWrongPersonForThisRoom()
+        self.hospital:adviseWrongStaffForRoom(self, humanoid)
       end
     else
       self.humanoids[humanoid] = true

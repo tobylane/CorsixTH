@@ -480,6 +480,32 @@ function PlayerHospital:announceStaffLeave(staff)
   self.world.ui:playRandomAnnouncement(staff.leave_sounds, staff.leave_priority)
 end
 
+--! Advise the player that they attempted to put a staff member in a room they can't attend to
+--!param room (table)
+--!param staff_member (table)
+function PlayerHospital:adviseWrongStaffForRoom(room, staff_member)
+  local room_name = room.room_info.long_name
+  local required = (room.room_info.maximum_staff or room.room_info.required_staff)
+  if staff_member.humanoid_class == "Doctor" and
+      (room.room_info.id == "toilets" or room.room_info.id == "training") then
+    self.world.ui.adviser:say(_A.staff_place_advice.doctors_cannot_work_in_room:format(room_name))
+  elseif staff_member.humanoid_class == "Nurse" then
+    self.world.ui.adviser:say(_A.staff_place_advice.nurses_cannot_work_in_room:format(room_name))
+  elseif required then
+    if required.Nurse then
+      self.world.ui.adviser:say(_A.staff_place_advice.only_nurses_in_room:format(room_name))
+    elseif required.Surgeon then
+      self.world.ui.adviser:say(_A.staff_place_advice.only_surgeons)
+    elseif required.Researcher then
+      self.world.ui.adviser:say(_A.staff_place_advice.only_researchers)
+    elseif required.Psychiatrist then
+      self.world.ui.adviser:say(_A.staff_place_advice.only_psychiatrists)
+    else
+      self.world.ui.adviser:say(_A.staff_place_advice.only_doctors_in_room:format(room_name))
+    end
+  end
+end
+
 function PlayerHospital:afterLoad(old, new)
   if old < 145 then
     self.hosp_cheats = Cheats(self)
