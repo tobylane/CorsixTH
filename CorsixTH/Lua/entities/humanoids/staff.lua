@@ -20,6 +20,8 @@ SOFTWARE. --]]
 
 corsixth.require("announcer")
 
+local AnnouncementPriority = _G["AnnouncementPriority"]
+
 --! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
 class "Staff" (Humanoid)
 
@@ -31,6 +33,8 @@ function Staff:Staff(...)
   self:Humanoid(...)
   self.hover_cursor = TheApp.gfx:loadMainCursor("staff")
   self.parcelNr = 0
+  self.leave_sounds = {}
+  self.leave_priority = AnnouncementPriority.High
 end
 
 --! Handle daily adjustments to staff.
@@ -200,10 +204,6 @@ function Staff:checkIfWaitedTooLong()
   end
 end
 
-function Staff:leaveAnnounce()
-  return
-end
-
 function Staff:isTiring()
   local tiring = true
 
@@ -256,7 +256,7 @@ function Staff:fire()
   self.hospital:changeReputation("kicked")
   self:despawn()
   self.hover_cursor = nil
-  self:leaveAnnounce()
+  self.hospital:announceStaffLeave(self)
   -- Unregister any build callbacks or messages.
   self:unregisterCallbacks()
   -- Update the staff management window if it is open.
@@ -669,6 +669,20 @@ function Staff:afterLoad(old, new)
     Humanoid.afterLoad(self, old, 133)
     self:afterLoad(133, new)
     return
+  end
+
+  if old < 159 and new >= 159 then
+    self.leave_priority = AnnouncementPriority.High
+    if self.humanoid_class == "Handyman" then
+      self.leave_sounds = {"sack006.wav"}
+    elseif self.humanoid_class == "Receptionist" then
+      self.leave_sounds = {"sack007.wav", "sack008.wav"}
+      self.leave_priority = AnnouncementPriority.Critical -- must always be played even without receptionist
+    elseif self.humanoid_class == "Nurse" then
+      self.leave_sounds = {"sack004.wav", "sack005.wav"}
+    else
+      self.leave_sounds = {"sack001.wav", "sack002.wav", "sack003.wav"}
+    end
   end
 
   Humanoid.afterLoad(self, old, new)

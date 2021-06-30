@@ -2431,3 +2431,7 @@ end
 function Hospital:announceRepair()
   -- Nothing to do, override in a derived class.
 end
+
+function Hospital:announceStaffLeave()
+  -- Nothing to do, override in a derived class.
+end

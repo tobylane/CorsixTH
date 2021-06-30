@@ -18,10 +18,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
-corsixth.require("announcer")
 corsixth.require("entities.humanoids.staff")
 
-local AnnouncementPriority = _G["AnnouncementPriority"]
 
 --! A Doctor (Researcher,Surgan,Psychologist)
 class "Doctor" (Staff)
@@ -32,6 +30,7 @@ local Doctor = _G["Doctor"]
 --!param ... Arguments to base class constructor.
 function Doctor:Doctor(...)
   self:Staff(...)
+  self.leave_sounds = {"sack001.wav", "sack002.wav", "sack003.wav"}
 end
 
 function Doctor:tickDay()
@@ -104,12 +103,6 @@ function Doctor:tick()
   if self:isLearningOnTheJob() then
     self:updateSkill(self.humanoid_class, "skill", 0.000003)
   end
-end
-
-function Doctor:leaveAnnounce()
-  local announcement_priority = AnnouncementPriority.High
-  local dr_leave_sounds = {"sack001.wav", "sack002.wav", "sack003.wav",}
-  self.world.ui:playAnnouncement(dr_leave_sounds[math.random(1, #dr_leave_sounds)], announcement_priority)
 end
 
 -- Determine if the staff member should contribute to research

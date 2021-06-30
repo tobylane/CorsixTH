@@ -18,10 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
-corsixth.require("announcer")
 corsixth.require("entities.humanoids.staff")
-
-local AnnouncementPriority = _G["AnnouncementPriority"]
 
 --! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
 class "Nurse" (Staff)
@@ -32,13 +29,7 @@ local Nurse = _G["Nurse"]
 --!param ... Arguments to base class constructor.
 function Nurse:Nurse(...)
   self:Staff(...)
-end
-
-function Nurse:leaveAnnounce()
-  local announcement_priority = AnnouncementPriority.High
-
-  local nurse_leave_sounds = {"sack004.wav", "sack005.wav",}
-  self.world.ui:playAnnouncement(nurse_leave_sounds[math.random(1, #nurse_leave_sounds)], announcement_priority)
+  self.leave_sounds = {"sack004.wav", "sack005.wav"}
 end
 
 -- Helper function to decide if Staff fulfills a criterion
