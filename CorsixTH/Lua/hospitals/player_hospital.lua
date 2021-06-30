@@ -506,6 +506,18 @@ function PlayerHospital:adviseWrongStaffForRoom(room, staff_member)
   end
 end
 
+--! Advise the player that a multi staff occupancy room has more staff than desks
+--!param staff_member (table)
+--!param room_id (string) The id from room_info
+function PlayerHospital:adviseNeedsDesks(staff_member, room_id)
+  if staff_member.profile.is_researcher and room_id == "research" then
+    self:giveAdvice({ _A.warnings.researcher_needs_desk_1,
+        _A.warnings.researcher_needs_desk_2, _A.warnings.researcher_needs_desk_3 })
+  elseif staff_member.humanoid_class == "Nurse" and room_id == "ward" then
+    self:giveAdvice({ _A.warnings.nurse_needs_desk_1, _A.warnings.nurse_needs_desk_2 })
+  end
+end
+
 function PlayerHospital:afterLoad(old, new)
   if old < 145 then
     self.hosp_cheats = Cheats(self)

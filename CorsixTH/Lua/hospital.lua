@@ -2439,3 +2439,7 @@ end
 function Hospital:adviseWrongStaffForRoom()
   -- Nothing to do, override in a derived class.
 end
+
+function Hospital:adviseNeedsDesks()
+  -- Nothing to do, override in a derived class.
+end
