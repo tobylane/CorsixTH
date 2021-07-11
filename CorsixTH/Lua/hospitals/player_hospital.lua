@@ -497,5 +497,6 @@ function PlayerHospital:afterLoad(old, new)
     self.win_declined = false -- Has not yet declined the level win fax
   end
 
+  self.hosp_cheats = Cheats(self)
   Hospital.afterLoad(self, old, new)
 end
