@@ -33,9 +33,9 @@ local SAVEGAME_VERSION = 177 -- Regression #2086
 
 class "App"
 
----@type App
 local App = _G["App"]
 
+--- Core function.
 function App:App()
   self.command_line = {}
   self.config = {}
@@ -69,8 +69,8 @@ function App:App()
   self.idle_tick = 0
 end
 
---! Starts a Lua DBGp client & connects it to a DBGp server.
---!return error_message (String) Returns an error message or nil.
+--- Starts a Lua DBGp client & connects it to a DBGp server.
+-- @return error_message (String) Returns an error message or nil.
 function App:connectDebugger()
   return runDebugger()
 end
@@ -85,10 +85,10 @@ function App:setCommandLine(...)
   end
 end
 
---! Returns the full path of the local path given
---!param folders (string or table) A string of one segment or an set of many segments of the path
---!param trailing_slash (boolean) Whether the path needs to end with a local path separator
---!return fullpath (string) The OS dependent full path
+--- Returns the full path of the local path given.
+-- @param folders (string or table) A string of one segment or an set of many segments of the path
+-- @param trailing_slash (boolean) Whether the path needs to end with a local path separator
+-- @return fullpath (string) The OS dependent full path
 function App:getFullPath(folders, trailing_slash)
   if type(folders) ~= "table" then folders = {folders} end
   local ending = trailing_slash and pathsep or ""
@@ -388,15 +388,15 @@ function App:init()
   return true
 end
 
---! Works out the intended location of the gamelog file.
---!return full path gamelog should exist at
+--- Works out the intended location of the gamelog file.
+-- @return full path gamelog should exist at
 function App:getGamelogPath()
   local config_path = self.command_line["config-file"] or ""
   config_path = config_path:match("^(.-)[^" .. pathsep .. "]*$")
   return config_path .. "gamelog.txt"
 end
 
---! Checks and creates the gamelog file if it does not exist.
+--- Checks and creates the gamelog file if it does not exist.
 function App:initGamelogFile()
   local gamelog_path = self:getGamelogPath()
   local gamelog = io.open(gamelog_path, "r")
@@ -408,11 +408,10 @@ function App:initGamelogFile()
   fi:close()
 end
 
---! Tries to initialize the user level and campaign directories
+--- Tries to initialize the user level and campaign directories.
 -- TODO: Integrate other directory initialisations into this function
 function App:initUserDirectories()
   local conf_path = self.command_line["config-file"] or "config.txt"
-
   -- Attempt to set the user's directory choice
   -- param dir (path) The defined path of the folder by the user
   -- param label (string) What folder was being set if there was an error
@@ -436,8 +435,8 @@ function App:initUserDirectories()
   self.user_campaign_dir = setUserDir(self.user_campaign_dir, "User Campaigns")
 end
 
---! Tries to initialize the savegame directory, returns true on success and
---! false on failure.
+--- Tries to initialize the savegame directory.
+-- @return true on success and false on failure.
 function App:initSavegameDir()
   local conf_path = self.command_line["config-file"] or "config.txt"
   self.savegame_dir = self.config.savegames or
@@ -532,8 +531,8 @@ function App:worldExited()
   self.audio:clearCallbacks()
 end
 
---! Initialise CorsixTH's main menu screen including relevant windows
---!param message (string) Something to display to the user
+--- Initialise CorsixTH's main menu screen including relevant windows
+-- @param message (string) Something to display to the user
 function App:loadMainMenu(message)
   if self.world then
     self:worldExited()
@@ -564,15 +563,14 @@ function App:loadMainMenu(message)
   self:resetIdle()
 end
 
---! Sets the mouse capture to the state set within
---! app.config.capture_mouse
+--- Sets the mouse capture to the state set within app.config.capture_mouse.
 function App:setCaptureMouse()
   self.video:setCaptureMouse(self.config.capture_mouse)
 end
 
---! Loads the first level of the specified campaign and prepares the world
---! to be able to progress through that campaign.
---!param campaign_file (string) Name of a CorsixTH Campaign definition Lua file.
+--- Loads the campaign for the world.
+-- First level of the specified campaign and prepares the world to be able to progress through that campaign.
+-- @param campaign_file (string) Name of a CorsixTH Campaign definition Lua file.
 function App:loadCampaign(campaign_file)
   local campaign_info, level_info, errors, _
 
@@ -600,10 +598,10 @@ function App:loadCampaign(campaign_file)
   self.world.campaign_info = campaign_info
 end
 
---! Reads the given file name as a Lua chunk from the Campaigns folder in the CorsixTH install directory.
---! A correct campaign definition contains "name", "description", "levels", and "winning_text".
---!param campaign_file (string) Name of the file to read.
---!return (table) Definitions found in the campaign file.
+--- Reads the given file name as a Lua chunk from the Campaigns folder in the CorsixTH install directory.
+-- A correct campaign definition contains "name", "description", "levels", and "winning_text".
+-- @param campaign_file (string) Name of the file to read.
+-- @return (table) Definitions found in the campaign file.
 function App:readCampaignFile(campaign_file)
   local path = self:getFullPath({"Campaigns", campaign_file})
   local chunk, err = loadfile_envcall(path)
@@ -616,10 +614,10 @@ function App:readCampaignFile(campaign_file)
   end
 end
 
---! Opens the given file name and returns all Level definitions in a table.
---! Values in the returned table: "path", "level_file", "name", "map_file", "briefing", and "end_praise".
---!param level (string) Name of the file to read.
---!return (table) Level info found in the file.
+--- Opens the given file name and returns all Level definitions in a table.
+-- Values in the returned table: "path", "level_file", "name", "map_file", "briefing", and "end_praise".
+-- @param level (string) Name of the file to read.
+-- @return (table) Level info found in the file.
 function App:readLevelFile(level)
   local filename = self:getAbsolutePathToLevelFile(level)
   local file, err = io.open(filename and filename or "")
@@ -648,11 +646,10 @@ function App:readLevelFile(level)
   return level_info
 end
 
---! Searches for the given level file in the "Campaigns" and "Levels" folder of the
---! CorsixTH install directory.
---!param level (string) Filename to search for.
---!return (string, error) Returns the found absolute path, or nil if not found. Then
---!       a second variable is returned with an error message.
+--- Searches for the given level file in the "Campaigns" and "Levels" folder of the CorsixTH install directory.
+-- @param level (string) Filename to search for.
+-- @return (string, error) Returns the found absolute path, or nil if not found. Then
+---       a second variable is returned with an error message.
 function App:getAbsolutePathToLevelFile(level)
   local paths_to_search = {
     self.user_campaign_dir,
@@ -671,9 +668,9 @@ function App:getAbsolutePathToLevelFile(level)
   return nil, "Level not found: " .. level
 end
 
--- Loads the specified level. If a string is passed it looks for the file with the same name
--- in the "Levels" folder of CorsixTH, if it is a number it tries to load that level from
--- the original game.
+--- Loads the specified level.
+-- If a string is passed it looks for the file with the same name in the "Levels" folder of CorsixTH,
+-- if it is a number it tries to load that level from the original game.
 function App:loadLevel(level, difficulty, level_name, level_file, level_intro, map_editor)
   if self.world then
     self:worldExited()
@@ -809,11 +806,11 @@ function App:dumpStrings()
   print("")
 end
 
---! Compares strings provided by language file of given language WITHOUT inheritance
--- with strings provided by english language with inheritance (i.e. all strings).
+--- Compares strings provided by language file of given language.
+-- WITHOUT inheritance with strings provided by english language with inheritance (i.e. all strings).
 -- This will give translators an idea which strings are missing in their translation.
---!param dir The directory where the file to write to should be.
---!param language The language to check against.
+-- @param dir The directory where the file to write to should be.
+-- @param language The language to check against.
 function App:checkMissingStringsInLanguage(dir, language)
   -- Accessors to reach through the userdata proxies on strings
   local LUT = debug.getregistry().StringProxyValues
@@ -981,10 +978,10 @@ function App:saveConfig()
   fi:close()
 end
 
---! Tries to open the given file or a file in OS's temp dir.
+--- Tries to open the given file or a file in OS's temp dir.
 -- Returns the file handler
---!param file The full path of the intended file
---!param mode The mode in which the file is opened, defaults to write
+-- @param file The full path of the intended file
+-- @param mode The mode in which the file is opened, defaults to write
 function App:writeToFileOrTmp(file, mode)
   local f, err = io.open(file, mode or "w")
   if err then
@@ -1206,8 +1203,8 @@ function App:onTick(...)
   return true -- tick events always result in a repaint
 end
 
---! Function for handling idle time in the main menu, which leads to playing the
---! demo gameplay trailer if left long enough
+--- Function for handling idle time in the main menu.
+-- which leads to playing the demo gameplay trailer if left long enough
 function App:idle()
   if not self.config.play_intro then return end
   -- Check if we are in a proper 'idle' state and solely on the main menu
@@ -1226,7 +1223,7 @@ function App:idle()
   end
 end
 
--- Reset the idle count
+--- Reset the idle count
 function App:resetIdle()
   self.idle_tick = 0
 end
@@ -1297,8 +1294,8 @@ function App:onWindowActive(...)
   return self.ui:onWindowActive(...)
 end
 
---! Window has been resized by the user
---! Call the UI to handle the new window size
+--- Window has been resized by the user.
+-- Call the UI to handle the new window size
 function App:onWindowResize(...)
   return self.ui:onWindowResize(...)
 end
@@ -1482,16 +1479,16 @@ function App:findSoundFont()
   return nil
 end
 
---! Get the directory containing the bitmap files.
---!return Name of the directory containing the bitmap files, ending with a
+--- Get the directory containing the bitmap files.
+-- @return Name of the directory containing the bitmap files, ending with a
 --        directory path separator.
 function App:getBitmapDir()
   return (self.command_line["bitmap-dir"] or "Bitmap") .. pathsep
 end
 
 -- Load bitmap data into memory.
---!param filename Name of the file to load.
---!return The loaded data.
+-- @param filename Name of the file to load.
+-- @return The loaded data.
 function App:readBitmapDataFile(filename)
   filename = self:getBitmapDir() .. filename
   local file = assert(io.open(filename, "rb"))
@@ -1504,9 +1501,9 @@ function App:readBitmapDataFile(filename)
 end
 
 -- Read a data file of the application into memory (possibly with decompression).
---!param dir (string) Directory to read from. "Bitmap" and "Levels" are
+-- @param dir (string) Directory to read from. "Bitmap" and "Levels" are
 --       meta-directories, and get resolved to real directories in the function.
---!param filename (string or nil) If specified, the file to load. If 'nil', the
+-- @param filename (string or nil) If specified, the file to load. If 'nil', the
 --       'dir' parameter is the filename in the "Data" directory.
 function App:readDataFile(dir, filename)
   if dir == "Bitmap" then
@@ -1525,9 +1522,9 @@ function App:readDataFile(dir, filename)
   return data
 end
 
---! Get a level file.
---!param filename (string) Name of the level file.
---!return If the file could be found, the data of the file, else a
+--- Get a level file.
+-- @param filename (string) Name of the level file.
+-- @return If the file could be found, the data of the file, else a
 --        tuple 'nil', and an error description
 function App:readMapDataFile(filename)
   -- First look in the original install directory, if not found there
@@ -1591,10 +1588,10 @@ function App:loadLuaFolder(dir, no_results, append_to)
   end
 end
 
---! Returns the version number (name) of the local copy of the game based on
---! which save game version it is. This was added after the Beta 8
---! release, which is why the checks prior to that version aren't made.
---!param version An optional value if you want to find what game version
+--- Returns the version number (name) of the local copy of the game.
+-- based on which save game version it is. This was added after the Beta 8
+-- release, which is why the checks prior to that version aren't made.
+-- @param version An optional value if you want to find what game version
 -- a specific savegame version is from.
 function App:getVersion(version)
   local ver = version or self.savegame_version
@@ -1662,10 +1659,10 @@ function App:quickLoad()
   end
 end
 
---! Function to check the loaded game is compatible with the program
---!param save_version (num)
---!param gfx_set (string) What graphics set is used
---!return true if compatible, otherwise false
+--- Function to check the loaded game is compatible with the program.
+-- @param save_version (num)
+-- @param gfx_set (string) What graphics set is used
+-- @return true if compatible, otherwise false
 function App:checkCompatibility(save_version, gfx_set)
   local app_version = self.savegame_version
   local err
@@ -1687,7 +1684,7 @@ function App:checkCompatibility(save_version, gfx_set)
   return false
 end
 
---! Restarts the current level (offers confirmation window first)
+--- Restarts the current level (.)
 function App:restart()
   assert(self.map, "Trying to restart while no map is loaded.")
   self.ui:addWindow(UIConfirmDialog(self.ui, false, _S.confirmation.restart_level,
@@ -1714,24 +1711,24 @@ function App:restart()
   end))
 end
 
---! Begin the map editor
+--- Begin the map editor.
 function App:mapEdit()
   self:loadLevel("", nil, nil, nil, nil, true)
 end
 
---! Exits the game completely (no confirmation window)
+--- Exits the game completely (no confirmation window).
 function App:exit()
   -- Save config before exiting
   self:saveConfig()
   self.running = false
 end
 
---! Exits the game completely without saving the config i.e. Alt+F4 for Quit Application
+--- Exits the game completely without saving the config i.e. Alt+F4 for Quit Application.
 function App:abandon()
   self.running = false
 end
 
---! This function is automatically called after loading a game and serves for compatibility.
+--- This function is automatically called after loading a game and serves for compatibility.
 function App:afterLoad()
   self.ui:addOrRemoveDebugModeKeyHandlers()
   local old = self.world.savegame_version or 0
@@ -1871,13 +1868,13 @@ function App:checkForUpdates()
   self.ui:addWindow(UIUpdate(self.ui, current_version, new_version, changelog, update_table["download_url"]))
 end
 
--- Free up / stop any resources relying on the current video object
+--- Free up / stop any resources relying on the current video object.
 function App:prepareVideoUpdate()
   self.video:endFrame()
   self.moviePlayer:deallocatePictureBuffer()
 end
 
--- Update / start any resources relying on a video object
+--- Update / start any resources relying on a video object.
 function App:finishVideoUpdate()
   self.gfx:updateTarget(self.video)
   self.moviePlayer:updateRenderer()
@@ -1889,8 +1886,8 @@ function App:isAudioEnabled()
   return TH.GetCompileOptions().audio
 end
 
---! Generate information about user's system and the program
---!return System and program info as a string
+--- Generate information about user's system and the program.
+-- @return System and program info as a string
 function App:gamelogHeader()
   local gen_date = os.date("%Y-%m-%d %H:%M:%S")
   gen_date = string.format("Gamelog generated on %s\n", gen_date)
