@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Lua extensions to the C++ THMap class
+--- Lua extensions to the C++ THMap class
 class "Map"
 
 ---@type Map
@@ -46,19 +46,19 @@ end
 
 local flag_cache = {}
 
---! Get the value of the given flag from the tile at x, y in the map.
---!param x (int) Horizontal position of the tile to query in the map.
---!param x (int) Vertical position of the tile to query in the map.
---!param flag (string) Name of the queried flag.
---!return (?) value of the queried flag.
+--- Get the value of the given flag from the tile at x, y in the map.
+-- @param x (int) Horizontal position of the tile to query in the map.
+-- @param x (int) Vertical position of the tile to query in the map.
+-- @param flag (string) Name of the queried flag.
+-- @return (?) value of the queried flag.
 function Map:getCellFlag(x, y, flag)
   return self.th:getCellFlags(math.floor(x), math.floor(y), flag_cache)[flag]
 end
 
---! Get the ID of the room of the tile at x, y in the map.
---!param x (int) Horizontal position of the tile to query in the map.
---!param x (int) Vertical position of the tile to query in the map.
---!return ID of the room at the queried tile.
+--- Get the ID of the room of the tile at x, y in the map.
+-- @param x (int) Horizontal position of the tile to query in the map.
+-- @param x (int) Vertical position of the tile to query in the map.
+-- @return ID of the room at the queried tile.
 function Map:getRoomId(x, y)
   return self.th:getCellFlags(math.floor(x), math.floor(y)).roomId
 end
@@ -71,25 +71,25 @@ function Map:getPlayerCount(count)
   self.th:getPlayerCount(count)
 end
 
---! Set the camera tile for the given player on the map
---!param x (int) Horizontal position of tile to set camera on
---!param y (int) Vertical position of the tile to set the camera on
---!param player (int) Player number (1-4)
+--- Set the camera tile for the given player on the map
+-- @param x (int) Horizontal position of tile to set camera on
+-- @param y (int) Vertical position of the tile to set the camera on
+-- @param player (int) Player number (1-4)
 function Map:setCameraTile(x, y, player)
   self.th:setCameraTile(x, y, player)
 end
 
---! Set the heliport tile for the given player on the map
---!param x (int) Horizontal position of tile to set heliport on
---!param y (int) Vertical position of the tile to set the heliport on
---!param player (int) Player number (1-4)
+--- Set the heliport tile for the given player on the map
+-- @param x (int) Horizontal position of tile to set heliport on
+-- @param y (int) Vertical position of the tile to set the heliport on
+-- @param player (int) Player number (1-4)
 function Map:setHeliportTile(x, y, player)
   self.th:setHeliportTile(x, y, player)
 end
 
---! Set how to display the room temperature in the hospital map.
---!param method (int) Way of displaying the temperature. See also THMapTemperatureDisplay enum.
---! 1=red gradients, 2=blue/green/red colour shifts, 3=yellow/orange/red colour shifts
+--- Set how to display the room temperature in the hospital map.
+-- @param method (int) Way of displaying the temperature. See also THMapTemperatureDisplay enum.
+--- 1=red gradients, 2=blue/green/red colour shifts, 3=yellow/orange/red colour shifts
 function Map:setTemperatureDisplayMethod(method)
   if method ~= 1 and method ~= 2 and method ~= 3 then
     method = 1
@@ -99,7 +99,7 @@ function Map:setTemperatureDisplayMethod(method)
   self.th:setTemperatureDisplay(method)
 end
 
---! Copy the temperature display method from the Lua data, if available, else use the default.
+--- Copy the temperature display method from the Lua data, if available, else use the default.
 function Map:registerTemperatureDisplayMethod()
   if not self.temperature_display_method then
     self:setTemperatureDisplayMethod(self.app.config.warmth_colors_display_default)
@@ -278,8 +278,8 @@ function Map:load(level, difficulty, level_name, map_file, level_intro, map_edit
   return objects
 end
 
---! Get the difficulty of the level. Custom levels and campaign always have medium difficulty.
---!return (int) difficulty of the level, 1=easy, 2=medium, 3=hard.
+--- Get the difficulty of the level. Custom levels and campaign always have medium difficulty.
+-- @return (int) difficulty of the level, 1=easy, 2=medium, 3=hard.
 function Map:getDifficulty()
   if self.difficulty == "easy" then return 1 end
   if self.difficulty == "hard" then return 3 end
@@ -587,8 +587,8 @@ function Map:onTick()
   end
 end
 
---! Set the sprites to be used by the map.
---!param blocks (object) Sprite sheet for the map.
+--- Set the sprites to be used by the map.
+-- @param blocks (object) Sprite sheet for the map.
 function Map:setBlocks(blocks)
   self.blocks = blocks
   self.th:setSheet(blocks)
@@ -620,14 +620,14 @@ function Map:setDebugText(x, y, msg, ...)
   self.debug_text[(y - 1) * self.width + x - 1] = text
 end
 
---! Draws the rectangle of the map given by (sx, sy, sw, sh) at position (dx, dy) on the canvas
---!param canvas
---!param sx Horizontal start position at the screen.
---!param sy Vertical start position at the screen.
---!param sw (int) Width of the screen.
---!param sh (int) Height of the screen.
---!param dx (jnt) Horizontal destination at the canvas.
---!param dy (int) Vertical destination at the canvas.
+--- Draws the rectangle of the map given by (sx, sy, sw, sh) at position (dx, dy) on the canvas
+-- @param canvas
+-- @param sx Horizontal start position at the screen.
+-- @param sy Vertical start position at the screen.
+-- @param sw (int) Width of the screen.
+-- @param sh (int) Height of the screen.
+-- @param dx (jnt) Horizontal destination at the canvas.
+-- @param dy (int) Vertical destination at the canvas.
 --]]
 function Map:draw(canvas, sx, sy, sw, sh, dx, dy)
   -- All the heavy work is done by C code:
@@ -718,9 +718,9 @@ function Map:draw(canvas, sx, sy, sw, sh, dx, dy)
   end
 end
 
---! Get the price of a parcel
---!param parcel (int) Parcel number being queried.
---!return Price of the queried parcel.
+--- Get the price of a parcel
+-- @param parcel (int) Parcel number being queried.
+-- @return Price of the queried parcel.
 function Map:getParcelPrice(parcel)
   local conf = self.level_config
   conf = conf and conf.gbv
@@ -728,9 +728,9 @@ function Map:getParcelPrice(parcel)
   return self:getParcelTileCount(parcel) * (conf or 25)
 end
 
---! Get the number of tiles in a parcel.
---!param parcel (int) Parcel number being queried.
---!return Number of tiles in the queried parcel.
+--- Get the number of tiles in a parcel.
+-- @param parcel (int) Parcel number being queried.
+-- @return Number of tiles in the queried parcel.
 function Map:getParcelTileCount(parcel)
   return self.parcelTileCounts[parcel] or 0
 end

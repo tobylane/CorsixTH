@@ -22,8 +22,8 @@ local TH = require("TH")
 
 local pathsep = package.config:sub(1, 1)
 
---! Layer for loading (and subsequently caching) graphical resources.
---! The Graphics class handles loading and caching of graphics resources.
+--- Layer for loading (and subsequently caching) graphical resources.
+--- The Graphics class handles loading and caching of graphics resources.
 -- It can adapt as the API to C changes, and hide these changes from most of
 -- the other Lua code.
 class "Graphics"
@@ -116,8 +116,8 @@ function Graphics:Graphics(app)
   self.custom_graphics_folder = graphics_folder
 end
 
---! Tries to load the font file given in the config file as unicode_font.
---! If it is not found it tries to find one in the operating system.
+--- Tries to load the font file given in the config file as unicode_font.
+--- If it is not found it tries to find one in the operating system.
 function Graphics:loadFontFile()
   local lfs = require("lfs")
   local function check(path) return path and lfs.attributes(path, "mode") == "file" end
@@ -226,11 +226,11 @@ local function makeGreyscaleGhost(pal)
   return table.concat(remap, "", 0, 255)
 end
 
---! Load a palette file
---!param dir (string) The directory of the palette relative to the HOSPITAL directory
---!param name (string) The name of the palette file
---!param transparent_255 (boolean) Whether the 255th entry in the palette should be transparent
---!return (palette, string) The palette and a string representing the palette converted to greyscale
+--- Load a palette file
+-- @param dir (string) The directory of the palette relative to the HOSPITAL directory
+-- @param name (string) The name of the palette file
+-- @param transparent_255 (boolean) Whether the 255th entry in the palette should be transparent
+-- @return (palette, string) The palette and a string representing the palette converted to greyscale
 function Graphics:loadPalette(dir, name, transparent_255)
   name = name or "MPalette.dat"
   if self.cache.palette[name] then
@@ -265,15 +265,15 @@ function Graphics:loadGhost(dir, name, index)
   return cached:sub(index * 256 + 1, index * 256 + 256)
 end
 
---! Load a bitmap from a dat file and palette
---!
---!param name (string) The file name of the bitmap without the .dat extension
---!param width (int) The width of the bitmap. Defaults to 640
---!param height (int) The height of the bitmap. Defaults to 480
---!param dir (string) The directory of the bitmap. Defaults to QData
---!param paldir (string) The directory of the palette.
---!param pal (string) The name of the palette
---!param transparent_255 (boolean) Whether the 255th entry of the palette should be transparent
+--- Load a bitmap from a dat file and palette
+---
+-- @param name (string) The file name of the bitmap without the .dat extension
+-- @param width (int) The width of the bitmap. Defaults to 640
+-- @param height (int) The height of the bitmap. Defaults to 480
+-- @param dir (string) The directory of the bitmap. Defaults to QData
+-- @param paldir (string) The directory of the palette.
+-- @param pal (string) The name of the palette
+-- @param transparent_255 (boolean) Whether the 255th entry of the palette should be transparent
 function Graphics:loadRaw(name, width, height, dir, paldir, pal, transparent_255)
   if self.cache.raw[name] then
     return self.cache.raw[name]
@@ -347,7 +347,7 @@ function Graphics:hasLanguageFont(font)
   end
 end
 
---! Font proxy meta table wrapping the C++ class.
+--- Font proxy meta table wrapping the C++ class.
 local font_proxy_mt = {
   __index = {
     sizeOf = function(self, ...)
@@ -381,13 +381,13 @@ function Graphics:onChangeLanguage()
   self.load_info = load_info
 end
 
---! Font reload function.
---!param font The font to (force) reloading.
+--- Font reload function.
+-- @param font The font to (force) reloading.
 local function font_reloader(font)
   font:clearCache()
 end
 
---! Utility function to return preferred font for main menu ui
+--- Utility function to return preferred font for main menu ui
 function Graphics:loadMenuFont()
   local font
   if self.language_font then
@@ -475,8 +475,8 @@ function Graphics:loadAnimations(dir, prefix)
     return self.cache.anims[prefix]
   end
 
-  --! Load a custom animation file (if it can be found)
-  --!param path Path to the file.
+  --- Load a custom animation file (if it can be found)
+  ---param path Path to the file.
   local function loadCustomAnims(path)
     local file, err = io.open(path, "rb")
     if not file then
@@ -551,7 +551,7 @@ function Graphics:updateTarget(target)
   end
 end
 
---! Utility class for setting animation markers and querying animation length.
+--- Utility class for setting animation markers and querying animation length.
 class "AnimationManager"
 
 ---@type AnimationManager
@@ -562,7 +562,7 @@ function AnimationManager:AnimationManager(anims)
   self.anims = anims
 end
 
---! For overriding animations which have builtin repeats or excess frames
+--- For overriding animations which have builtin repeats or excess frames
 function AnimationManager:setAnimLength(anim, length)
   self.anim_length_cache[anim] = length
 end

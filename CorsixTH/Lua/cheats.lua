@@ -23,7 +23,7 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---! A holder for all cheats in the game
+--- A holder for all cheats in the game
 class "Cheats"
 
 ---@type Cheats
@@ -55,16 +55,16 @@ function Cheats:Cheats(hospital)
   --[[ Toggle-based cheats are found at bottom of file]]
 end
 
---! Performs a cheat from the cheat_list (menu cheats)
---!param num (integer) The cheat from the cheat_list called
---!return true if cheat was successful, false otherwise
+--- Performs a cheat from the cheat_list (menu cheats)
+-- @param num (integer) The cheat from the cheat_list called
+-- @return true if cheat was successful, false otherwise
 function Cheats:performCheat(num)
   local cheat_success = self.cheat_list[num].func(self) ~= false
   return cheat_success and self.cheat_list[num].name ~= "lose_level"
 end
 
---! Updates the cheated status of the player, with a matching announcement
---!param speech (string) Optional text for the adviser to say
+--- Updates the cheated status of the player, with a matching announcement
+-- @param speech (string) Optional text for the adviser to say
 function Cheats:announceCheat(speech)
   local announcements = self.hospital.world.cheat_announcements
   local ui = self.hospital.world.ui
@@ -180,19 +180,19 @@ end
 
 --[[Begin toggle-based cheat functions]]
 
---! Enable Roujin's challenge (spawn rate cheat)
+--- Enable Roujin's challenge (spawn rate cheat)
 function Cheats:roujinOn()
   self.active_cheats["spawn_rate_cheat"] = true
 end
 
---! Disable Roujin's challenge (spawn rate cheat)
+--- Disable Roujin's challenge (spawn rate cheat)
 function Cheats:roujinOff()
   -- Clear the current month's spawns to give the player a break
   self.hospital.world.spawn_dates = {}
   self.active_cheats["spawn_rate_cheat"] = nil
 end
 
---! Enables no rest cheat (staff do not tire, fast movement)
+--- Enables no rest cheat (staff do not tire, fast movement)
 function Cheats:noRestOn()
   for _, staff in ipairs(self.hospital.staff) do
     if staff.attributes["fatigue"] then
@@ -202,7 +202,7 @@ function Cheats:noRestOn()
   self.active_cheats["no_rest_cheat"] = true
 end
 
---! Disable no rest cheat (re-enable staff fatigue, and normal movement)
+--- Disable no rest cheat (re-enable staff fatigue, and normal movement)
 function Cheats:noRestOff()
   self.active_cheats["no_rest_cheat"] = nil
 end
@@ -232,16 +232,16 @@ local toggle_cheats = {
   },
 }
 
---! Checks if a toggle cheat is activated
---!param name (string) Name of cheat to check
---!return Returns true if active
+--- Checks if a toggle cheat is activated
+-- @param name (string) Name of cheat to check
+-- @return Returns true if active
 function Cheats:isCheatActive(name)
   return self.active_cheats[name]
 end
 
---! Checks the obfuscated cheat code for a match and executes it
---!param num (number) The obfuscated cheat value
---!return Returns name of the cheat executed from the lookup table, or nil
+--- Checks the obfuscated cheat code for a match and executes it
+-- @param num (number) The obfuscated cheat value
+-- @return Returns name of the cheat executed from the lookup table, or nil
 function Cheats:processCheatCode(num)
   local cheat_list = toggle_cheats
   for name, data in pairs(cheat_list) do
@@ -254,8 +254,8 @@ function Cheats:processCheatCode(num)
 end
 
 
---! Performs a cheat from fax_cheats
---!param name (string) The cheat called from the list
+--- Performs a cheat from fax_cheats
+-- @param name (string) The cheat called from the list
 function Cheats:toggleCheat(name)
   local ui = self.hospital.world.ui
   local cheat_list = toggle_cheats

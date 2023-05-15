@@ -26,7 +26,7 @@ local TH = require("TH")
 local ipairs
     = ipairs
 
---! Layer which handles the Lua-facing side of loading and playing audio.
+--- Layer which handles the Lua-facing side of loading and playing audio.
 class "Audio"
 
 ---@type Audio
@@ -237,7 +237,7 @@ function Audio:initSpeech(speech_file)
   end
 end
 
---! Set the visual area for sound effects playback
+--- Set the visual area for sound effects playback
 function Audio:setSoundStage()
   if self.sound_fx then
     local w, h = self.app.config.width / 2, self.app.config.height / 2
@@ -430,9 +430,9 @@ function Audio:onSoundPlayed(played_callbacks_id)
   end
 end
 
---! Returns whether the given sound (either a string or a number)
---! exists in the sound archive
---!param sound The sound to look for, either a string (name) or a
+--- Returns whether the given sound (either a string or a number)
+--- exists in the sound archive
+-- @param sound The sound to look for, either a string (name) or a
 -- number (position in the list of sounds)
 function Audio:soundExists(sound)
   if self.sound_archive then
@@ -499,9 +499,9 @@ function Audio:playPreviousBackgroundTrack()
   self:playNextOrPreviousBackgroundTrack(-1)
 end
 
---! Pauses or unpauses background music depending on the current state.
---! Returns whether music is currently paused or not after the call.
---! If nil is returned music might either be playing or completely stopped.
+--- Pauses or unpauses background music depending on the current state.
+--- Returns whether music is currently paused or not after the call.
+--- If nil is returned music might either be playing or completely stopped.
 function Audio:pauseBackgroundTrack()
   assert(self.background_music, "Trying to pause music while music is stopped")
 
@@ -538,8 +538,8 @@ function Audio:pauseBackgroundTrack()
   return self.background_paused
 end
 
---! Stops playing background music for the time being.
---! Does not affect the configuration setting play_music.
+--- Stops playing background music for the time being.
+--- Does not affect the configuration setting play_music.
 function Audio:stopBackgroundTrack()
   if self.background_paused then
     -- Resume first in order to clear the saved volume.
@@ -551,9 +551,9 @@ function Audio:stopBackgroundTrack()
   self:notifyJukebox()
 end
 
---! Plays a given background track.
---! Playback will only start if the configuration says it's ok. (play_music = true)
---!param index Index of the track to play in the playlist.
+--- Plays a given background track.
+--- Playback will only start if the configuration says it's ok. (play_music = true)
+-- @param index Index of the track to play in the playlist.
 function Audio:playBackgroundTrack(index)
   local info = self.background_playlist[index]
   assert(info, "Index not valid")

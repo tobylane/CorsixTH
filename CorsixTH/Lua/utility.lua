@@ -246,14 +246,14 @@ function list_to_set(list)
   return set
 end
 
---! Find the smallest bucket with its upper value less or equal to a given number,
---! and return the value of the bucket, or its index.
---!param number (number) Value to accept by the bucket.
---!param buckets (list) Available buckets, pairs of {upper=x, value=y} tables,
+--- Find the smallest bucket with its upper value less or equal to a given number,
+--- and return the value of the bucket, or its index.
+-- @param number (number) Value to accept by the bucket.
+-- @param buckets (list) Available buckets, pairs of {upper=x, value=y} tables,
 --  in increasing x value, where nil is taken as infinite. The y value is
 --  returned for the first bucket in the list where number <= x. If y is nil,
 --  the index of the bucket in the list is returned.
---!return (number) Value or index of the matching bucket.
+-- @return (number) Value or index of the matching bucket.
 function rangeMapLookup(number, buckets)
   for index, bucket in ipairs(buckets) do
     if not bucket.upper or bucket.upper >= number then
@@ -266,29 +266,29 @@ end
 -- this is a pseudo bitwise OR operation
 -- assumes value2 is always a power of 2 (limits carry errors in the addition)
 -- mimics the logic of hasBit with the addition if bit not set
---!param value1 (int) value to check set bit of
---!param value2 (int) power of 2 value - bit enumeration
---!return (int) value1 and value2 'bitwise' or.
+-- @param value1 (int) value to check set bit of
+-- @param value2 (int) power of 2 value - bit enumeration
+-- @return (int) value1 and value2 'bitwise' or.
 function bitOr(value1, value2)
   return value1 % (value2 + value2) >= value2 and value1 or value1 + value2
 end
 
---! Check bit is set
---!param value (int) value to check set bit of
---!param bit (int) 0-base index of bit to check
---!return (boolean) true if bit is set.
+--- Check bit is set
+-- @param value (int) value to check set bit of
+-- @param bit (int) 0-base index of bit to check
+-- @return (boolean) true if bit is set.
 function hasBit(value, bit)
   local p = 2 ^ bit
   return value % (p + p) >= p
 end
 
---! Convert an array table to a string.
---! Joins each elements by the provided separator. As a convenience feature
---! if the input is not an array it will be converted to a string and
---! returned.
---!param array (table) array to join.
---!param separator (string) separator between elements.
---!return (string) The joined string.
+--- Convert an array table to a string.
+--- Joins each elements by the provided separator. As a convenience feature
+--- if the input is not an array it will be converted to a string and
+--- returned.
+-- @param array (table) array to join.
+-- @param separator (string) separator between elements.
+-- @return (string) The joined string.
 function array_join(array, separator)
   separator = separator or ","
 
@@ -385,15 +385,15 @@ local function serialize_table(obj, options, depth, pt_reflist)
   return result
 end
 
---! Serialize a value. Call it with the value to serialize and print the output.
+--- Serialize a value. Call it with the value to serialize and print the output.
 --  By default it will end recursion when a cycle is detected.
---!param val Value to serialize.
---!param options Option settings, table, 'detect_cycles' field boolean that
+-- @param val Value to serialize.
+-- @param options Option settings, table, 'detect_cycles' field boolean that
 --  ends recursion on a cycle, and 'max_depth' integer that ends recursion at the
 --  specified depth. By default initialized with "{detect_cycles = True}"
---!param depth Recursion depth, should be omitted.
---!param pt_reflist Seen nodes, should be omitted.
---!return The seralized output.
+-- @param depth Recursion depth, should be omitted.
+-- @param pt_reflist Seen nodes, should be omitted.
+-- @return The seralized output.
 function serialize(val, options, depth, pt_reflist)
   if type(val) == "string" then
     return serialize_string(val)

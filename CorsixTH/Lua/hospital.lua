@@ -270,16 +270,16 @@ function Hospital:Hospital(world, avail_rooms, name)
   end
 end
 
---! Checks if a room has been discovered
---!param room_id (string) The name of the room
---!return (boolean) true if discovered, otherwise false
+--- Checks if a room has been discovered
+-- @param room_id (string) The name of the room
+-- @return (boolean) true if discovered, otherwise false
 function Hospital:isRoomDiscovered(room_id)
   return self.room_discoveries[room_id].is_discovered
 end
 
---! Update the loaded game with version 'old' to the version 'new'.
---!param old Version of the loaded game.
---!param new Version of the code being executed.
+--- Update the loaded game with version 'old' to the version 'new'.
+-- @param old Version of the loaded game.
+-- @param new Version of the code being executed.
 function Hospital:afterLoad(old, new)
   if old < 8 then
     -- The list of discovered rooms was not saved. The best we can do is make everything
@@ -690,9 +690,9 @@ function Hospital:afterLoad(old, new)
   self.research.afterLoad(old, new)
 end
 
---! Count the number of patients in the hospital.
---!param max_count (optional integer) If provided, non-negative maximum count to return.
---!return The number of patients in the hospital, at most max_count is returned if provided.
+--- Count the number of patients in the hospital.
+-- @param max_count (optional integer) If provided, non-negative maximum count to return.
+-- @return The number of patients in the hospital, at most max_count is returned if provided.
 function Hospital:countPatients(max_count)
   local count = 0
   for _, patient in ipairs(self.patients) do
@@ -706,8 +706,8 @@ function Hospital:countPatients(max_count)
   return count
 end
 
---! Count number of sitting and standing patients in the hospital.
---!return (integer, integer) Number of sitting and number of standing patient in the hospital.
+--- Count number of sitting and standing patients in the hospital.
+-- @return (integer, integer) Number of sitting and number of standing patient in the hospital.
 function Hospital:countSittingStanding()
   local numberSitting = 0
   local numberStanding = 0
@@ -722,8 +722,8 @@ function Hospital:countSittingStanding()
   return numberSitting, numberStanding
 end
 
---! Called each tick, also called 'hours'. Check hours_per_day in
---! date.lua to see how many times per day this is.
+--- Called each tick, also called 'hours'. Check hours_per_day in
+--- date.lua to see how many times per day this is.
 function Hospital:tick()
   -- Add some random background sounds, ringing phones, coughing, belching etc.
   --
@@ -778,8 +778,8 @@ function Hospital:getPlayerIndex()
   return 1
 end
 
---! Returns the heliport x and y coordinates or nil if none exist.
---!return (pair of integers, or nil) The x,y position of the tile with the heliport, if it exists.
+--- Returns the heliport x and y coordinates or nil if none exist.
+-- @return (pair of integers, or nil) The x,y position of the tile with the heliport, if it exists.
 function Hospital:getHeliportPosition()
   local x, y = self.world.map.th:getHeliportTile(self:getPlayerIndex())
   -- NB: Level 2 has a heliport tile set, but no heliport, so we ensure that
@@ -790,8 +790,8 @@ function Hospital:getHeliportPosition()
   end
 end
 
---! Returns the tile on which patients should spawn when getting out of the helicopter.
---!return (pair of integers, or nil) The x,y position to use for spawning emergency patients from the heliport, if available.
+--- Returns the tile on which patients should spawn when getting out of the helicopter.
+-- @return (pair of integers, or nil) The x,y position to use for spawning emergency patients from the heliport, if available.
 function Hospital:getHeliportSpawnPosition()
   local x, y = self:getHeliportPosition()
   if x and y then
@@ -808,16 +808,16 @@ function Hospital:isInHospital(x, y)
   return flags.hospital and flags.owner == self:getPlayerIndex()
 end
 
---! Decide how many days the hospital functions within specification.
---!return (int) Number of disaster-free days in the hospital.
+--- Decide how many days the hospital functions within specification.
+-- @return (int) Number of disaster-free days in the hospital.
 function Hospital:daysUntilNextDisaster()
   local disaster_free_days = {300, 200, 150}
   -- Original doesn't use random, see Github #490.
   return disaster_free_days[self.world.map:getDifficulty()] + math.random(1, 21) - 11
 end
 
---! Boiler should break down.
---!param broken_heat (0 or 1) Amount of heat to output due to being broken.
+--- Boiler should break down.
+-- @param broken_heat (0 or 1) Amount of heat to output due to being broken.
 function Hospital:boilerBreakdown(broken_heat)
   local heat_vars = self.heating
 
@@ -839,7 +839,7 @@ function Hospital:boilerBreakdown(broken_heat)
   self:adviseBoilerBreakdown(broken_heat)
 end
 
---! Boiler broke down and work is done to get it fixed.
+--- Boiler broke down and work is done to get it fixed.
 function Hospital:_fixBoiler()
   local heat_vars = self.heating
 
@@ -867,8 +867,8 @@ function Hospital:_fixBoiler()
   end
 end
 
---! Daily update of the ratholes.
---!param self (Hospital) hospital being updated.
+--- Daily update of the ratholes.
+-- @param self (Hospital) hospital being updated.
 local function dailyUpdateRatholes(self)
   local map = self.world.map
   local th = map.th
@@ -1033,13 +1033,13 @@ function Hospital:onEndMonth()
   self.money_out = 0
 end
 
---! Returns whether this hospital is controlled by a real person or not.
+--- Returns whether this hospital is controlled by a real person or not.
 function Hospital:isPlayerHospital()
   return self == self.world:getLocalPlayerHospital()
 end
 
---! Does the hospital have a working reception?
---!return (bool) Whether there is a working reception in the hospital.
+--- Does the hospital have a working reception?
+-- @return (bool) Whether there is a working reception in the hospital.
 function Hospital:hasStaffedDesk()
   for _, desk in ipairs(self:findReceptionDesks()) do
     if desk.receptionist or desk.reserved_for then return true end
@@ -1047,8 +1047,8 @@ function Hospital:hasStaffedDesk()
   return false
 end
 
---! Collect the reception desks in the hospital.
---!return (list) The reception desks in the hospital.
+--- Collect the reception desks in the hospital.
+-- @return (list) The reception desks in the hospital.
 function Hospital:findReceptionDesks()
   local reception_desks = {}
   for _, obj_list in pairs(self.world.objects) do
@@ -1061,7 +1061,7 @@ function Hospital:findReceptionDesks()
   return reception_desks
 end
 
---! Called at the end of each year
+--- Called at the end of each year
 function Hospital:onEndYear()
   self.sodas_sold = 0
   self.num_vips_ty  = 0
@@ -1081,7 +1081,7 @@ end
 
 -- Creates complete emergency with patients, what disease they have, what's needed
 -- to cure them and the fax.
---!return (optional string) Textual reason for failure, else nil
+-- @return (optional string) Textual reason for failure, else nil
 function Hospital:createEmergency(emergency)
   local random_disease = self.world.available_diseases[math.random(1, #self.world.available_diseases)]
   local disease = TheApp.diseases[random_disease.id]
@@ -1139,8 +1139,8 @@ function Hospital:resolveEmergency()
   self.world:nextEmergency()
 end
 
---! Determine if all of the patients in the emergency have been cured or killed.
---! If they have end the emergency timer.
+--- Determine if all of the patients in the emergency have been cured or killed.
+--- If they have end the emergency timer.
 function Hospital:checkEmergencyOver()
   local killed = self.emergency.killed_emergency_patients
   local cured = self.emergency.cured_emergency_patients
@@ -1401,14 +1401,14 @@ function Hospital:receiveMoneyForTreatment(patient)
   end
 end
 
---! Sell a soda to a patient.
---!param patient (patient) The patient buying the soda.
+--- Sell a soda to a patient.
+-- @param patient (patient) The patient buying the soda.
 function Hospital:sellSodaToPatient(patient)
   self:receiveMoneyForProduct(patient, 20, _S.transactions.drinks)
   self.sodas_sold = self.sodas_sold + 1
 end
 
---! Function to determine the price for a treatment, modified by reputation and percentage
+--- Function to determine the price for a treatment, modified by reputation and percentage
 -- Treatment charge should never be less than the starting price if reputation falls below 500
 function Hospital:getTreatmentPrice(disease)
   local reputation = self.disease_casebook[disease].reputation or self.reputation
@@ -1431,8 +1431,8 @@ function Hospital:receiveMoneyForProduct(patient, amount, reason)
   self:receiveMoney(amount, reason)
 end
 
---! Pay drug if drug has been purchased to treat a patient.
---!param disease_id Disease that was treated.
+--- Pay drug if drug has been purchased to treat a patient.
+-- @param disease_id Disease that was treated.
 function Hospital:paySupplierForDrug(disease_id)
   local drug_amount = self.disease_casebook[disease_id].drug_cost or 0
   if drug_amount ~= 0 then
@@ -1455,7 +1455,7 @@ function Hospital:logTransaction(transaction)
   table.insert(self.transactions, 1, transaction)
 end
 
---! Initialize hospital staff from the level config.
+--- Initialize hospital staff from the level config.
 function Hospital:initStaff()
   local level_config = self.world.map.level_config
   if level_config.start_staff then
@@ -1549,8 +1549,8 @@ function Hospital:addPatient(patient)
   self:determineIfContagious(patient)
 end
 
---! Humanoid has died, record the incident.
---!param patient The deceased.
+--- Humanoid has died, record the incident.
+-- @param patient The deceased.
 function Hospital:humanoidDeath(patient)
   self:msgKilled()
 
@@ -1569,12 +1569,12 @@ function Hospital:humanoidDeath(patient)
   end
 end
 
---! Checks if the hospital employs staff of a given category.
---!param category (string) A humanoid_class or one of the specialists, i.e.
---! "Doctor", "Nurse", "Handyman", "Receptionist", "Psychiatrist",
---! "Surgeon", "Researcher", "Junior" or "Consultant"
---!param max_count (optional integer) If provided, non-negative maximum count to return.
---! returns Number of that type employed, at most max_count is returned if provided.
+--- Checks if the hospital employs staff of a given category.
+-- @param category (string) A humanoid_class or one of the specialists, i.e.
+--- "Doctor", "Nurse", "Handyman", "Receptionist", "Psychiatrist",
+--- "Surgeon", "Researcher", "Junior" or "Consultant"
+-- @param max_count (optional integer) If provided, non-negative maximum count to return.
+--- returns Number of that type employed, at most max_count is returned if provided.
 function Hospital:countStaffOfCategory(category, max_count)
   local result = 0
   for _, staff in ipairs(self.staff) do
@@ -1586,10 +1586,10 @@ function Hospital:countStaffOfCategory(category, max_count)
   return result
 end
 
---! Checks if the hospital has a room of a given type.
---!param type (string) A room_info.id, e.g. "ward".
---!param max_count (optional integer) If provided, non-negative maximum count to return.
---! Returns Number of that type found, at most max_count is returned if provided.
+--- Checks if the hospital has a room of a given type.
+-- @param type (string) A room_info.id, e.g. "ward".
+-- @param max_count (optional integer) If provided, non-negative maximum count to return.
+--- Returns Number of that type found, at most max_count is returned if provided.
 function Hospital:countRoomOfType(type, max_count)
   -- Check how many rooms there are.
   local result = 0
@@ -1602,9 +1602,9 @@ function Hospital:countRoomOfType(type, max_count)
   return result
 end
 
---! Update tile object counts for adding an object.
---! See also 'Hospital:removeTileObject'
---!param object_category Category of the tile object.
+--- Update tile object counts for adding an object.
+--- See also 'Hospital:removeTileObject'
+-- @param object_category Category of the tile object.
 function Hospital:addTileObject(object_category)
   if object_category then
     local current_count = self.tile_object_counts[object_category]
@@ -1612,9 +1612,9 @@ function Hospital:addTileObject(object_category)
   end
 end
 
---! Update tile object counts for removing an object.
---! See also 'Hospital:addTileObject'
---!param object_category Category of the tile object.
+--- Update tile object counts for removing an object.
+--- See also 'Hospital:addTileObject'
+-- @param object_category Category of the tile object.
 function Hospital:removeTileObject(object_category)
   if object_category then
     local current_count = self.tile_object_counts[object_category]
@@ -1622,39 +1622,39 @@ function Hospital:removeTileObject(object_category)
   end
 end
 
---! Get the number of reception desks in the hospital.
---!return (int) Number of reception desks in the hospital.
+--- Get the number of reception desks in the hospital.
+-- @return (int) Number of reception desks in the hospital.
 function Hospital:countReceptionDesks()
   return self.tile_object_counts["reception_desk"]
 end
 
---! Get the number of radiators in the hospital.
---!return (int) Number of radiators in the hospital.
+--- Get the number of radiators in the hospital.
+-- @return (int) Number of radiators in the hospital.
 function Hospital:countRadiators()
   return self.tile_object_counts["radiator"]
 end
 
---! Get the number of plants in the hospital.
---!return (int) Number of plants in the hospital.
+--- Get the number of plants in the hospital.
+-- @return (int) Number of plants in the hospital.
 function Hospital:countPlants()
   return self.tile_object_counts["plant"]
 end
 
---! Get the number of fire extinguishers in the hospital.
---!return (int) Number of fire extinguishers in the hospital.
+--- Get the number of fire extinguishers in the hospital.
+-- @return (int) Number of fire extinguishers in the hospital.
 function Hospital:countFireExtinguishers()
   return self.tile_object_counts["extinguisher"]
 end
 
---! Get the number of general objects in the hospital.
---!return (int) Number of general objects in the hospital.
+--- Get the number of general objects in the hospital.
+-- @return (int) Number of general objects in the hospital.
 function Hospital:countGeneralObjects()
   return self.tile_object_counts["general"]
 end
 
---! A new object has been placed in the hospital.
---!param entity (Entity) The entity that was just placed.
---!param id (string) That entity's id.
+--- A new object has been placed in the hospital.
+-- @param entity (Entity) The entity that was just placed.
+-- @param id (string) That entity's id.
 function Hospital:objectPlaced(entity, id)
   -- If it is a bench we're placing, notify queueing patients in the vicinity
   if id == "bench" then
@@ -1690,11 +1690,11 @@ function Hospital:objectPlaced(entity, id)
   end
 end
 
---! Remove the first entry with a given value from a table.
---! Only works reliably for lists.
---!param t Table to search for the value, and update.
---!param value Value to search and remove.
---!return Whether the value was removed.
+--- Remove the first entry with a given value from a table.
+--- Only works reliably for lists.
+-- @param t Table to search for the value, and update.
+-- @param value Value to search and remove.
+-- @return Whether the value was removed.
 local function RemoveByValue(t, value)
   for i, v in ipairs(t) do
     if v == value then
@@ -1705,16 +1705,16 @@ local function RemoveByValue(t, value)
   return false
 end
 
---! Remove a staff member from the hospital staff.
---!param staff (Staff) Staff member to remove.
+--- Remove a staff member from the hospital staff.
+-- @param staff (Staff) Staff member to remove.
 function Hospital:removeStaff(staff)
   RemoveByValue(self.staff, staff)
   -- update all messages for waiting patients
   self:notifyOfStaffChange(staff)
 end
 
---! Remove a patient from the hospital.
---!param patient (Patient) Patient to remove.
+--- Remove a patient from the hospital.
+-- @param patient (Patient) Patient to remove.
 function Hospital:removePatient(patient)
   RemoveByValue(self.patients, patient)
 end
@@ -1731,11 +1731,11 @@ local reputation_changes = {
   ["room_crash"] = -50,
 }
 
---! Normally reputation is changed based on a reason, and the affected
---! disease also has its own reputation meter.
---!param reason (string) The reason for changing reputation, for example "cured" or "death".
---!param disease The disease, if any, that should be affected.
---!param valueChange (integer) In some cases, for example at year end, the amount varies a lot.
+--- Normally reputation is changed based on a reason, and the affected
+--- disease also has its own reputation meter.
+-- @param reason (string) The reason for changing reputation, for example "cured" or "death".
+-- @param disease The disease, if any, that should be affected.
+-- @param valueChange (integer) In some cases, for example at year end, the amount varies a lot.
 -- Then it is specified here.
 function Hospital:changeReputation(reason, disease, valueChange)
   local amount
@@ -1756,10 +1756,10 @@ function Hospital:changeReputation(reason, disease, valueChange)
   end
 end
 
---! Unconditionally change the reputation.
---! In most cases, the better entry point for changing reputation
---! is 'Hospital:changeReputation'.
---!param valueChange (integer) Amount of change.
+--- Unconditionally change the reputation.
+--- In most cases, the better entry point for changing reputation
+--- is 'Hospital:changeReputation'.
+-- @param valueChange (integer) Amount of change.
 function Hospital:unconditionalChangeReputation(valueChange)
   self.reputation = self.reputation + valueChange
 
@@ -1781,10 +1781,10 @@ function Hospital:unconditionalChangeReputation(valueChange)
   end
 end
 
---! Decide whether a reputation change is effective or not. As we approach 1000,
---! a gain is less likely. As we approach 0, a loss is less likely.
---! Under 500, a gain is always effective.  Over 500, a loss is always effective.
---!param amount (int): The amount of reputation change.
+--- Decide whether a reputation change is effective or not. As we approach 1000,
+--- a gain is less likely. As we approach 0, a loss is less likely.
+--- Under 500, a gain is always effective.  Over 500, a loss is always effective.
+-- @param amount (int): The amount of reputation change.
 function Hospital:isReputationChangeAllowed(amount)
   if (amount > 0 and self.reputation <= 500) or (amount < 0 and self.reputation >= 500) or (amount == 0) then
     return true
@@ -1793,9 +1793,9 @@ function Hospital:isReputationChangeAllowed(amount)
   end
 end
 
---! Compute the likelihood for a reputation change to be effective.
---! Likelihood gets smaller as hospital reputation gets closer to extreme values.
---!return (float) Likelihood of a reputation change.
+--- Compute the likelihood for a reputation change to be effective.
+--- Likelihood gets smaller as hospital reputation gets closer to extreme values.
+-- @return (float) Likelihood of a reputation change.
 function Hospital:getReputationChangeLikelihood()
   -- The result follows a quadratic function, for a curved and smooth evolution.
   -- If reputation == 500, the result is 100%.
@@ -1817,8 +1817,8 @@ function Hospital:getReputationChangeLikelihood()
   return 1 - (a * x * x - b * x + c)
 end
 
---! Update the 'cured' counts of the hospital.
---!param patient Patient that was cured.
+--- Update the 'cured' counts of the hospital.
+-- @param patient Patient that was cured.
 function Hospital:updateCuredCounts(patient)
   self:msgCured()
 
@@ -1837,11 +1837,11 @@ function Hospital:updateCuredCounts(patient)
   end
 end
 
---! Update the 'not cured' counts of the hospital.
---!param patient Patient that was not cured.
---!param reason (string) the reason why the patient is not cured.
---! -"kicked": Patient goes home early (manually sent, no treatment room, etc).
---! -"over_priced": Patient considers the price too high.
+--- Update the 'not cured' counts of the hospital.
+-- @param patient Patient that was not cured.
+-- @param reason (string) the reason why the patient is not cured.
+--- -"kicked": Patient goes home early (manually sent, no treatment room, etc).
+--- -"over_priced": Patient considers the price too high.
 function Hospital:updateNotCuredCounts(patient, reason)
   if patient.is_debug then return end
 
@@ -1867,10 +1867,10 @@ function Hospital:updatePercentages()
   self.percentage_cured = math.round(cured)
 end
 
---! Compute average of an attribute for all patients in the hospital.
---!param attribute (str) Name of the attribute.
---!param default_value Value to return if there are no patients.
---!return Average value of the attribute for all hospital patients, or the default value.
+--- Compute average of an attribute for all patients in the hospital.
+-- @param attribute (str) Name of the attribute.
+-- @param default_value Value to return if there are no patients.
+-- @return Average value of the attribute for all hospital patients, or the default value.
 function Hospital:getAveragePatientAttribute(attribute, default_value)
   local sum = 0
   local count = 0
@@ -1890,10 +1890,10 @@ function Hospital:getAveragePatientAttribute(attribute, default_value)
   end
 end
 
---! Compute average of an attribute for all staff in the hospital.
---!param attribute (str) Name of the attribute.
---!param default_value Value to return if there is no staff.
---!return Average value of the attribute for all staff, or the default value.
+--- Compute average of an attribute for all staff in the hospital.
+-- @param attribute (str) Name of the attribute.
+-- @param default_value Value to return if there is no staff.
+-- @return Average value of the attribute for all staff, or the default value.
 function Hospital:getAverageStaffAttribute(attribute, default_value)
   local sum = 0
   local count = 0
@@ -1907,12 +1907,12 @@ function Hospital:getAverageStaffAttribute(attribute, default_value)
   return count == 0 and default_value or sum / count
 end
 
---! Checks if the requirements for the given disease are met in the hospital and returns the ones missing.
---!param disease (String) The disease to check the requirements for
---! returns false if all requirements are met, else a table in the form
---! { rooms = {[room1], [room2], ...}, staff = {[humanoid_class] = [amount_needed] or nil} }
---! i.e. a list of rooms (ordered the same as disease.treatment_rooms), and a set of humanoid_classes with
---! the needed amount of that class as the value
+--- Checks if the requirements for the given disease are met in the hospital and returns the ones missing.
+-- @param disease (String) The disease to check the requirements for
+--- returns false if all requirements are met, else a table in the form
+--- { rooms = {[room1], [room2], ...}, staff = {[humanoid_class] = [amount_needed] or nil} }
+--- i.e. a list of rooms (ordered the same as disease.treatment_rooms), and a set of humanoid_classes with
+--- the needed amount of that class as the value
 function Hospital:checkDiseaseRequirements(disease)
   -- Copy rooms list from disease but leave out the ones that are present in the hospital
   -- Get required staff from all rooms required by the disease, if not already present in hospital
@@ -1940,10 +1940,10 @@ function Hospital:checkDiseaseRequirements(disease)
   return any and {rooms = rooms, staff = staff}
 end
 
---! Get the set of walls around a tile position.
---!param x (int) X position of the queried tile.
---!param y (int) Y position of the queried tile.
---!return (table {wall, parcel}) The walls around the given position.
+--- Get the set of walls around a tile position.
+-- @param x (int) X position of the queried tile.
+-- @param y (int) Y position of the queried tile.
+-- @return (table {wall, parcel}) The walls around the given position.
 function Hospital:getWallsAround(x, y)
   local map = self.world.map
   local th = map.th
@@ -1977,19 +1977,19 @@ function Hospital:getWallsAround(x, y)
   return walls
 end
 
---! Test for the given position to be inside the given rectangle.
---!param x (int) X position to test.
---!param y (int) Y position to test.
---!param rect (table x, y, width, height) Rectangle to check against.
---!return (bool) Whether the position is inside the rectangle.
+--- Test for the given position to be inside the given rectangle.
+-- @param x (int) X position to test.
+-- @param y (int) Y position to test.
+-- @param rect (table x, y, width, height) Rectangle to check against.
+-- @return (bool) Whether the position is inside the rectangle.
 local function isInside(x, y, rect)
   return x >= rect.x and x < rect.x + rect.width and y >= rect.y and y < rect.y + rect.height
 end
 
---! Find all ratholes that match the `to_match` criteria.
---!param holes (list ratholes) Currently existing holes.
---!param to_match (table) For each direction a rectangle with matching tile positions.
---!return (list) Matching ratholes.
+--- Find all ratholes that match the `to_match` criteria.
+-- @param holes (list ratholes) Currently existing holes.
+-- @param to_match (table) For each direction a rectangle with matching tile positions.
+-- @return (list) Matching ratholes.
 local function findMatchingRatholes(holes, to_match)
   local matched = {}
   for _, hole in ipairs(holes) do
@@ -1998,8 +1998,8 @@ local function findMatchingRatholes(holes, to_match)
   return matched
 end
 
---! Remove the ratholes that use the walls of the provided room.
---!param room (Room) Room being de-activated.
+--- Remove the ratholes that use the walls of the provided room.
+-- @param room (Room) Room being de-activated.
 function Hospital:removeRatholesAroundRoom(room)
   local above_rect = {x = room.x, width = room.width, y = room.y - 1,          height = 1}
   local below_rect = {x = room.x, width = room.width, y = room.y +room.height, height = 1}
@@ -2013,10 +2013,10 @@ function Hospital:removeRatholesAroundRoom(room)
 end
 
 -- Add a rathole to the room.
---!param x (int) X position of the tile containing the rathole.
---!param y (int) Y position of the tile containing the rathole.
---!param wall (string) Wall containing the hole (north, west, south, east)
---!param parcel (int) Parcel number of the xy position.
+-- @param x (int) X position of the tile containing the rathole.
+-- @param y (int) Y position of the tile containing the rathole.
+-- @param wall (string) Wall containing the hole (north, west, south, east)
+-- @param parcel (int) Parcel number of the xy position.
 function Hospital:addRathole(x, y, wall, parcel)
   for _, rathole in ipairs(self.ratholes) do
     if rathole.x == x and rathole.y == y and rathole.wall == wall then return end
@@ -2030,8 +2030,8 @@ function Hospital:addRathole(x, y, wall, parcel)
   table.insert(self.ratholes, hole)
 end
 
---! Remove the provided rathole.
---!param hole (table{x, y, wall, optional object}) Hole to remove.
+--- Remove the provided rathole.
+-- @param hole (table{x, y, wall, optional object}) Hole to remove.
 function Hospital:removeRathole(hole)
   for i, rathole in ipairs(self.ratholes) do
     if rathole.x == hole.x and rathole.y == hole.y and rathole.wall == hole.wall then
@@ -2045,9 +2045,9 @@ function Hospital:removeRathole(hole)
   end
 end
 
---! Remove any rathole from the given position.
---!param x X position of the tile that should not have ratholes.
---!param y Y position of the tile that should not have ratholes.
+--- Remove any rathole from the given position.
+-- @param x X position of the tile that should not have ratholes.
+-- @param y Y position of the tile that should not have ratholes.
 function Hospital:removeRatholeXY(x, y)
   for i = #self.ratholes, 1, -1 do
     local rathole = self.ratholes[i]
@@ -2058,23 +2058,23 @@ function Hospital:removeRatholeXY(x, y)
   end
 end
 
---! Adds a handyman task
---!param object The object needing attention
---!param taskType The handyman task type: repairing, watering, cleaning
---!param priority Task priority: 1 is low, 2 is high
---!param x coordinate
---!param y coordinate
---!param call The call added to the dispatcher
+--- Adds a handyman task
+-- @param object The object needing attention
+-- @param taskType The handyman task type: repairing, watering, cleaning
+-- @param priority Task priority: 1 is low, 2 is high
+-- @param x coordinate
+-- @param y coordinate
+-- @param call The call added to the dispatcher
 function Hospital:addHandymanTask(object, taskType, priority, x, y, call)
   local parcelId = self.world.map.th:getCellFlags(x, y).parcelId
   local subTable = self:findHandymanTaskSubtable(taskType)
   table.insert(subTable, {["object"] = object, ["priority"] = priority, ["tile_x"] = x, ["tile_y"] = y, ["parcelId"] = parcelId, ["call"] = call})
 end
 
---! Queries the priority of an existing handyman task
---!param taskIndex (integer) Number of task
---!param taskType The handyman task type: repairing, watering, cleaning
---!return Priority of task
+--- Queries the priority of an existing handyman task
+-- @param taskIndex (integer) Number of task
+-- @param taskType The handyman task type: repairing, watering, cleaning
+-- @return Priority of task
 function Hospital:getHandymanTaskPriority(taskIndex, taskType)
   local subTable = self:findHandymanTaskSubtable(taskType)
   return subTable[taskIndex].priority
@@ -2201,12 +2201,12 @@ function Hospital:searchForHandymanTask(handyman, taskType)
   return index
 end
 
---! Find a handyman task by task type, position, and possibly the used object.
---!param x (int) The X coordinate of the position.
---!param y (int) The Y coordinate of the position.
---!param taskType Type of the task.
---!param obj (Object) If specified, the object used for doing the task.
---! Since multiple litter objects may exist at the same tile, the object must be given when cleaning.
+--- Find a handyman task by task type, position, and possibly the used object.
+-- @param x (int) The X coordinate of the position.
+-- @param y (int) The Y coordinate of the position.
+-- @param taskType Type of the task.
+-- @param obj (Object) If specified, the object used for doing the task.
+--- Since multiple litter objects may exist at the same tile, the object must be given when cleaning.
 function Hospital:getIndexOfTask(x, y, taskType, obj)
   local subTable = self:findHandymanTaskSubtable(taskType)
   for i, v in ipairs(subTable) do
@@ -2217,7 +2217,7 @@ function Hospital:getIndexOfTask(x, y, taskType, obj)
   return -1
 end
 
---! Afterload function to initialize the owned plots.
+--- Afterload function to initialize the owned plots.
 function Hospital:initOwnedPlots()
   self.ownedPlots = {}
   for _, v in ipairs(self.world.entities) do
@@ -2237,9 +2237,9 @@ function Hospital:initOwnedPlots()
   end
 end
 
---! Function that returns true if the room for the given disease
---! has not been researched yet.
---!param disease (string): the disease to be checked.
+--- Function that returns true if the room for the given disease
+--- has not been researched yet.
+-- @param disease (string): the disease to be checked.
 function Hospital:roomNotYetResearched(disease)
   local req = self:checkDiseaseRequirements(disease)
   if type(req) == "table" and #req.rooms > 0 then
@@ -2250,8 +2250,8 @@ function Hospital:roomNotYetResearched(disease)
   return false
 end
 
---! Function that returns true if concentrating research on the disease is possible.
---! @param disease (string): the disease to be checked.
+--- Function that returns true if concentrating research on the disease is possible.
+--- @param disease (string): the disease to be checked.
 function Hospital:canConcentrateResearch(disease)
   local book = self.disease_casebook
   if not book[disease].pseudo and self:roomNotYetResearched(disease) then
@@ -2282,13 +2282,13 @@ function Hospital:canConcentrateResearch(disease)
   return false
 end
 
---! Change patient happiness and hospital reputation based on price distortion.
---! The patient happiness is adjusted proportionally. The hospital reputation
---! can only be affected when the distortion level reaches some threshold.
---!param patient (patient) The patient paying the bill. His/her happiness level
---! is adjusted.
---!param casebook (object) Disease casebook entry. It's used to display the
---! localised disease name when Adviser tells the warning message.
+--- Change patient happiness and hospital reputation based on price distortion.
+--- The patient happiness is adjusted proportionally. The hospital reputation
+--- can only be affected when the distortion level reaches some threshold.
+-- @param patient (patient) The patient paying the bill. His/her happiness level
+--- is adjusted.
+-- @param casebook (object) Disease casebook entry. It's used to display the
+--- localised disease name when Adviser tells the warning message.
 function Hospital:computePriceLevelImpact(patient, casebook)
   local price_distortion = patient:getPriceDistortion(casebook)
   patient:changeAttribute("happiness", -(price_distortion / 2))
@@ -2309,22 +2309,22 @@ function Hospital:computePriceLevelImpact(patient, casebook)
   end
 end
 
---! Notify patients of a change to hospital staff members
---!param staff (Staff) Changed staff member subject of notification
+--- Notify patients of a change to hospital staff members
+-- @param staff (Staff) Changed staff member subject of notification
 function Hospital:notifyOfStaffChange(staff)
   for _, patient in pairs(self.patients) do
     patient:notifyOfStaffChange(staff)
   end
 end
 
---! Change the hospital value by an amount independent of a cost being incurred
---!param changeValue (int) The amount the hospital value should change by
+--- Change the hospital value by an amount independent of a cost being incurred
+-- @param changeValue (int) The amount the hospital value should change by
 function Hospital:changeValue(changeValue)
   self.value = self.value + changeValue
 end
 
---! Collect the hospital level settings relevant for the next hospital
---!return campaign_data (table) Hospital campaign data
+--- Collect the hospital level settings relevant for the next hospital
+-- @return campaign_data (table) Hospital campaign data
 function Hospital:getCampaignData()
   local campaign_data = {
     player_salary = self.player_salary,
@@ -2337,16 +2337,16 @@ function Hospital:getCampaignData()
   return campaign_data
 end
 
---! Restore the hospital settings from the previous hospital
---!param campaign_data (table) Hospital campaign data
+--- Restore the hospital settings from the previous hospital
+-- @param campaign_data (table) Hospital campaign data
 function Hospital:setCampaignData(campaign_data)
   for key, value in pairs(campaign_data) do
     self[key] = value
   end
 end
 
---! Finds a random room with significantly long queues
---!return room or nil The chosen room in the hospital or nil for no room busy enough
+--- Finds a random room with significantly long queues
+-- @return room or nil The chosen room in the hospital or nil for no room busy enough
 function Hospital:getRandomBusyRoom()
   local long_queue_rooms, active_rooms, total_queue = {}, 0, 0
   for _, room in pairs(self.world.rooms) do
@@ -2368,92 +2368,92 @@ end
 ---- Stubs section - these functions have nothing to do here, are overridden in a derived class.
 -- luacheck: ignore 212 keep args for child class
 
---! Give advice to the user about the need to buy the first reception desk.
+--- Give advice to the user about the need to buy the first reception desk.
 function Hospital:msgNeedFirstReceptionDesk()
 end
 
---! Give advice to the user about having bought a reception desk.
+--- Give advice to the user about having bought a reception desk.
 function Hospital:msgReceptionDesk()
 end
 
---! Give advice about having more desks.
+--- Give advice about having more desks.
 function Hospital:msgMultiReceptionDesks()
 end
 
---! Give advice to the user about maintenance of plants.
+--- Give advice to the user about maintenance of plants.
 function Hospital:advisePlants()
 end
 
---! Show the 'Gates to hell' animation.
+--- Show the 'Gates to hell' animation.
 function Hospital:showGatesToHell(entity)
 end
 
---! Advises the player.
+--- Advises the player.
 function Hospital:giveAdvice(msgs, rnd_frac, stay_up)
 end
 
---! Give the user possibly a message about a cured patient.
+--- Give the user possibly a message about a cured patient.
 function Hospital:msgCured()
 end
 
---! Give the user possibly a message about a dead patient.
+--- Give the user possibly a message about a dead patient.
 function Hospital:msgKilled()
 end
 
 function Hospital:adviseDiscoverDisease(disease)
 end
 
---! Select a relevant message to be displayed to the user
+--- Select a relevant message to be displayed to the user
 function Hospital:adviseBoilerBreakdown()
 end
 
---! Announces a machine needing repair
+--- Announces a machine needing repair
 function Hospital:announceRepair(room)
 end
 
 function Hospital:onSpawnVIP()
 end
 
---! Give visual warning that player doesn't have enough $ to build
+--- Give visual warning that player doesn't have enough $ to build
 function Hospital:adviseCannotAffordPlot()
 end
 
---! Tell the player, through the advisor, about the impact of casebook prices
+--- Tell the player, through the advisor, about the impact of casebook prices
 function Hospital:advisePriceLevelImpact(judgment, name)
 end
 
---! Makes the raise request for a staff member
+--- Makes the raise request for a staff member
 function Hospital:makeRaiseRequest(amount, staff)
 end
 
---! Announce to the player that a staff member is leaving the hospital
+--- Announce to the player that a staff member is leaving the hospital
 function Hospital:announceStaffLeave(staff)
 end
 
---! Makes the fax requesting player action for the patient who needs a diagnosis room
+--- Makes the fax requesting player action for the patient who needs a diagnosis room
 function Hospital:makeNoTreatmentRoomFax(patient)
 end
 
---! Makes the fax requesting player action for the patient who needs a diagnosis room
+--- Makes the fax requesting player action for the patient who needs a diagnosis room
 function Hospital:makeNoDiagnosisRoomFax(patient)
 end
 
---! Makes the fax at the start of an emergency
+--- Makes the fax at the start of an emergency
 function Hospital:makeEmergencyStartFax()
 end
 
---! Makes the fax at the end of an emergency
+--- Makes the fax at the end of an emergency
 function Hospital:makeEmergencyEndFax(rescued_patients, total, max_bonus, earned)
 end
 
---! Makes the fax which may spawn a VIP
+--- Makes the fax which may spawn a VIP
 function Hospital:createVip()
 end
 
---! Remove any message (fax) relating to this humanoid
+--- Remove any message (fax) relating to this humanoid
 function Hospital:removeMessage(humanoid)
 end
 
---! Called when the vip is out of the hospital grounds
+--- Called when the vip is out of the hospital grounds
 function Hospital:makeVipEndFax(vip_rating, name, cash_reward, vip_message)
 end

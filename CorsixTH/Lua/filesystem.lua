@@ -23,7 +23,7 @@ local part_pattern = "[^" .. pathsep .. "]+"
 
 local ISO_FS = require("TH").iso_fs
 
---! Layer for abstracting away differences in file systems.
+--- Layer for abstracting away differences in file systems.
 --
 -- In the traditional case, the FileSystem is associated with a path on the
 -- actual filesystem, from which all other operations are considered relative.
@@ -54,13 +54,13 @@ function FileSystem:FileSystem()
   self.provider = nil
 end
 
---! Convert a file name to a canonical, case insensitive format.
+--- Convert a file name to a canonical, case insensitive format.
 -- The format is based on the limitations of the ISO filesystem.
 local function normalise(str)
   return str:upper():gsub("_", "-")
 end
 
---! Populate the files and sub_dirs values for the current FileSystem path.
+--- Populate the files and sub_dirs values for the current FileSystem path.
 function FileSystem:_enumerate()
   self.sub_dirs = {}
   self.files = {}
@@ -74,7 +74,7 @@ function FileSystem:_enumerate()
   end
 end
 
---! Test if file name has an .iso or .dmg extension
+--- Test if file name has an .iso or .dmg extension
 function FileSystem:isIso(name)
   if name == nil then
     return false
@@ -84,11 +84,11 @@ function FileSystem:isIso(name)
   return ext == 'iso' or ext == 'iso9660$' or ext == 'dmg'
 end
 
---! Set the root physical path for this FileSystem.
+--- Set the root physical path for this FileSystem.
 -- If the path is an ISO then set the provider. If the path is a directory
 -- then set the physical_path and populate the files and sub_dirs.
 --
---!param physical_path (string) a path on the filesystem to either a directory
+-- @param physical_path (string) a path on the filesystem to either a directory
 -- or theme hospital ISO file.
 function FileSystem:setRoot(physical_path)
   if self:isIso(physical_path) then
@@ -113,12 +113,12 @@ function FileSystem:setRoot(physical_path)
   return true
 end
 
---! list the files in the given path.
+--- list the files in the given path.
 --
---!param virtual_path (string) a path relative to the FileSystem root.
---!param ... (string) the virtual_path may be split into separate arguments
+-- @param virtual_path (string) a path relative to the FileSystem root.
+-- @param ... (string) the virtual_path may be split into separate arguments
 -- for each level in the filesystem.
---!return (object) a map of normalized names to actual names of files.
+-- @return (object) a map of normalized names to actual names of files.
 function FileSystem:listFiles(virtual_path, ...)
   if ... then
     virtual_path = table.concat({virtual_path, ...}, pathsep)
@@ -144,9 +144,9 @@ function FileSystem:listFiles(virtual_path, ...)
   return self.files
 end
 
---! Combine the given path segments into a single path string.
---!param virtual_path (string) a path relative to the FileSystem root.
---!param ... (string) the virtual_path may be split into separate arguments
+--- Combine the given path segments into a single path string.
+-- @param virtual_path (string) a path relative to the FileSystem root.
+-- @param ... (string) the virtual_path may be split into separate arguments
 -- for each level in the filesystem.
 local function getFullPath(virtual_path, ...)
   if ... then
@@ -155,10 +155,10 @@ local function getFullPath(virtual_path, ...)
   return virtual_path
 end
 
---! Return the contents of the file at the given path.
+--- Return the contents of the file at the given path.
 --
---!param virtual_path (string) a path relative to the FileSystem root.
---!param ... (string) the virtual_path may be split into separate arguments
+-- @param virtual_path (string) a path relative to the FileSystem root.
+-- @param ... (string) the virtual_path may be split into separate arguments
 -- for each level in the filesystem.
 function FileSystem:readContents(virtual_path, ...)
   virtual_path = getFullPath(virtual_path, ...)
@@ -179,10 +179,10 @@ function FileSystem:readContents(virtual_path, ...)
   return data
 end
 
---! Determines if the given path points to a real file.
+--- Determines if the given path points to a real file.
 --
---!param virtual_path (string) a path relative to the FileSystem root.
---!param ... (string) the virtual_path may be split into separate arguments
+-- @param virtual_path (string) a path relative to the FileSystem root.
+-- @param ... (string) the virtual_path may be split into separate arguments
 -- for each level in the filesystem.
 function FileSystem:fileExists(virtual_path, ...)
   virtual_path = getFullPath(virtual_path, ...)
@@ -199,12 +199,12 @@ function FileSystem:fileExists(virtual_path, ...)
   return (not not s), e
 end
 
---! Get the size of the file at the given path.
+--- Get the size of the file at the given path.
 --
---!param virtual_path (string) a path relative to the FileSystem root.
---!param ... (string) the virtual_path may be split into separate arguments
+-- @param virtual_path (string) a path relative to the FileSystem root.
+-- @param ... (string) the virtual_path may be split into separate arguments
 -- for each level in the filesystem.
---!return (numeric) Number of bytes in the given file. Nil if the file doesn't
+-- @return (numeric) Number of bytes in the given file. Nil if the file doesn't
 -- exist.
 function FileSystem:fileSize(virtual_path, ...)
   virtual_path = getFullPath(virtual_path, ...)

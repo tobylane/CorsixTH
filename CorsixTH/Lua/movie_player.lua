@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Layer which handles the Lua-facing side of loading and playing video.
+--- Layer which handles the Lua-facing side of loading and playing video.
 
 local TH = require("TH")
 local pathsep = package.config:sub(1, 1)
@@ -28,10 +28,10 @@ class "MoviePlayer"
 ---@type MoviePlayer
 local MoviePlayer = _G["MoviePlayer"]
 
---! Calculate the position and size for a movie
---!
---! Returns x and y position and width and height for the movie to be displayed
---! based on the native size of the movie and the current screen dimensions
+--- Calculate the position and size for a movie
+---
+--- Returns x and y position and width and height for the movie to be displayed
+--- based on the native size of the movie and the current screen dimensions
 local calculateSize = function(me)
   -- calculate target dimensions
   local x, y, w, h
@@ -103,7 +103,7 @@ function MoviePlayer:MoviePlayer(app, audio, video)
   self.wait_for_over = false
 end
 
---! Initialises the different movies used in the game
+--- Initialises the different movies used in the game
 function MoviePlayer:init()
   self.moviePlayer = TH.moviePlayer()
   self.moviePlayer:setRenderer(self.video)
@@ -141,25 +141,25 @@ function MoviePlayer:init()
   end
 end
 
---! Plays the opening movie from TH
---!param callback_after_movie (function) What to do once movie ends
+--- Plays the opening movie from TH
+-- @param callback_after_movie (function) What to do once movie ends
 function MoviePlayer:playIntro(callback_after_movie)
   self:playMovie(self.intro_movie, false, true, callback_after_movie)
 end
 
---! Plays the demo gameplay footage movie from TH
+--- Plays the demo gameplay footage movie from TH
 function MoviePlayer:playDemoMovie()
   self:playMovie(self.demo_movie, false, true)
 end
 
---! Plays the movie for winning the game
+--- Plays the movie for winning the game
 function MoviePlayer:playWinMovie()
   self:playMovie(self.win_movie, true, true)
 end
 
---! Plays the level advance movie, which is going to the next level on the game board
---! This is for the original campaign only.
---!param level (number) What level we're going to.
+--- Plays the level advance movie, which is going to the next level on the game board
+--- This is for the original campaign only.
+-- @param level (number) What level we're going to.
 function MoviePlayer:playAdvanceMovie(level)
   local filename = self.advance_movies[level]
 
@@ -180,7 +180,7 @@ function MoviePlayer:playAdvanceMovie(level)
   self:playMovie(filename, true, false)
 end
 
---! Plays one of the lose scenario movies at random
+--- Plays one of the lose scenario movies at random
 function MoviePlayer:playLoseMovie()
   if #self.lose_movies > 0 then
     local filename = self.lose_movies[math.random(#self.lose_movies)]
@@ -188,12 +188,12 @@ function MoviePlayer:playLoseMovie()
   end
 end
 
---! Function used to tell the Movie Player to play something.
---!param filename (string) Location of the movie file
---!param wait_for_stop (boolean) If true, movie will not dismiss automatically
---! (requires a mouse/key press)
---!param can_skip (boolean) If true, the player can end movie prematurely
---!param callback (function) What to do after the movie ends
+--- Function used to tell the Movie Player to play something.
+-- @param filename (string) Location of the movie file
+-- @param wait_for_stop (boolean) If true, movie will not dismiss automatically
+--- (requires a mouse/key press)
+-- @param can_skip (boolean) If true, the player can end movie prematurely
+-- @param callback (function) What to do after the movie ends
 function MoviePlayer:playMovie(filename, wait_for_stop, can_skip, callback)
   local success, warning
 
@@ -277,7 +277,7 @@ function MoviePlayer:deallocatePictureBuffer()
   self.moviePlayer:deallocatePictureBuffer()
 end
 
---! Handles when the movie ends
+--- Handles when the movie ends
 function MoviePlayer:onMovieOver()
   if self.moviePlayer == nil then return end
 
@@ -287,7 +287,7 @@ function MoviePlayer:onMovieOver()
   end
 end
 
---! Handles ending the movie prematurely (user input)
+--- Handles ending the movie prematurely (user input)
 function MoviePlayer:stop()
   if self.moviePlayer == nil then return end
 

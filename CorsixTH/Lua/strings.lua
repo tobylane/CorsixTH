@@ -21,7 +21,7 @@ SOFTWARE. --]]
 local lfs = require("lfs")
 local TH = require("TH")
 
---! Layer which handles the loading of localised text.
+--- Layer which handles the loading of localised text.
 class "Strings"
 
 ---@type Strings
@@ -279,7 +279,7 @@ function Strings:load(language, no_restriction, no_inheritance)
   return env, speech_file
 end
 
---! Get the Font() declaration of a language, if there was one.
+--- Get the Font() declaration of a language, if there was one.
 function Strings:getFont(language)
   local chunk = self.language_to_chunk[language:lower()]
   return chunk and self.chunk_to_font[chunk]

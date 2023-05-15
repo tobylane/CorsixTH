@@ -68,9 +68,9 @@ function Room:initRoom(x, y, w, h, door, door2)
   self.world:prepareRectangleTilesForBuild(self.x, self.y, self.width, self.height)
 end
 
---! Get the tile next to the door.
---!param inside (bool) If set, get the tile inside the room, else get the tile outside.
---!return x,y (tile coordinates) of the tile next to the door.
+--- Get the tile next to the door.
+-- @param inside (bool) If set, get the tile inside the room, else get the tile outside.
+-- @return x,y (tile coordinates) of the tile next to the door.
 function Room:getEntranceXY(inside)
   local door = self.door
   local x, y = door.tile_x, door.tile_y
@@ -84,8 +84,8 @@ function Room:getEntranceXY(inside)
   return x, y
 end
 
---! Construct an 'walk' action to the tile next to the door, just outside the room.
---!return Action to move to the tile just outside the room.
+--- Construct an 'walk' action to the tile next to the door, just outside the room.
+-- @return Action to move to the tile just outside the room.
 function Room:createLeaveAction()
   local x, y = self:getEntranceXY(false)
   return WalkAction(x, y):setIsLeaving(true):truncateOnHighPriority()
@@ -123,8 +123,8 @@ function Room:createEnterAction(humanoid_entering, callback)
   return WalkAction(x, y):setIsEntering(true)
 end
 
---! Get a patient in the room.
---!return A patient (humanoid) if there is a patient, nil otherwise.
+--- Get a patient in the room.
+-- @return A patient (humanoid) if there is a patient, nil otherwise.
 function Room:getPatient()
   for humanoid in pairs(self.humanoids) do
     if class.is(humanoid, Patient) then
@@ -133,8 +133,8 @@ function Room:getPatient()
   end
 end
 
---! Count the number of patients in the room.
---!return Number of patients in the room.
+--- Count the number of patients in the room.
+-- @return Number of patients in the room.
 function Room:getPatientCount()
   local count = 0
   for humanoid in pairs(self.humanoids) do
@@ -206,7 +206,7 @@ function Room:dealtWithPatient(patient)
   self:findWorkForStaff()
 end
 
---! Checks if the room still needs the staff in it and otherwise
+--- Checks if the room still needs the staff in it and otherwise
 -- sends them away if they're needed somewhere else.
 function Room:findWorkForStaff()
   -- If the staff member is idle we can send him/her somewhere else
@@ -279,16 +279,16 @@ end
 
 local no_staff = {} -- Constant denoting 'no staff at all' in a room.
 
---! Get the type and number of maximum staff for the room.
---!return (table) Type and number of maximum staff.
+--- Get the type and number of maximum staff for the room.
+-- @return (table) Type and number of maximum staff.
 function Room:getMaximumStaffCriteria()
   -- Some rooms have dynamic criteria (i.e. dependent upon the number of items
   -- in the room), so this method is provided for such rooms to override it.
   return self.room_info.maximum_staff or self.room_info.required_staff or no_staff
 end
 
---! Get the type and number of required staff for the room.
---!return (table) Type and number of required staff.
+--- Get the type and number of required staff for the room.
+-- @return (table) Type and number of required staff.
 function Room:getRequiredStaffCriteria()
   return self.room_info.required_staff or no_staff
 end
@@ -428,9 +428,9 @@ function Room:createDealtWithPatientCallback(humanoid)
   self.waiting_staff_member = humanoid
 end
 
---! Get the current staff member.
+--- Get the current staff member.
 -- In multi-occupancy rooms this returns the staff member with the minimum service quality
---!return (staff) The current staff member.
+-- @return (staff) The current staff member.
 function Room:getStaffMember()
   if not self.staff_member_set then return self.staff_member end
 
@@ -445,16 +445,16 @@ function Room:getStaffMember()
   return staff
 end
 
---! Set the current staff member.
---!param staff (staff) Staff member to denote as current staff.
+--- Set the current staff member.
+-- @param staff (staff) Staff member to denote as current staff.
 function Room:setStaffMember(staff)
   self.staff_member = staff
 end
 
---! Does the given staff member fit in the room?
+--- Does the given staff member fit in the room?
 -- Returns false if the room is already full of staff or if the given member of staff cannot help out.
 -- Otherwise returns true.
---!return (bool) True if the staff member can work in the room, else False.
+-- @return (bool) True if the staff member can work in the room, else False.
 function Room:staffFitsInRoom(staff)
   local criteria = self:getMaximumStaffCriteria()
   if self:testStaffCriteria(criteria) or not self:testStaffCriteria(criteria, staff) then
@@ -463,7 +463,7 @@ function Room:staffFitsInRoom(staff)
   return true
 end
 
---! Returns true if the humanoid meets (one of) the required staff criteria of the room
+--- Returns true if the humanoid meets (one of) the required staff criteria of the room
 function Room:staffMeetsRoomRequirements(humanoid)
   local criteria = self:getRequiredStaffCriteria()
   for attribute, _ in pairs(criteria) do
@@ -474,10 +474,10 @@ function Room:staffMeetsRoomRequirements(humanoid)
   return false
 end
 
---! When a valid member of staff enters the room this function is called.
+--- When a valid member of staff enters the room this function is called.
 -- Can be extended in derived classes.
---!param humanoid The staff in question
---!param already_initialized If true, this means that the staff has already got order
+-- @param humanoid The staff in question
+-- @param already_initialized If true, this means that the staff has already got order
 -- what to do.
 function Room:commandEnteringStaff(humanoid, already_initialized)
   if not already_initialized then
@@ -495,9 +495,9 @@ end
 
 
 
---! Activates and deactivates the staff waiting for patient mood icon
+--- Activates and deactivates the staff waiting for patient mood icon
 -- and dynamic info text
---!param activate (bool) - true to activate, false or nil to deactivate
+-- @param activate (bool) - true to activate, false or nil to deactivate
 function Room:_staffWaitToggle(activate)
   local state = "deactivate"
   local dynamic_text = ""
@@ -636,8 +636,8 @@ end
 local tile_factor = 10     -- how many tiles further are we willing to walk for 1 person fewer in the queue
 local readiness_bonus = 50 -- how many tiles further are we willing to walk if the room has all the required staff
 
---! Score function to decide how desirable a room is for a patient.
---!return (int) The score, lower is better.
+--- Score function to decide how desirable a room is for a patient.
+-- @return (int) The score, lower is better.
 function Room:getUsageScore()
   local queue = self.door.queue
   local score = queue:patientSize() + self:getPatientCount() - self.maximum_patients
@@ -698,11 +698,11 @@ function Room:roomFinished()
   self:tryAdvanceQueue()
 end
 
---! Try to move a patient from the old room to the new room.
---!param old_room (Room) Room that currently has the patient in the queue.
---!param new_room (Room) Room that wants the patient in the queue.
---!param patient (Humanoid) Patient to move.
---!return (boolean) Whether we are done with the old room (no more patients will come from it).
+--- Try to move a patient from the old room to the new room.
+-- @param old_room (Room) Room that currently has the patient in the queue.
+-- @param new_room (Room) Room that wants the patient in the queue.
+-- @param patient (Humanoid) Patient to move.
+-- @return (boolean) Whether we are done with the old room (no more patients will come from it).
 local function tryMovePatient(old_room, new_room, patient)
   local world = new_room.world
 
@@ -764,7 +764,7 @@ local function tryMovePatient(old_room, new_room, patient)
   return false
 end
 
---! Try to find new patients for this room by 'stealing' them from other rooms nearby.
+--- Try to find new patients for this room by 'stealing' them from other rooms nearby.
 function Room:tryToFindNearbyPatients()
   if not self.door.queue then
     return
@@ -787,7 +787,7 @@ function Room:tryToFindNearbyPatients()
   end
 end
 
---! Explode the room.
+--- Explode the room.
 function Room:crashRoom()
   self.door:closeDoor()
   if self.door2 then
@@ -941,7 +941,7 @@ function Room:makeHumanoidDressIfNecessaryAndThenLeave(humanoid)
   end
 end
 
---! Deactivate the room from the world.
+--- Deactivate the room from the world.
 function Room:deactivate()
   self.is_active = false -- So that no more patients go to it.
   self.world:notifyRoomRemoved(self)
@@ -986,7 +986,7 @@ function Room:hasQueueDialog()
   return not self.room_info.has_no_queue_dialog
 end
 
---! Stub to be extended in subclasses, if needed.
+--- Stub to be extended in subclasses, if needed.
 function Room:afterLoad(old, new)
   if old and old < 46 then
     self.humanoids_enroute = {--[[a set rather than a list]]}
@@ -1036,8 +1036,8 @@ function Room:isDiagnosisRoomForPatient(patient)
   end
 end
 
---! Get the average service quality of the staff members in the room.
---!return (float) [0-1] Average staff service quality.
+--- Get the average service quality of the staff members in the room.
+-- @return (float) [0-1] Average staff service quality.
 function Room:getStaffServiceQuality()
   local quality = 0.5
 
@@ -1059,8 +1059,8 @@ function Room:getStaffServiceQuality()
   return quality
 end
 
---! Count the number of windows in the room
---!return (int) Number of windows
+--- Count the number of windows in the room
+-- @return (int) Number of windows
 function Room:countWindows()
   local window_tile = {[116]=true, [117]=true, [118]=true, [119]=true,
    [124]=true, [125]=true, [126]=true, [127]=true}
@@ -1075,8 +1075,8 @@ function Room:countWindows()
   return count
 end
 
---! Get the removal cost
---!return (int) cost of the room
+--- Get the removal cost
+-- @return (int) cost of the room
 function Room:calculateRemovalCost()
   -- Charge double to clean it up
   local progress = self.hospital.research.research_progress

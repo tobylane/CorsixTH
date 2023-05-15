@@ -44,7 +44,7 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---! Manages entities, rooms, and the date.
+--- Manages entities, rooms, and the date.
 class "World"
 
 ---@type World
@@ -205,7 +205,7 @@ function World:World(app)
   self:gameLog("Created game with savegame version " .. self.savegame_version .. ".")
 end
 
---! Register key shortcuts for controlling the world (game speed, etc.)
+--- Register key shortcuts for controlling the world (game speed, etc.)
 function World:setUI(ui)
   self.ui = ui
 
@@ -247,9 +247,9 @@ function World:resetZoom()
   return self.ui:setZoom(1)
 end
 
---! Initialize the game level (available diseases, winning conditions).
---!param app Game application.
---!param avail_rooms (list) Available rooms in the level.
+--- Initialize the game level (available diseases, winning conditions).
+-- @param app Game application.
+-- @param avail_rooms (list) Available rooms in the level.
 function World:initLevel(app, avail_rooms)
   local existing_rooms = {}
   for _, avail_room in ipairs(avail_rooms) do
@@ -299,8 +299,8 @@ function World:toggleInformation()
   self.room_information_dialogs = not self.room_information_dialogs
 end
 
---! Load goals to win and lose from the map, and store them in 'self.goals'.
---! Also set 'self.winning_goal_count'.
+--- Load goals to win and lose from the map, and store them in 'self.goals'.
+--- Also set 'self.winning_goal_count'.
 function World:determineWinningConditions()
   local winning_goal_count = 0
   -- No conditions if in free build mode!
@@ -364,8 +364,8 @@ function World:determineWinningConditions()
   self.winning_goal_count = winning_goal_count
 end
 
---! Find the rooms available at the level.
---!return (list) Available rooms, with discovery state at start, and build_cost.
+--- Find the rooms available at the level.
+-- @return (list) Available rooms, with discovery state at start, and build_cost.
 function World:getAvailableRooms()
   local avail_rooms = {}
 
@@ -400,15 +400,15 @@ function World:getAvailableRooms()
   return avail_rooms
 end
 
---! Get the hospital controlled by the (single) player.
---!return (Hospital) The hospital controlled by the (single) player.
+--- Get the hospital controlled by the (single) player.
+-- @return (Hospital) The hospital controlled by the (single) player.
 function World:getLocalPlayerHospital()
   -- NB: UI code can get the hospital to use via ui.hospital
   -- TODO: Make this work in multiplayer?
   return self.hospitals[1]
 end
 
---! Identify the tiles on the map suitable for spawning `Humanoid`s from.
+--- Identify the tiles on the map suitable for spawning `Humanoid`s from.
 function World:calculateSpawnTiles()
   self.spawn_points = {}
   local w, h = self.map.width, self.map.height
@@ -441,11 +441,11 @@ function World:calculateSpawnTiles()
   end
 end
 
---! Function to determine whether a given disease is available for new patients.
---!param self (World) World object.
---!param disease (disease) Disease to test.
---!param hospital (Hospital) Hospital that needs a new patient.
---!return (boolean) Whether the disease is usable for new spawned patients.
+--- Function to determine whether a given disease is available for new patients.
+-- @param self (World) World object.
+-- @param disease (disease) Disease to test.
+-- @param hospital (Hospital) Hospital that needs a new patient.
+-- @return (boolean) Whether the disease is usable for new spawned patients.
 local function isDiseaseUsableForNewPatient(self, disease, hospital)
   if disease.only_emergency then return false end
   local level_config = self.map.level_config
@@ -472,9 +472,9 @@ local function isDiseaseUsableForNewPatient(self, disease, hospital)
   error("disease has neither visuals_id or non_visuals_id")
 end
 
---! Spawn a patient from a spawn point for the given hospital.
---!param hospital (Hospital) Hospital that the new patient should visit.
---!return (Patient entity) The spawned patient, or 'nil' if no patient spawned.
+--- Spawn a patient from a spawn point for the given hospital.
+-- @param hospital (Hospital) Hospital that the new patient should visit.
+-- @return (Patient entity) The spawned patient, or 'nil' if no patient spawned.
 function World:spawnPatient(hospital)
   if not hospital then
     hospital = self:getLocalPlayerHospital()
@@ -518,7 +518,7 @@ function World:spawnPatient(hospital)
 end
 
 --A VIP is invited (or he invited himself) to the player hospital.
---!param name Name of the VIP
+-- @param name Name of the VIP
 function World:spawnVIP(name)
   local hospital = self:getLocalPlayerHospital()
 
@@ -544,7 +544,7 @@ function World:spawnVIP(name)
   vip:queueAction(SeekReceptionAction())
 end
 
---! Perform actions to simulate an active earthquake.
+--- Perform actions to simulate an active earthquake.
 function World:tickEarthquake()
   if self:isCurrentSpeed("Pause") then return end
 
@@ -649,8 +649,8 @@ function World:tickEarthquake()
   end
 end
 
---! Enable or disable salary raise events.
---!param mode (boolean) If true, do not create salary raise events.
+--- Enable or disable salary raise events.
+-- @param mode (boolean) If true, do not create salary raise events.
 function World:debugDisableSalaryRaise(mode)
   self.debug_disable_salary_raise = mode
 end
@@ -704,8 +704,8 @@ function World:getObjectToNotifyOfOccupants(x, y)
   return self.objects_notify_occupants[idx]
 end
 
---! Place objects from a map file onto the map.
---!param objects Objects to place.
+--- Place objects from a map file onto the map.
+-- @param objects Objects to place.
 function World:createMapObjects(objects)
   self.delayed_map_objects = {}
 
@@ -715,8 +715,8 @@ function World:createMapObjects(objects)
 end
 
 local flag_cache = {}
---! Internal function for placing an object from the map file.
---!param object Object to place.
+--- Internal function for placing an object from the map file.
+-- @param object Object to place.
 function World:_createMapObject(object)
   local x, y, thob, flags = unpack(object)
   local object_id = self.object_id_by_thob[thob]
@@ -744,9 +744,9 @@ function World:_createMapObject(object)
   end
 end
 
---! Change owner of a plot.
---!param parcel (int) Plot to change.
---!param owner (int) New owner (may be 0).
+--- Change owner of a plot.
+-- @param parcel (int) Plot to change.
+-- @param owner (int) New owner (may be 0).
 function World:setPlotOwner(parcel, owner)
   self.map:setPlotOwner(parcel, owner)
   if owner ~= 0 and self.delayed_map_objects then
@@ -765,13 +765,13 @@ function World:getAnimLength(anim)
 end
 
 -- Register a function to be called whenever a room has been deactivated (crashed or edited).
---!param callback (function) A function taking one argument: a `Room`.
+-- @param callback (function) A function taking one argument: a `Room`.
 function World:registerRoomRemoveCallback(callback)
   self.room_remove_callbacks[callback] = true
 end
 
 -- Unregister a function from being called whenever a room has been deactivated (crashed or edited).
---!param callback (function) A function previously passed to
+-- @param callback (function) A function previously passed to
 -- `registerRoomRemoveCallback`.
 function World:unregisterRoomRemoveCallback(callback)
   self.room_remove_callbacks[callback] = nil
@@ -790,8 +790,8 @@ function World:newRoom(x, y, w, h, room_info, ...)
   return room
 end
 
---! Called when a room has been completely built and is ready to use.
---!param room (Room) The new room.
+--- Called when a room has been completely built and is ready to use.
+-- @param room (Room) The new room.
 function World:markRoomAsBuilt(room)
   room:roomFinished()
   local hosp = room.hospital
@@ -806,7 +806,7 @@ function World:markRoomAsBuilt(room)
   end
 end
 
---! Called when a room has been deactivated (crashed or edited)
+--- Called when a room has been deactivated (crashed or edited)
 function World:notifyRoomRemoved(room)
   self.dispatcher:dropFromQueue(room)
   for callback in pairs(self.room_remove_callbacks) do
@@ -814,7 +814,7 @@ function World:notifyRoomRemoved(room)
   end
 end
 
---! Clear all internal caches which are dependent upon map state / object position
+--- Clear all internal caches which are dependent upon map state / object position
 function World:clearCaches()
   self.idle_cache = {}
 end
@@ -894,13 +894,13 @@ function World:previousSpeed()
   end
 end
 
---! Return true if the given speed the same as the current speed.
+--- Return true if the given speed the same as the current speed.
 function World:isCurrentSpeed(speed)
   local numerator, denominator = unpack(tick_rates[speed])
   return self.hours_per_tick == numerator and self.tick_rate == denominator
 end
 
---! Return the name of the current speed, relating to a key in tick_rates.
+--- Return the name of the current speed, relating to a key in tick_rates.
 function World:getCurrentSpeed()
   for name, rate in pairs(tick_rates) do
     if rate[1] == self.hours_per_tick and rate[2] == self.tick_rate then
@@ -910,7 +910,7 @@ function World:getCurrentSpeed()
 end
 
 -- Set the (approximate) number of seconds per tick.
---!param speed (string) One of: "Pause", "Slowest", "Slower", "Normal",
+-- @param speed (string) One of: "Pause", "Slowest", "Slower", "Normal",
 -- "Max speed", or "And then some more".
 function World:setSpeed(speed)
   if self:isCurrentSpeed(speed) then
@@ -950,7 +950,7 @@ function World:isPaused()
   return self:isCurrentSpeed("Pause")
 end
 
---! Dedicated function to allow unpausing by pressing 'p' again
+--- Dedicated function to allow unpausing by pressing 'p' again
 function World:pauseOrUnpause()
   if self:isSystemPauseActive() then return end -- System pause takes precedence
   if not self:isCurrentSpeed("Pause") then
@@ -960,20 +960,20 @@ function World:pauseOrUnpause()
   end
 end
 
---! Sets the system_pause parameter
---!param state (bool)
+--- Sets the system_pause parameter
+-- @param state (bool)
 function World:setSystemPause(state)
   self.system_pause = state
 end
 
---! Reports the system pause status
---!return (bool) true is system pause is active, else false
+--- Reports the system pause status
+-- @return (bool) true is system pause is active, else false
 function World:isSystemPauseActive()
   return self.system_pause
 end
 
---! Function to check if player can perform actions when paused
---!return (bool) Returns true if player hasn't allowed editing while paused
+--- Function to check if player can perform actions when paused
+-- @return (bool) Returns true if player hasn't allowed editing while paused
 function World:isUserActionProhibited()
   if self:isSystemPauseActive() then return true end
   return self:isCurrentSpeed("Pause") and not self.user_actions_allowed
@@ -996,7 +996,7 @@ local outside_temperatures = {
    4.75 / 50, -- December
 }
 
---! World ticks are translated to game ticks (or hours) depending on the
+--- World ticks are translated to game ticks (or hours) depending on the
 -- current speed of the game. There are 50 hours in a TH day.
 function World:onTick()
   if self.map.level_number == "MAP EDITOR" then return end
@@ -1096,7 +1096,7 @@ function World:onTick()
   self.tick_timer = self.tick_timer - 1
 end
 
---! Change the date of the game to the last hour of this month.
+--- Change the date of the game to the last hour of this month.
 function World:setEndMonth()
   local previous_date = self.game_date
   local first_day_of_next_month = Date(self.game_date:year(), self.game_date:monthOfYear() + 1)
@@ -1107,7 +1107,7 @@ function World:setEndMonth()
   end
 end
 
---! Change the date of the game to the last hour of this year.
+--- Change the date of the game to the last hour of this year.
 function World:setEndYear()
   local previous_date = self.game_date
   local first_day_of_next_year = Date(self.game_date:year() + 1)
@@ -1118,10 +1118,10 @@ function World:setEndYear()
   end
 end
 
---! Checks if a time jump caused an emergency to be missed
---!param prev_date (Date) Original game date before jump
---!param new_date (Date) Game date after time jump
---!return (boolean) true if emergency has been skipped
+--- Checks if a time jump caused an emergency to be missed
+-- @param prev_date (Date) Original game date before jump
+-- @param new_date (Date) Game date after time jump
+-- @return (boolean) true if emergency has been skipped
 function World:wasEmergencySkipped(prev_date, new_date)
   local emer_date = self.next_emergency_date
   return emer_date and emer_date < new_date and prev_date < emer_date
@@ -1275,17 +1275,17 @@ function World:updateSpawnDates()
   end
 end
 
---! Computes the impact of hospital reputation on the spawn rate.
---! The relation between reputation and its impact is linear.
---! Returns a percentage (as a float):
---!     1% if reputation < 253
---!    60% if reputation == 400
---!   100% if reputation == 500
---!   140% if reputation == 600
---!   180% if reputation == 700
---!   300% if reputation == 1000
---!param hospital (hospital): the hospital used to compute the
---! reputation impact
+--- Computes the impact of hospital reputation on the spawn rate.
+--- The relation between reputation and its impact is linear.
+--- Returns a percentage (as a float):
+---     1% if reputation < 253
+---    60% if reputation == 400
+---   100% if reputation == 500
+---   140% if reputation == 600
+---   180% if reputation == 700
+---   300% if reputation == 1000
+-- @param hospital (hospital): the hospital used to compute the
+--- reputation impact
 function World:getReputationImpact(hospital)
   local result = 1 + ((hospital.reputation - 500) / 250)
 
@@ -1325,8 +1325,8 @@ function World:nextEmergency()
   until self:computeNextEmergencyDates(emergency)
 end
 
---! If a level file specifies random emergencies we make the next one as defined by the mean/variance given
---!param control (table) Contains emergency information from level file
+--- If a level file specifies random emergencies we make the next one as defined by the mean/variance given
+-- @param control (table) Contains emergency information from level file
 function World:scheduleRandomEmergency(control)
   -- Support standard values for mean and variance
   local mean = control[0].Mean or 180
@@ -1342,9 +1342,9 @@ function World:scheduleRandomEmergency(control)
   self.next_emergency_date = Date(1, self.next_emergency_month, self.next_emergency_day) -- TODO: Make more use of this
 end
 
---! Generate the dates for the next emergency
---!param emergency The next scheduled emergency to take place
---!return (boolean) true if emergency successfully scheduled
+--- Generate the dates for the next emergency
+-- @param emergency The next scheduled emergency to take place
+-- @return (boolean) true if emergency successfully scheduled
 function World:computeNextEmergencyDates(emergency)
   -- Generate the next month and day the emergency should occur at.
   -- Make sure it doesn't happen in the past.
@@ -1423,13 +1423,13 @@ function World:createEarthquake()
   end
 end
 
---! Checks if all goals have been achieved or if the player has lost.
---! Returns a table that always contains a state string ("win", "lose" or "nothing").
---! If the state is "lose", the table also contains a reason string,
---! which corresponds to the criterion name the player lost to
---! (reputation, balance, percentage_killed) and a number limit which
---! corresponds to the limit the player passed.
---!param player_no The index of the player to check in the world's list of hospitals
+--- Checks if all goals have been achieved or if the player has lost.
+--- Returns a table that always contains a state string ("win", "lose" or "nothing").
+--- If the state is "lose", the table also contains a reason string,
+--- which corresponds to the criterion name the player lost to
+--- (reputation, balance, percentage_killed) and a number limit which
+--- corresponds to the limit the player passed.
+-- @param player_no The index of the player to check in the world's list of hospitals
 function World:checkWinningConditions(player_no)
   -- If there are no goals at all, do nothing.
   if #self.goals == 0 then
@@ -1476,8 +1476,8 @@ function World:checkWinningConditions(player_no)
   return result
 end
 
---! Process that the given player number won the game.
---!param player_no (integer) Number of the player who just won.
+--- Process that the given player number won the game.
+-- @param player_no (integer) Number of the player who just won.
 function World:winGame(player_no)
   if player_no == 1 then -- Player won. TODO: Needs to be changed for multiplayer
     local text = {}
@@ -1522,11 +1522,11 @@ function World:winGame(player_no)
   end
 end
 
---! Finds what text the winning fax should contain, and which choices the player has.
---!param player_no (integer) Which player that will see the message.
---!return (string, string, string) Text to show in the fax, text that accompanies
---!       the "continue"-choice the player has, and whether it is the "return_to_main_menu"
---!       choice or the "accept_new_level" choice.
+--- Finds what text the winning fax should contain, and which choices the player has.
+-- @param player_no (integer) Which player that will see the message.
+-- @return (string, string, string) Text to show in the fax, text that accompanies
+---       the "continue"-choice the player has, and whether it is the "return_to_main_menu"
+---       choice or the "accept_new_level" choice.
 function World:getCampaignWinningText(player_no)
   local text = {}
   local choice_text, choice
@@ -1586,10 +1586,10 @@ function World:getCampaignWinningText(player_no)
   return text, choice_text, choice
 end
 
---! Cause the player with the player number player_no to lose.
---!param player_no (number) The number of the player which should lose.
---!param reason (string) [optional] The name of the criterion the player lost to.
---!param limit (number) [optional] The number the player went over/under which caused him to lose.
+--- Cause the player with the player number player_no to lose.
+-- @param player_no (number) The number of the player which should lose.
+-- @param reason (string) [optional] The name of the criterion the player lost to.
+-- @param limit (number) [optional] The number the player went over/under which caused him to lose.
 function World:loseGame(player_no, reason, limit)
   if player_no == 1 then -- TODO: Multiplayer
     self.ui.app.moviePlayer:playLoseMovie()
@@ -1625,11 +1625,11 @@ end
 -- Calculate the distance of the shortest path (along passable tiles) between
 -- the two given map tiles. This operation is commutative (swapping (x1, y1)
 -- with (x2, y2) has no effect on the result) if both tiles are passable.
---!param x1 (integer) X-cordinate of first tile's Lua tile coordinates.
---!param y1 (integer) Y-cordinate of first tile's Lua tile coordinates.
---!param x2 (integer) X-cordinate of second tile's Lua tile coordinates.
---!param y2 (integer) Y-cordinate of second tile's Lua tile coordinates.
---!return (integer, boolean) The distance of the shortest path, or false if
+-- @param x1 (integer) X-cordinate of first tile's Lua tile coordinates.
+-- @param y1 (integer) Y-cordinate of first tile's Lua tile coordinates.
+-- @param x2 (integer) X-cordinate of second tile's Lua tile coordinates.
+-- @param y2 (integer) Y-cordinate of second tile's Lua tile coordinates.
+-- @return (integer, boolean) The distance of the shortest path, or false if
 -- there is no path.
 function World:getPathDistance(x1, y1, x2, y2)
   return self.pathfinder:findDistance(x1, y1, x2, y2)
@@ -1705,12 +1705,12 @@ function World:getFreeBench(x, y, distance)
   return bench, rx, ry, bench_distance
 end
 
---! Checks whether the given tile is part of a nearby object (walkable tiles
+--- Checks whether the given tile is part of a nearby object (walkable tiles
 --  count as part of the object)
---!param x X position of the given tile.
---!param y Y position of the given tile.
---!param distance The number of tiles away from the tile to search.
---!return (boolean) Whether the tile is part of a nearby object.
+-- @param x X position of the given tile.
+-- @param y Y position of the given tile.
+-- @param distance The number of tiles away from the tile to search.
+-- @return (boolean) Whether the tile is part of a nearby object.
 function World:isTilePartOfNearbyObject(x, y, distance)
   for o in pairs(self:findAllObjectsNear(x, y, distance)) do
     for _, xy in ipairs(o:getWalkableTiles()) do
@@ -1723,10 +1723,10 @@ function World:isTilePartOfNearbyObject(x, y, distance)
 end
 
 -- Returns a set of all objects near the given position but if supplied only of the given object type.
---!param x The x-coordinate at which to originate the search
---!param y The y-coordinate
---!param distance The number of tiles away from the origin to search
---!param object_type_name The name of the objects that are being searched for
+-- @param x The x-coordinate at which to originate the search
+-- @param y The y-coordinate
+-- @param distance The number of tiles away from the origin to search
+-- @param object_type_name The name of the objects that are being searched for
 function World:findAllObjectsNear(x, y, distance, object_type_name)
   if not distance then
     -- Note that regardless of distance, only the room which the humanoid is in
@@ -1886,9 +1886,9 @@ function World:findRoomNear(humanoid, room_type_id, distance, mode)
   return room
 end
 
---! Setup an animated floating money amount above a patient.
---!param patient Patient to float above.
---!param amount Amount of money to display.
+--- Setup an animated floating money amount above a patient.
+-- @param patient Patient to float above.
+-- @param amount Amount of money to display.
 function World:newFloatingDollarSign(patient, amount)
   if self.free_build_mode or patient.hospital ~= self:getLocalPlayerHospital() then
     return
@@ -1937,14 +1937,14 @@ function World:newObjectType(new_object)
   self.object_types[new_object.id] = new_object
 end
 
---! Creates a new object by finding the object_type from the "id" variable and
+--- Creates a new object by finding the object_type from the "id" variable and
 --  calls its class constructor.
---!param id (string) The unique id of the object to be created.
---!param x X position of the new object.
---!param y Y position of the new object.
---!param flags Flags of the new object.
---!param name Name of the new object.
---!return The created object.
+-- @param id (string) The unique id of the object to be created.
+-- @param x X position of the new object.
+-- @param y Y position of the new object.
+-- @param flags Flags of the new object.
+-- @param name Name of the new object.
+-- @return The created object.
 function World:newObject(id, x, y, flags, name)
   local object_type = self.object_types[id]
   local hospital = self:getLocalPlayerHospital()
@@ -1986,10 +1986,10 @@ function World:canNonSideObjectBeSpawnedAt(x, y, objects_id, orientation, spawn_
   return not self:wouldNonSideObjectBreakPathfindingIfSpawnedAt(x, y, object, orientation, spawn_rooms_id)
 end
 
---! Test whether the given coordinate is on the map.
---!param x (int) X position of the coordinate to test.
---!param y (int) Y position of the coordinate to test.
---!return (boolean) Whether the provided position is on the map.
+--- Test whether the given coordinate is on the map.
+-- @param x (int) X position of the coordinate to test.
+-- @param y (int) Y position of the coordinate to test.
+-- @return (boolean) Whether the provided position is on the map.
 function World:isOnMap(x, y)
   return x >= 1 and x <= self.map.width and y >= 1 and y <= self.map.height
 end
@@ -2138,10 +2138,10 @@ function World:wouldNonSideObjectBreakPathfindingIfSpawnedAt(x, y, object, objec
   return not all_good
 end
 
---! Notifies the world that an object has been placed, notifying
+--- Notifies the world that an object has been placed, notifying
 --  interested entities in the vicinity of the new arrival.
---!param entity (Entity) The entity that was just placed.
---!param id (optional string) That entity's id.
+-- @param entity (Entity) The entity that was just placed.
+-- @param id (optional string) That entity's id.
 function World:objectPlaced(entity, id)
   -- If id is not supplied, we can use the entities internal id if it exists
   -- This is so the bench check below works
@@ -2158,11 +2158,11 @@ function World:objectPlaced(entity, id)
   if hosp then hosp:objectPlaced(entity, id) end
 end
 
---! Notify the world of an object being removed from a tile
---! See also `World:addObjectToTile`
---!param object (Object) The object being removed.
---!param x (integer) The X-coordinate of the tile which the object was on
---!param y (integer) The Y-coordinate of the tile which the object was on
+--- Notify the world of an object being removed from a tile
+--- See also `World:addObjectToTile`
+-- @param object (Object) The object being removed.
+-- @param x (integer) The X-coordinate of the tile which the object was on
+-- @param y (integer) The Y-coordinate of the tile which the object was on
 function World:removeObjectFromTile(object, x, y)
   local index = (y - 1) * self.map.width + x
   local objects = self.objects[index]
@@ -2180,11 +2180,11 @@ function World:removeObjectFromTile(object, x, y)
   return false
 end
 
---! Notify the world of a new object being placed somewhere in the world
---! See also `World:removeObjectFromTile`
---!param object (Object) The object being placed
---!param x (integer) The X-coordinate of the tile being placed upon
---!param y (integer) The Y-coordinate of the tile being placed upon
+--- Notify the world of a new object being placed somewhere in the world
+--- See also `World:removeObjectFromTile`
+-- @param object (Object) The object being placed
+-- @param x (integer) The X-coordinate of the tile being placed upon
+-- @param y (integer) The Y-coordinate of the tile being placed upon
 function World:addObjectToTile(object, x, y)
   local index = (y - 1) * self.map.width + x
   local objects = self.objects[index]
@@ -2200,20 +2200,20 @@ function World:addObjectToTile(object, x, y)
   return true
 end
 
---! Retrieve all objects from a given position.
---!param x (int) X position of the object to retrieve.
---!param y (int) Y position of the object to retrieve.
+--- Retrieve all objects from a given position.
+-- @param x (int) X position of the object to retrieve.
+-- @param y (int) Y position of the object to retrieve.
 function World:getObjects(x, y)
   local index = (y - 1) * self.map.width + x
   return self.objects[index]
 end
 
---! Retrieve one object from a given position.
---!param x (int) X position of the object to retrieve.
---!param y (int) Y position of the object to retrieve.
---!param id Id to search, nil gets first object, string gets first object with
---! that id, set of strings gets first object that matches an entry in the set.
---!return (Object or nil) The found object, or nil if the object is not found.
+--- Retrieve one object from a given position.
+-- @param x (int) X position of the object to retrieve.
+-- @param y (int) Y position of the object to retrieve.
+-- @param id Id to search, nil gets first object, string gets first object with
+--- that id, set of strings gets first object that matches an entry in the set.
+-- @return (Object or nil) The found object, or nil if the object is not found.
 function World:getObject(x, y, id)
   local objects = self:getObjects(x, y)
   if objects then
@@ -2236,9 +2236,9 @@ function World:getObject(x, y, id)
   return -- nil
 end
 
---! Remove all cleanable litter from a given tile.
---!param x (int) X position of the tile to clean.
---!param y (int) Y position of the tile to clean.
+--- Remove all cleanable litter from a given tile.
+-- @param x (int) X position of the tile to clean.
+-- @param y (int) Y position of the tile to clean.
 function World:removeAllLitter(x, y)
   local litters = {}
   local objects = self:getObjects(x, y)
@@ -2252,10 +2252,10 @@ function World:removeAllLitter(x, y)
   for _, litter in ipairs(litters) do litter:remove() end
 end
 
---! Prepare all tiles of the footprint for build of an object.
---!param object_footprint Footprint of the object being build.
---!param x (int) X position of the object
---!param y (int) Y position of the object
+--- Prepare all tiles of the footprint for build of an object.
+-- @param object_footprint Footprint of the object being build.
+-- @param x (int) X position of the object
+-- @param y (int) Y position of the object
 function World:prepareFootprintTilesForBuild(object_footprint, x, y)
   local hospital = self:getLocalPlayerHospital()
 
@@ -2267,11 +2267,11 @@ function World:prepareFootprintTilesForBuild(object_footprint, x, y)
   end
 end
 
---! Prepare all tiles in the given rectangle for building a room.
---!param x (int) Start x position of the area.
---!param y (int) Start y position of the area.
---!param w (int) Number of tiles in x direction.
---!param h (int) Number of tiles in y direction.
+--- Prepare all tiles in the given rectangle for building a room.
+-- @param x (int) Start x position of the area.
+-- @param y (int) Start y position of the area.
+-- @param w (int) Number of tiles in x direction.
+-- @param h (int) Number of tiles in y direction.
 function World:prepareRectangleTilesForBuild(x, y, w, h)
   local hospital = self:getLocalPlayerHospital()
 
@@ -2285,18 +2285,18 @@ function World:prepareRectangleTilesForBuild(x, y, w, h)
   end
 end
 
---! Get the room at a given tile location.
---!param x (int) X position of the queried tile.
---!param y (int) Y position of the queried tile.
---!return (Room) Room of the tile, or 'nil'.
+--- Get the room at a given tile location.
+-- @param x (int) X position of the queried tile.
+-- @param y (int) Y position of the queried tile.
+-- @return (Room) Room of the tile, or 'nil'.
 function World:getRoom(x, y)
   return self.rooms[self.map:getRoomId(x, y)]
 end
 
---! Get the hospital at a given tile location.
---!param x (int) X position of the queried tile.
---!param y (int) Y position of the queried tile.
---!return (Hospital) Hospital at the given location or 'nil'.
+--- Get the hospital at a given tile location.
+-- @param x (int) X position of the queried tile.
+-- @param y (int) Y position of the queried tile.
+-- @return (Hospital) Hospital at the given location or 'nil'.
 function World:getHospital(x, y)
   local th = self.map.th
 
@@ -2305,7 +2305,7 @@ function World:getHospital(x, y)
   return self.hospitals[flags.owner]
 end
 
---! Returns localized name of the room, internal required staff name
+--- Returns localized name of the room, internal required staff name
 -- and localized name of staff required.
 function World:getRoomNameAndRequiredStaffName(room_id)
   local room_name, required_staff
@@ -2323,8 +2323,8 @@ function World:getRoomNameAndRequiredStaffName(room_id)
   return room_name, staff_name, StaffProfile.translateStaffClass(staff_name)
 end
 
---! Append a message to the game log.
---!param message (string) The message to add.
+--- Append a message to the game log.
+-- @param message (string) The message to add.
 function World:gameLog(message)
   self.game_log[#self.game_log + 1] = message
   -- If in debug mode also show it in the command prompt
@@ -2333,7 +2333,7 @@ function World:gameLog(message)
   end
 end
 
---! Dump the contents of the game log into a file.
+--- Dump the contents of the game log into a file.
 -- This is automatically done on each error.
 function World:dumpGameLog()
   local gamelog_path = TheApp:getGamelogPath()
@@ -2347,7 +2347,7 @@ function World:dumpGameLog()
   fi:close()
 end
 
---! Because the save file only saves one thob per tile if they are more that information
+--- Because the save file only saves one thob per tile if they are more that information
 -- will be lost. To solve this after a load we need to set again all the thobs on each tile.
 function World:resetAnimations()
   -- Erase entities from the map if they want.
@@ -2372,7 +2372,7 @@ local function our_concat(t)
   return result
 end
 
---! Refresh cache of letters in current language to be used for staff member's initials
+--- Refresh cache of letters in current language to be used for staff member's initials
 function World:updateInitialsCache()
   local parts = tostring(our_concat(_S.humanoid_name_starts)
       .. our_concat(_S.humanoid_name_ends)):sub(33)
@@ -2383,9 +2383,9 @@ function World:updateInitialsCache()
   staff_initials_cache.initials = initials
 end
 
---! Change the staff name first letter to one from the current language
+--- Change the staff name first letter to one from the current language
 -- from the seed (generated here or in staff_profile.lua)
---!param profile (table) The profile of the staff member
+-- @param profile (table) The profile of the staff member
 function World:localiseInitial(profile)
   if not profile.name_seed then
     -- 1009 is a prime number which avoids a modulo of 0 when we need
@@ -2399,11 +2399,11 @@ function World:localiseInitial(profile)
   profile.name_lang = TheApp.config.language
 end
 
---! Let the world react to and old save game. First it gets the chance to
+--- Let the world react to and old save game. First it gets the chance to
 -- do things for itself, and then it calls corresponding functions for
 -- the hospitals, entities and rooms in that order.
---!param old The old version of the save game.
---!param new The current version of the save game format.
+-- @param old The old version of the save game.
+-- @param new The current version of the save game format.
 function World:afterLoad(old, new)
 
   if not self.original_savegame_version then
@@ -2823,10 +2823,10 @@ passable tiles. This presents problems with objects like Bench where the passabl
 is not for exclusive use of the Bench (another object can share that same tile)
 the footprint.shareable differentiates shareable passable tiles, and exclusive use
 passable tiles (the norm for most objects)]]
---!param x (int) x map tile position
---!param y (int) y map tile position
---!param distance (int) searchable distance for nearby objects
---!return (boolean) indicating if exclusively passable or not
+-- @param x (int) x map tile position
+-- @param y (int) y map tile position
+-- @param distance (int) searchable distance for nearby objects
+-- @return (boolean) indicating if exclusively passable or not
 function World:isTileExclusivelyPassable(x, y, distance)
   for o in pairs(self:findAllObjectsNear(x, y, distance)) do
     if o and o.footprint then
@@ -2847,14 +2847,14 @@ function World:isTileExclusivelyPassable(x, y, distance)
   return true
 end
 
---! Get todays date.
---!return (Date) Current game date.
+--- Get todays date.
+-- @return (Date) Current game date.
 function World:date()
   return self.game_date:clone()
 end
 
---! Collect the settings that should be reused in the next world
---!return (table) world and hospital campaign data
+--- Collect the settings that should be reused in the next world
+-- @return (table) world and hospital campaign data
 function World:getCampaignData()
   local world = {
     room_built = self.room_built,
@@ -2864,8 +2864,8 @@ function World:getCampaignData()
   return { world = world, hospital = self:getLocalPlayerHospital():getCampaignData() }
 end
 
---! Restore the settings from the previous world
---!param campaign_data (table) world and hospital campaign data
+--- Restore the settings from the previous world
+-- @param campaign_data (table) world and hospital campaign data
 function World:setCampaignData(campaign_data)
   for key, value in pairs(campaign_data.world) do
     self[key] = value

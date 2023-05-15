@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 corsixth.require("window")
 
---! Top-level container for all other user-interface components.
+--- Top-level container for all other user-interface components.
 class "UI" (Window)
 
 ---@type UI
@@ -313,13 +313,13 @@ function UI:draw(canvas)
   end
 end
 
---! Register a key handler / hotkey for a window.
---!param keys (string or table) The keyboard key which should trigger the callback (for
+--- Register a key handler / hotkey for a window.
+-- @param keys (string or table) The keyboard key which should trigger the callback (for
 -- example, "left" or "z" or "F9"), or a list with modifier(s) and the key (e.g. {"ctrl", "s"}).
---!param window (Window) The UI window which should receive the callback.
---!param callback (function) The method to be called on `window` when `key` is
+-- @param window (Window) The UI window which should receive the callback.
+-- @param callback (function) The method to be called on `window` when `key` is
 -- pressed.
---!param ... Additional arguments to `callback`.
+-- @param ... Additional arguments to `callback`.
 function UI:addKeyHandler(keys, window, callback, ...)
   -- It is necessary to clone the key table into another temporary table, as if we don't the original table that we take it from will lose
   -- the last key of that table permanently in the next line of code after this one, until the program is restarted.
@@ -417,10 +417,10 @@ function UI:addKeyHandler(keys, window, callback, ...)
   end
 end
 
---! Unregister a key handler previously registered by `addKeyHandler`.
---!param keys (string or table) The key or list of modifiers+key of a key / window
+--- Unregister a key handler previously registered by `addKeyHandler`.
+-- @param keys (string or table) The key or list of modifiers+key of a key / window
 -- pair previously passed to `addKeyHandler`.
---!param window (Window) The window of a key / window pair previously passed
+-- @param window (Window) The window of a key / window pair previously passed
 -- to `addKeyHandler`.
 function UI:removeKeyHandler(keys, window)
   local temp_keys = nil
@@ -509,11 +509,11 @@ function UI:removeKeyHandler(keys, window)
   end
 end
 
---! Set the menu background image
---!
---! The menu size closest to, but no larger than the height of the currently
---! set game window is selected. If no image fits that criteria the smallest
---! available image is used.
+--- Set the menu background image
+---
+--- The menu size closest to, but no larger than the height of the currently
+--- set game window is selected. If no image fits that criteria the smallest
+--- available image is used.
 function UI:setMenuBackground()
   local screen_h = self.app.config.height
   local bg_size_idx = 1
@@ -632,7 +632,7 @@ function UI:releaseMouse()
   self:setMouseReleased(true)
 end
 
---! Dedicated hotkey function for toggling fullscreen
+--- Dedicated hotkey function for toggling fullscreen
 function UI:fullscreenHotkey()
   local toggle = self:toggleFullscreen()
   if not toggle then
@@ -647,8 +647,8 @@ function UI:fullscreenHotkey()
   end
 end
 
---! Turns fullscreen on and off
---!return success true if toggle succeeded
+--- Turns fullscreen on and off
+-- @return success true if toggle succeeded
 function UI:toggleFullscreen()
   local modes = self.app.modes
 
@@ -701,9 +701,9 @@ function UI:toggleFullscreen()
   return success
 end
 
---! Called when the user presses a key on the keyboard
---!param rawchar (string) The name of the key the user pressed.
---!param is_repeat (boolean) True if this is a key repeat event
+--- Called when the user presses a key on the keyboard
+-- @param rawchar (string) The name of the key the user pressed.
+-- @param is_repeat (boolean) True if this is a key repeat event
 function UI:onKeyDown(rawchar, modifiers, is_repeat)
   local handled = false
   -- Apply key-remapping and normalisation
@@ -758,8 +758,8 @@ function UI:onKeyDown(rawchar, modifiers, is_repeat)
   return handled
 end
 
---! Called when the user releases a key on the keyboard
---!param rawchar (string) The name of the key the user pressed.
+--- Called when the user releases a key on the keyboard
+-- @param rawchar (string) The name of the key the user pressed.
 function UI:onKeyUp(rawchar)
   rawchar = SDL.getKeyModifiers().numlockactive and
             string.sub(rawchar,1,6) == "Keypad" and string.sub(rawchar,8) or
@@ -814,9 +814,9 @@ function UI:onEditingText(text, start, length) -- luacheck: ignore 212 keep args
   -- Does nothing at the moment. We are handling text input ourselves.
 end
 
---! Called in-between onKeyDown and onKeyUp. The argument 'text' is a
---! string containing the input localized according to the keyboard layout
---! the user uses.
+--- Called in-between onKeyDown and onKeyUp. The argument 'text' is a
+--- string containing the input localized according to the keyboard layout
+--- the user uses.
 function UI:onTextInput(text)
   -- It's time for any active textbox to get input.
   for _, box in ipairs(self.textboxes) do
@@ -938,13 +938,13 @@ end
 
 local UpdateCursorPosition = TH.cursor.setPosition
 
---! Called when the mouse enters or leaves the game window.
+--- Called when the mouse enters or leaves the game window.
 function UI:onWindowActive(gain)
 end
 
---! Window has been resized by the user
---!param width (integer) New window width
---!param height (integer) New window height
+--- Window has been resized by the user
+-- @param width (integer) New window width
+-- @param height (integer) New window height
 function UI:onWindowResize(width, height)
   if not self.app.config.fullscreen then
     self:changeResolution(width, height)
@@ -975,9 +975,9 @@ function UI:onMouseMove(x, y, dx, dy)
   return repaint
 end
 
---! Process SDL_MULTIGESTURE events.
---!
---!return (boolean) event processed indicator
+--- Process SDL_MULTIGESTURE events.
+---
+-- @return (boolean) event processed indicator
 function UI:onMultiGesture()
   return false
 end
@@ -1039,8 +1039,8 @@ function UI:removeWindow(closing_window)
   end
 end
 
---! Function to check if we have any must pause windows open
---!return (bool) Returns true if a must pause window is found
+--- Function to check if we have any must pause windows open
+-- @return (bool) Returns true if a must pause window is found
 function UI:checkForMustPauseWindows()
   for _, window in pairs(self.windows) do
     if window:mustPause() then return true end
@@ -1118,8 +1118,8 @@ function UI:makeScreenshot()
   end
 end
 
---! Closes one window (the topmost / active window, if possible)
---!return true if a window was closed
+--- Closes one window (the topmost / active window, if possible)
+-- @return true if a window was closed
 function UI:closeWindow()
   if not self.windows then
     return false
@@ -1145,12 +1145,12 @@ function UI:closeWindow()
   end
 end
 
---! Shows the Lua console
+--- Shows the Lua console
 function UI:showLuaConsole()
   self:addWindow(UILuaConsole(self))
 end
 
---! Triggers reset of the application (reloads .lua files)
+--- Triggers reset of the application (reloads .lua files)
 function UI:resetApp()
   debug.getregistry()._RESTART = true
   TheApp.running = false
@@ -1160,12 +1160,12 @@ function UI:exitApplication()
   self.app:abandon()
 end
 
---! Triggers quitting the application
+--- Triggers quitting the application
 function UI:quit()
   self.app:exit()
 end
 
---! Tries to stop a video, if one is currently playing
+--- Tries to stop a video, if one is currently playing
 function UI:stopMovie()
   if self.app.moviePlayer.playing then
     self.app.moviePlayer:stop()

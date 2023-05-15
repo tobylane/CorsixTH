@@ -51,7 +51,7 @@ local function restrict(ni, i, ...)
 end
 restrict(newindex, index)
 
---!! Wrap a function so that it is freely able to set global variables
+---! Wrap a function so that it is freely able to set global variables
 --[[ Some existing functions (for example, `require`) should be allowed to read
      and write global variables without having to worry about declaring them
      with `strict_declare_global`.
@@ -67,7 +67,7 @@ function destrict(fn)
   end
 end
 
---!! Declare a global variable so that it can later be used
+---! Declare a global variable so that it can later be used
 --[[!param name The name of the global to declare
     !example
      strict_declare_global "some_var"

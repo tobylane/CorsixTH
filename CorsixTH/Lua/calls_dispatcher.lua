@@ -92,9 +92,9 @@ function CallsDispatcher:callForStaffEachRoom(room, attribute, key)
 end
 
 -- Call for repair
---!param urgent Announcement should be made
---!param manual This call should not trigger advisor for "your machine is failing"
---!param lock_room This is a minor maintence. Rooms needed not to be locked.
+-- @param urgent Announcement should be made
+-- @param manual This call should not trigger advisor for "your machine is failing"
+-- @param lock_room This is a minor maintence. Rooms needed not to be locked.
 --  If urgent or manual is specified, lock_room will be true automatically
 function CallsDispatcher:callForRepair(object, urgent, manual, lock_room)
   lock_room = manual or lock_room
@@ -422,7 +422,7 @@ function CallsDispatcher.actionInterruptHandler(action, humanoid)
   end
 end
 
---! Called when a call is completed successfully.
+--- Called when a call is completed successfully.
 function CallsDispatcher.onCheckpointCompleted(call)
   if not call.dropped and call.assigned then
     if debug then CallsDispatcher.dumpCall(call, "completed") end
@@ -546,16 +546,16 @@ function CallsDispatcher.staffActionInterruptHandler(action, humanoid)
   end
 end
 
---! 'execute' callback for repairing an object (eg a machine).
---!param object Object to repair.
---!param handyman Staff to use.
+--- 'execute' callback for repairing an object (eg a machine).
+-- @param object Object to repair.
+-- @param handyman Staff to use.
 function CallsDispatcher.sendStaffToRepair(object, handyman)
   object:createHandymanActions(handyman)
 end
 
---! 'execute' callback for watering a plant.
---!param plant Plant to give water.
---!param handyman Staff to use.
+--- 'execute' callback for watering a plant.
+-- @param plant Plant to give water.
+-- @param handyman Staff to use.
 function CallsDispatcher.sendStaffToWatering(plant, handyman)
   plant:createHandymanActions(handyman)
 end

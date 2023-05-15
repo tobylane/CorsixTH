@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Abstraction for visible gameplay things which sit somewhere on the map.
+--- Abstraction for visible gameplay things which sit somewhere on the map.
 class "Entity"
 
 ---@type Entity
@@ -295,15 +295,15 @@ end
 function Entity:tickDay()
 end
 
---! Notify the entity of a new object.
---!param id Name of the new object.
+--- Notify the entity of a new object.
+-- @param id Name of the new object.
 -- TODO Currently only used for benches placed nearby.
 -- TODO Maybe also pass the object tile coordinates?
 function Entity:notifyNewObject(id) -- luacheck: ignore 212 keep args for child class
 end
 
---! Notify the entity that a new room was built.
---!param room (Room) The new room.
+--- Notify the entity that a new room was built.
+-- @param room (Room) The new room.
 function Entity:notifyNewRoom(room) -- luacheck: ignore 212 keep args for child class
 end
 
@@ -333,7 +333,7 @@ function Entity:clearDynamicInfo()
   self.dynamic_info = nil
 end
 
---! Stub to be extended in subclasses, if needed.
+--- Stub to be extended in subclasses, if needed.
 function Entity:afterLoad(old, new) -- luacheck: ignore 212 keep args for child class
 end
 
@@ -347,7 +347,7 @@ function Entity:playAfterLoadSound()
   end
 end
 
---! Stub to be extended in subclasses, if needed.
+--- Stub to be extended in subclasses, if needed.
 function Entity:eraseObject()
   -- Give entity the chance to clear itself from the map before resetAnimation gets called.
 end

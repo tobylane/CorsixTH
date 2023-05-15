@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 corsixth.require("date")
 
---! Pr
+--- Pr
 local AnnouncementPriority = {
   Critical = 1,
   High = 2,
@@ -41,13 +41,13 @@ local default_announcement_decay_hours = {
   [AnnouncementPriority.Low] = 3 * hoursPerDay
 }
 
---! An announcement queue based on priority
+--- An announcement queue based on priority
 class "AnnouncementQueue"
 
 ---@type AnnouncementQueue
 local AnnouncementQueue = _G["AnnouncementQueue"]
 
---! Creates an announcement queue: a collection of announcements with queue semantics.
+--- Creates an announcement queue: a collection of announcements with queue semantics.
 function AnnouncementQueue:AnnouncementQueue()
   -- might want to use a single table for this
   self.priorities = {
@@ -60,16 +60,16 @@ function AnnouncementQueue:AnnouncementQueue()
   self.count = 0
 end
 
---! Adds the announcement entry to the queue.
---!param priority (int) the priority of the announcement
---!param entry (AnnouncementEntry) the announcement entry
+--- Adds the announcement entry to the queue.
+-- @param priority (int) the priority of the announcement
+-- @param entry (AnnouncementEntry) the announcement entry
 function AnnouncementQueue:push(priority, entry)
   local entries = self.priorities[priority]
   table.insert(entries, entry)
   self.count = self.count + 1
 end
 
---! Dequeues the announcement with the highest priority, nil if the queue is empty.
+--- Dequeues the announcement with the highest priority, nil if the queue is empty.
 function AnnouncementQueue:pop()
   for _, entries in ipairs(self.priorities) do
     if entries[1] ~= nil then
@@ -82,14 +82,14 @@ function AnnouncementQueue:pop()
   return nil
 end
 
---! Returns true if the queue is empty, false otherwise.
+--- Returns true if the queue is empty, false otherwise.
 function AnnouncementQueue:isEmpty()
   return self.count == 0
 end
 
---! Checks for duplicates in the announcement queue and refreshes the announcement's created_date
---!param sound the announcement to check
---!param date the date to use, usually the current date
+--- Checks for duplicates in the announcement queue and refreshes the announcement's created_date
+-- @param sound the announcement to check
+-- @param date the date to use, usually the current date
 function AnnouncementQueue:checkForDuplicates(sound, date)
   for _, entries in ipairs(self.priorities) do
     for _, entry in ipairs(entries) do
@@ -103,13 +103,13 @@ function AnnouncementQueue:checkForDuplicates(sound, date)
 end
 
 
---! An announcement.
+--- An announcement.
 class "AnnouncementEntry"
 
 ---@type AnnouncementEntry
 local AnnouncementEntry = _G["AnnouncementEntry"]
 
---! Creates an announcement
+--- Creates an announcement
 function AnnouncementEntry:AnnouncementEntry()
   self.name = nil -- filename to play
   self.priority = default_announcement_priority
@@ -119,8 +119,8 @@ function AnnouncementEntry:AnnouncementEntry()
   self.played_callback_delay = nil -- but not until delay has passed
 end
 
---! Announces audible messages to the player.
---! The announcer plays announcements based on their priority. If the caller requests an
+--- Announces audible messages to the player.
+--- The announcer plays announcements based on their priority. If the caller requests an
 -- announcement to be played, it will be played directly if there are no announcements
 -- currently being announced. Note that announcements are only played if there is
 -- a worker at the reception desk and announcements are enabled in the settings.
@@ -129,8 +129,8 @@ class "Announcer"
 ---@type Announcer
 local Announcer = _G["Announcer"]
 
---! Constructor.
---!param app (App) The CorsixTH app
+--- Constructor.
+-- @param app (App) The CorsixTH app
 function Announcer:Announcer(app)
   self.app = app
   self.entries = AnnouncementQueue()
@@ -140,13 +140,13 @@ function Announcer:Announcer(app)
   self:_setRandomAnnouncementTarget()
 end
 
---! Requests the announcer to play an announcement.
---!param name (string) The filename to play.
---!param priority (int | nil) The priority of the announcement. See AnnouncementPriority.
---!param decay_hours (float | nil) After this amount of hours the announcement should be considered irrelevant.
+--- Requests the announcer to play an announcement.
+-- @param name (string) The filename to play.
+-- @param priority (int | nil) The priority of the announcement. See AnnouncementPriority.
+-- @param decay_hours (float | nil) After this amount of hours the announcement should be considered irrelevant.
 -- Provide nil for a decay time based on the provided priority.
---!param played_callback (function | nil) The callback to trigger when the announcement was successfully played.
---!param played_callback_delay (int | nil) Delay the callback with this amount of milliseconds.
+-- @param played_callback (function | nil) The callback to trigger when the announcement was successfully played.
+-- @param played_callback_delay (int | nil) Delay the callback with this amount of milliseconds.
 function Announcer:playAnnouncement(name, priority, decay_hours, played_callback, played_callback_delay)
   -- Announcements use the in-game time instead of ticks.
   -- For example, if an employee is sacked, the announcement should
@@ -180,7 +180,7 @@ function Announcer:playAnnouncement(name, priority, decay_hours, played_callback
   end
 end
 
---! The announcer's (game) tick handler.
+--- The announcer's (game) tick handler.
 -- Plays the actual sound of the announcements, if available.
 -- Also queues random announcements if no announcements have been played for a while.
 function Announcer:onTick()
@@ -221,7 +221,7 @@ function Announcer:onTick()
   end
 end
 
---! Private function. Sets the new time (in ticks) when a random announcement should be played.
+--- Private function. Sets the new time (in ticks) when a random announcement should be played.
 function Announcer:_setRandomAnnouncementTarget()
   -- Note that random announcement are measured in ticks.
   -- This ensures that on fast game speeds random announcements aren't
@@ -230,16 +230,16 @@ function Announcer:_setRandomAnnouncementTarget()
   self.random_announcement_ticks_target = math.random(8000, 12000)
 end
 
---! Private function. Plays the actual sound of an announcement.
---!param entry (AnnouncementEntry) The announcement to play.
+--- Private function. Plays the actual sound of an announcement.
+-- @param entry (AnnouncementEntry) The announcement to play.
 function Announcer:_play(entry)
   self.playing = true
   self.app.audio:playSound(entry.name, nil, true, function () self:_onPlayed(entry) end, entry.played_callback_delay)
   self.ticks_since_last_announcement = 0
 end
 
---! Private function. Handles the playSound completed event. Also calls the callback of the announcement.
---!param entry (AnnouncementEntry) The announcement that has been played.
+--- Private function. Handles the playSound completed event. Also calls the callback of the announcement.
+-- @param entry (AnnouncementEntry) The announcement that has been played.
 function Announcer:_onPlayed(entry)
   self.playing = false
 

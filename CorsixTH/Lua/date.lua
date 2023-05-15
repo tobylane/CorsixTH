@@ -62,8 +62,8 @@ end
 
 --[[ Method that returns the number of days of a month.
 --
---!param month (1..12) Month being queried.
---!return Number of days in the queried month,
+-- @param month (1..12) Month being queried.
+-- @return Number of days in the queried month,
 ]]
 function Date.daysPerMonth(month)
   assert(month >= 1 and month <= 12,

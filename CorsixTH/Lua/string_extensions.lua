@@ -102,20 +102,20 @@ local format_pattern = lpeg.Cs(
   ) ^ 0
 )
 
---! Custom format function for our proxy strings.
---! Keywords for replacing are: %s, %d, %%, %[num]% and %[num]:[tab]%
---! NB: %s and %d are only replaced if none of the new keywords (%[num]% and %[num]:[tab]%) are present.
---! NB: Always escape percent sign (i.e. use %% instead of %) in strings with formatting keywords! Failure
---!     to do so can cause unwanted behavior.
---!
---! Keywords:
---!  %s, %d        : replaced with the n-th parameter, if the type matches (%s = string, %d = number).
---!  %%            : replaced by single percent sign "%". Needed for escaping.
---!  %[num]%       : ([num] between 1-9) replaced by [num]-th parameter.
---!  %[num]:[tab]% : replaced by string obtained by indexing string table _S.[tab] with [num]-th parameter.
---!param str (string, stringProxy) the string that contains keywords to be replaced
---!param ... (string, stringProxy, number) parameters to be inserted in the string (or used for lookup)
---!return formatted stringProxy, if any of the result's components was a stringProxy, else formatted string
+--- Custom format function for our proxy strings.
+--- Keywords for replacing are: %s, %d, %%, %[num]% and %[num]:[tab]%
+--- NB: %s and %d are only replaced if none of the new keywords (%[num]% and %[num]:[tab]%) are present.
+--- NB: Always escape percent sign (i.e. use %% instead of %) in strings with formatting keywords! Failure
+---     to do so can cause unwanted behavior.
+---
+--- Keywords:
+---  %s, %d        : replaced with the n-th parameter, if the type matches (%s = string, %d = number).
+---  %%            : replaced by single percent sign "%". Needed for escaping.
+---  %[num]%       : ([num] between 1-9) replaced by [num]-th parameter.
+---  %[num]:[tab]% : replaced by string obtained by indexing string table _S.[tab] with [num]-th parameter.
+-- @param str (string, stringProxy) the string that contains keywords to be replaced
+-- @param ... (string, stringProxy, number) parameters to be inserted in the string (or used for lookup)
+-- @return formatted stringProxy, if any of the result's components was a stringProxy, else formatted string
 function TH.stringProxy.format(str, ...)
   local args = {idx = 0, ...}
   local str_was_proxy
@@ -127,13 +127,13 @@ function TH.stringProxy.format(str, ...)
   return result
 end
 
---! Wrapper for the lua string.find function. Make sure to call mystring:find(...) instead of string.find(mystring, ...).
+--- Wrapper for the lua string.find function. Make sure to call mystring:find(...) instead of string.find(mystring, ...).
 function TH.stringProxy.find(str, ...)
   str = _unwrap(str)
   return str:find(...)
 end
 
---! Wrapper for the lua string.sub function. Make sure to call mystring:sub(...) instead of string.sub(mystring, ...).
+--- Wrapper for the lua string.sub function. Make sure to call mystring:sub(...) instead of string.sub(mystring, ...).
 function TH.stringProxy.sub(str, ...)
   local str_was_proxy
   str, str_was_proxy = _unwrap(str)

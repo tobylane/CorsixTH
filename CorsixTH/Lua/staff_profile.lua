@@ -147,7 +147,7 @@ function StaffProfile:randomise(month)
   self:randomiseOrganical()
 end
 
---! Give the staff member some personal properties.
+--- Give the staff member some personal properties.
 function StaffProfile:randomiseOrganical()
   local initials = staff_initials_cache.initials
   local num = self.name_seed % #initials
@@ -257,9 +257,9 @@ function StaffProfile:getFullName()
   return self.initial .. ". " .. self.name
 end
 
---! Translate the staff class to its translated text.
---!param staff_class Class of the staff to translate.
---!return The translated name.
+--- Translate the staff class to its translated text.
+-- @param staff_class Class of the staff to translate.
+-- @return The translated name.
 function StaffProfile.translateStaffClass(staff_class)
   local staffclass_to_string = {
     Nurse        = _S.staff_title.nurse,

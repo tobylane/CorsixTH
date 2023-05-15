@@ -21,7 +21,7 @@ SOFTWARE. --]]
 corsixth.require("ui")
 corsixth.require("announcer")
 
---! Variant of UI for running games
+--- Variant of UI for running games
 class "GameUI" (UI)
 
 ---@type GameUI
@@ -41,10 +41,10 @@ local multigesture_pinch_sensitivity_factor = 0.002
 -- will result in a call to adjustZoom in the onTick method
 local multigesture_pinch_amplification_factor = 100
 
---! Game UI constructor.
---!param app (Application) Application object.
---!param local_hospital Hospital to display
---!param map_editor (bool) Whether the map is editable.
+--- Game UI constructor.
+-- @param app (Application) Application object.
+-- @param local_hospital Hospital to display
+-- @param map_editor (bool) Whether the map is editable.
 function GameUI:GameUI(app, local_hospital, map_editor)
   self:UI(app)
   self.app = app
@@ -184,11 +184,11 @@ function GameUI:makeVisibleDiamond(scr_w, scr_h)
   }
 end
 
---! Calculate the minimum valid zoom value
---!
---! Zooming out too much would cause negative width/height to be returned from
---! makeVisibleDiamond. This function calculates the minimum zoom_factor that
---! would be allowed.
+--- Calculate the minimum valid zoom value
+---
+--- Zooming out too much would cause negative width/height to be returned from
+--- makeVisibleDiamond. This function calculates the minimum zoom_factor that
+--- would be allowed.
 function GameUI:calculateMinimumZoom()
   local scr_w = self.app.config.width
   local scr_h = self.app.config.height
@@ -272,11 +272,11 @@ function GameUI:onChangeResolution()
   UI.onChangeResolution(self)
 end
 
---! Update UI state after the UI has been depersisted
---! When an UI object is depersisted, its state will reflect how the UI was at
+--- Update UI state after the UI has been depersisted
+--- When an UI object is depersisted, its state will reflect how the UI was at
 -- the moment of persistence, which may be different to the keyboard / mouse
 -- state at the moment of depersistence.
---!param ui (UI) The previously existing UI object, from which values should be
+-- @param ui (UI) The previously existing UI object, from which values should be
 -- taken.
 function GameUI:resync(ui)
   if self.drag_mouse_move then
@@ -407,9 +407,9 @@ function GameUI:getScreenOffset()
   return self.screen_offset_x, self.screen_offset_y
 end
 
---! Change if the World should be tested for entities under the cursor
---!param mode (boolean or room) true to enable hit test (normal), false
---! to disable, room to enable only for non-door objects in given room
+--- Change if the World should be tested for entities under the cursor
+-- @param mode (boolean or room) true to enable hit test (normal), false
+--- to disable, room to enable only for non-door objects in given room
 function GameUI:setWorldHitTest(mode)
   self.do_world_hit_test = mode
 end
@@ -528,7 +528,7 @@ local UpdateCursorPosition = TH.cursor.setPosition
 
 local highlight_x, highlight_y
 
---! Called when the mouse enters or leaves the game window.
+--- Called when the mouse enters or leaves the game window.
 function GameUI:onWindowActive(gain)
   if gain == 0 then
     self.tick_scroll_amount_mouse = false
@@ -701,14 +701,14 @@ function GameUI:onMouseUp(code, x, y)
   return UI.onMouseUp(self, code, x, y)
 end
 
---! Process SDL_MULTIGESTURE events for zoom and map move functionality
---!param numfingers (integer) number of touch points, received from the SDL event
---!  This is still more info about param x.
---!param dTheta (float) rotation in radians of the gesture from the SDL event
---!param dDist (float) magnitude of pinch from the SDL event
---!param x (float) normalised x value of the gesture
---!param y (float) normalised y value of the gesture
---!return (boolean) event processed indicator
+--- Process SDL_MULTIGESTURE events for zoom and map move functionality
+-- @param numfingers (integer) number of touch points, received from the SDL event
+---  This is still more info about param x.
+-- @param dTheta (float) rotation in radians of the gesture from the SDL event
+-- @param dDist (float) magnitude of pinch from the SDL event
+-- @param x (float) normalised x value of the gesture
+-- @param y (float) normalised y value of the gesture
+-- @return (boolean) event processed indicator
 function GameUI:onMultiGesture(numfingers, dTheta, dDist, x, y) -- luacheck: ignore 212 dTheta
   -- only deal with 2 finger events for now
   if numfingers == 2 then
@@ -759,12 +759,12 @@ function GameUI:onMouseWheel(x, y)
   return UI.onMouseWheel(self, x, y)
 end
 
---! Announcements to the player.
---!param msgs (array of string) Messages to select from.
---!param priority (optional valid AnnouncementPriority selection) Priority of announcement
---!param chance_to_play (optional float in range (0, 1]) Fraction of times that the
+--- Announcements to the player.
+-- @param msgs (array of string) Messages to select from.
+-- @param priority (optional valid AnnouncementPriority selection) Priority of announcement
+-- @param chance_to_play (optional float in range (0, 1]) Fraction of times that the
 --    call actually says something.
---!return (boolean) Whether a message was given to the user.
+-- @return (boolean) Whether a message was given to the user.
 function GameUI:playRandomAnnouncement(msgs, priority, chance_to_play, played_callback, played_callback_delay)
   local max_rnd = #msgs
   if chance_to_play and chance_to_play > 0 and chance_to_play < 1 then
@@ -930,14 +930,14 @@ function GameUI:scrollMap(dx, dy)
   self.screen_offset_y = floor(dy + 0.5)
 end
 
---! Start shaking the screen, e.g. an earthquake effect
---!param intensity (number) The magnitude of the effect, between 0 for no
+--- Start shaking the screen, e.g. an earthquake effect
+-- @param intensity (number) The magnitude of the effect, between 0 for no
 -- movement to 1 for significant shaking.
 function GameUI:beginShakeScreen(intensity)
   self.shake_screen_intensity = intensity
 end
 
---! Stop the screen from shaking after beginShakeScreen is called.
+--- Stop the screen from shaking after beginShakeScreen is called.
 function GameUI:endShakeScreen()
   self.shake_screen_intensity = 0
 end
@@ -947,13 +947,13 @@ function GameUI:limitCamera(mode)
   self:scrollMap(0, 0)
 end
 
---! Applies the current setting for wall transparency to the map
+--- Applies the current setting for wall transparency to the map
 function GameUI:applyTransparency()
   self.app.map.th:setWallDrawFlags(self.transparent_walls and 4 or 0)
 end
 
---! Sets wall transparency to the specified parameter
---!param mode (boolean) whether to enable or disable wall transparency
+--- Sets wall transparency to the specified parameter
+-- @param mode (boolean) whether to enable or disable wall transparency
 function GameUI:setWallsTransparent(mode)
   if mode ~= self.transparent_walls then
     self.transparent_walls = mode
@@ -1179,14 +1179,14 @@ function GameUI:startTutorial(chapter)
   self:tutorialStep(chapter, 0, 1)
 end
 
---! Converts centre of screen coordinates to world tile positions and stores the values for later recall
+--- Converts centre of screen coordinates to world tile positions and stores the values for later recall
 -- param index (integer) Position in recallpositions table
 function GameUI:setMapRecallPosition(index)
   local cx, cy = self:ScreenToWorld(self.app.config.width / 2, self.app.config.height / 2)
   self.recallpositions[index] = {x = cx, y = cy, z = self.zoom_factor}
 end
 
---! Retrieves stored recall position and attempts to scroll to that position - will be limited to the bounds of the camera when zoomed out
+--- Retrieves stored recall position and attempts to scroll to that position - will be limited to the bounds of the camera when zoomed out
 -- param index (integer) Position in recallpositions table
 function GameUI:recallMapPosition(index)
   if self.recallpositions[index] ~= nil then
@@ -1275,7 +1275,7 @@ function GameUI:showBriefing()
   self:addWindow(UIInformation(self, text))
 end
 
---! Offers a confirmation window to quit the game and return to main menu
+--- Offers a confirmation window to quit the game and return to main menu
 -- NB: overrides UI.quit, do NOT call it from here
 function GameUI:quit()
   self:addWindow(UIConfirmDialog(self, false, _S.confirmation.quit, --[[persistable:gameui_confirm_quit]] function()

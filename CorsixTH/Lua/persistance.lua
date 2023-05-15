@@ -251,8 +251,8 @@ function SaveGame()
   --end, persist.errcatch)
 end
 
---! Save a game to disk.
---!param filename (string) Path of the file to write.
+--- Save a game to disk.
+-- @param filename (string) Path of the file to write.
 function SaveGameFile(filename)
   local data = SaveGame()
   local f = TheApp:writeToFileOrTmp(filename, "wb")
@@ -260,9 +260,9 @@ function SaveGameFile(filename)
   f:close()
 end
 
---! Compatibility function to work out the game's graphics set
---!param map The savegame map data
---!param world The savegame world data
+--- Compatibility function to work out the game's graphics set
+-- @param map The savegame map data
+-- @param world The savegame world data
 local function gfxSetHeuristic(map, world)
   -- First eliminate all but the first campaign level (same in demo and full)
   local toxicity = tostring(_S.level_names[1]:upper())
@@ -279,8 +279,8 @@ local function gfxSetHeuristic(map, world)
   return "full"
 end
 
---! Puts loaded file into the game
---!param data The file
+--- Puts loaded file into the game
+-- @param data The file
 function LoadGame(data)
   --local status, res = xpcall(function()
   local objtable = MakePermanentObjectsTable(true)

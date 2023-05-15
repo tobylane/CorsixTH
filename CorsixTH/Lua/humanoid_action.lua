@@ -18,14 +18,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Humanoid action base class.
+--- Humanoid action base class.
 class "HumanoidAction"
 
 ---@type HumanoidAction
 local HumanoidAction = _G["HumanoidAction"]
 
---! Construct a humanoid action (base class constructor).
---!param name (str) Name of the action.
+--- Construct a humanoid action (base class constructor).
+-- @param name (str) Name of the action.
 function HumanoidAction:HumanoidAction(name)
   assert(type(name) == "string", "Invalid value for parameter 'name'")
 
@@ -38,9 +38,9 @@ function HumanoidAction:HumanoidAction(name)
   self.no_truncate = false -- If set, disable shortening the action.
 end
 
---! Set the number of times the action should happen.
---!param count (int or nil) Set to 'nil' if 'forever', else integer count.
---!return (action) Returning self, for daisy-chaining.
+--- Set the number of times the action should happen.
+-- @param count (int or nil) Set to 'nil' if 'forever', else integer count.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:setCount(count)
   assert(count == nil or type(count) == "number", "Invalid value for parameter 'count'")
 
@@ -48,9 +48,9 @@ function HumanoidAction:setCount(count)
   return self
 end
 
---! Set the 'must happen' flag (that is, action cannot be skipped).
---!param must_happen (bool) Whether or not the action must happen.
---!return (action) Returning self, for daisy-chaining.
+--- Set the 'must happen' flag (that is, action cannot be skipped).
+-- @param must_happen (bool) Whether or not the action must happen.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:setMustHappen(must_happen)
   assert(type(must_happen) == "boolean", "Invalid value for parameters 'must_happen'")
 
@@ -58,10 +58,10 @@ function HumanoidAction:setMustHappen(must_happen)
   return self
 end
 
---! Set the callback for checking termination conditions.
---!param loop_callback (func) Callback function that is called each iteration to check for
---! termination conditions.
---!return (action) Returning self, for daisy-chaining.
+--- Set the callback for checking termination conditions.
+-- @param loop_callback (func) Callback function that is called each iteration to check for
+--- termination conditions.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:setLoopCallback(loop_callback)
   assert(loop_callback == nil or type(loop_callback) == "function",
       "Invalid value for parameter 'loop_callback'")
@@ -70,9 +70,9 @@ function HumanoidAction:setLoopCallback(loop_callback)
   return self
 end
 
---! Set the callback for performing updates afterwards.
---!param after_use (func) Callback function that is called after the action ends.
---!return (action) Returning self, for daisy-chaining.
+--- Set the callback for performing updates afterwards.
+-- @param after_use (func) Callback function that is called after the action ends.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:setAfterUse(after_use)
   assert(after_use == nil or type(after_use) == "function",
       "Invalid value for parameter 'after_use'")
@@ -81,9 +81,9 @@ function HumanoidAction:setAfterUse(after_use)
   return self
 end
 
---! Set whether the humanoid is leaving.
---!param is_leaving (bool) Whether or not the humanoid is leaving. If not specified, value is true.
---!return (action) Returning self, for daisy-chaining.
+--- Set whether the humanoid is leaving.
+-- @param is_leaving (bool) Whether or not the humanoid is leaving. If not specified, value is true.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:setIsLeaving(is_leaving)
   assert(type(is_leaving) == "boolean", "Invalid value for parameter 'is_leaving'")
 
@@ -91,8 +91,8 @@ function HumanoidAction:setIsLeaving(is_leaving)
   return self
 end
 
---! Do not allow truncating the action.
---!return (action) Returning self, for daisy-chaining.
+--- Do not allow truncating the action.
+-- @return (action) Returning self, for daisy-chaining.
 function HumanoidAction:disableTruncate()
   self.no_truncate = true
   return self

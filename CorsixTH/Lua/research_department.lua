@@ -28,7 +28,7 @@ get improved. On the other hand it appears that the research is
 stored for future use anyway.
 --]]
 
---! Manages all things related to research for one hospital.
+--- Manages all things related to research for one hospital.
 class "ResearchDepartment"
 
 ---@type ResearchDepartment
@@ -140,7 +140,7 @@ function ResearchDepartment:checkAutomaticDiscovery(month)
   end
 end
 
---! Find a disease (if it exists) on which research can be concentrated and concentrate on it.
+--- Find a disease (if it exists) on which research can be concentrated and concentrate on it.
 function ResearchDepartment:setResearchConcentration()
   local casebook = self.hospital.disease_casebook
   if self.research_policy.specialisation.current ~= self.drain then
@@ -154,8 +154,8 @@ function ResearchDepartment:setResearchConcentration()
   end
 end
 
---! Function that redistributes research points from a finished category to
---! all the other categories.
+--- Function that redistributes research points from a finished category to
+--- all the other categories.
 function ResearchDepartment:redistributeResearchPoints()
   local sum, all_finished = 0, true
   local policy = {"cure", "diagnosis", "drugs", "improvements", "specialisation"}
@@ -323,8 +323,8 @@ function ResearchDepartment:getResearchRequired(thing)
   return required
 end
 
---! This function will give research points to the treatment of the illness of an autopsied patient.
---!param target_room_id (string) The name of the room
+--- This function will give research points to the treatment of the illness of an autopsied patient.
+-- @param target_room_id (string) The name of the room
 function ResearchDepartment:addResearchPointsForAutopsy(target_room_id)
   local level_config = self.world.map.level_config
   local room_discovery = self.hospital.room_discoveries[target_room_id]
@@ -350,9 +350,9 @@ function ResearchDepartment:addResearchPointsForAutopsy(target_room_id)
   end
 end
 
---! Add some more research points to research progress.
---! It will be divided according to the research policy into the different research areas.
---!param points (integer) The total amount of points before applying any level specific divisors to add to research.
+--- Add some more research points to research progress.
+--- It will be divided according to the research policy into the different research areas.
+-- @param points (integer) The total amount of points before applying any level specific divisors to add to research.
 function ResearchDepartment:addResearchPoints(points)
   local level_config = self.world.map.level_config
   -- Divide the points into the different areas. If global is not at 100 %
