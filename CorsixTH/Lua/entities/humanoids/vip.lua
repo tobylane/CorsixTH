@@ -55,12 +55,11 @@ If rating exceeds values, it will be capped as necessary
 --[[ initialisation --]]
 corsixth.require("utility")
 
-
---- A `Vip` who is in the hospital to evaluate the hospital and produce a report
 class "Vip" (Humanoid)
 
 local Vip = _G["Vip"]
 
+--- A `Vip` who is in the hospital to evaluate the hospital and produce a report.
 function Vip:Vip(...)
   self:Humanoid(...)
   self.hover_cursor = TheApp.gfx:loadMainCursor("default")
@@ -251,14 +250,14 @@ function Vip:setVIPRating()
     end
   end
 
---[[-- Group factor 1: Litter--]]
+  -- Group factor 1: Litter--
   if (self.num_vomit_noninducing + self.num_vomit_inducing) <= 10 then
     self.vip_rating = self.vip_rating - 1
   else
     self.vip_rating = self.vip_rating + 1
   end
 
---[[-- Group factor 2: Staff tiredness--]]
+  -- Group factor 2: Staff tiredness
   -- First get staff members
   local count_staff = #self.hospital.staff
   if count_staff > 1 then
@@ -281,7 +280,7 @@ function Vip:setVIPRating()
     self.vip_rating = self.vip_rating + 4
   end
 
---[[-- Group factor 3: Patients--]]
+  -- Group factor 3: Patients
   -- First check we had patients this visit
   local patients_this_visit = self.enter_patients + self.hospital.num_visitors - self.enter_visitors
   if patients_this_visit > 0 then
@@ -372,7 +371,7 @@ function Vip:setVIPRating()
     end
   end
 
---[[--Group factor 4: Doctor ratios--]]
+  --Group factor 4: Doctor ratios
   -- First get all doctors
   local num_docs = self.hospital:countStaffOfCategory("Doctor")
   -- No doctors are bad
@@ -391,7 +390,7 @@ function Vip:setVIPRating()
     end
   end
 
---[[--Group factor 5: Rooms--]]
+  --Group factor 5: Rooms
   -- Low room numbers incur a penalty
   if count_rooms < 1 then
     self.vip_rating = self.vip_rating + 4

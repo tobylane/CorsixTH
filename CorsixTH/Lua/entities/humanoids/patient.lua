@@ -461,7 +461,7 @@ end
 --- either when no treatment can be found for her/him, etc.
 --- -"over_priced": When the patient decided to leave because he/she believes
 --- the last treatment is over-priced.
---param disease_id (string): When the reason is "over_priced" this is the
+-- @param disease_id (string): When the reason is "over_priced" this is the
 --- id of the disease/diagnosis that the patient considered over_priced
 function Patient:goHome(reason, disease_id)
   local hosp = self.hospital

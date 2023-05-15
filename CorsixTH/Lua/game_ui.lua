@@ -447,7 +447,7 @@ function GameUI:onCursorWorldPositionChange()
     if self.cursor ~= self.edit_room_cursor and self.cursor ~= self.waiting_cursor then
       local cursor = self.default_cursor
       if self.app.world.user_actions_allowed then
-        --- If the patient is infected show the infected cursor
+        -- If the patient is infected show the infected cursor
         if epidemic and epidemic.coverup_in_progress and
           entity and entity.infected and not epidemic.timer.closed then
           cursor = infected_cursor
@@ -763,6 +763,8 @@ end
 -- @param priority (optional valid AnnouncementPriority selection) Priority of announcement
 -- @param chance_to_play (optional float in range (0, 1]) Fraction of times that the
 --    call actually says something.
+-- @param played_callback
+-- @param played_callback_delay
 -- @return (boolean) Whether a message was given to the user.
 function GameUI:playRandomAnnouncement(msgs, priority, chance_to_play, played_callback, played_callback_delay)
   local max_rnd = #msgs

@@ -416,11 +416,11 @@ function UIOptions:close()
   end
 end
 
---- A custom resolution selection window
 class "UIResolution" (UIResizable)
 
 local UIResolution = _G["UIResolution"]
 
+--- A custom resolution selection window.
 function UIResolution:UIResolution(ui, callback)
   self:UIResizable(ui, 200, 140, col_bg)
 
@@ -488,11 +488,11 @@ function UIResolution:close(ok)
   end
 end
 
---- A window for setting the scroll speed of the camera.
 class "UIScrollSpeed" (UIResizable)
 
 local UIScrollSpeed = _G["UIScrollSpeed"]
 
+--- A window for setting the scroll speed of the camera.
 function UIScrollSpeed:UIScrollSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col_bg)
 
@@ -549,12 +549,11 @@ function UIScrollSpeed:close(ok)
   end
 end
 
-
---- A window for setting the scroll speed of the camera while pressing the SHIFT key..
 class "UIShiftScrollSpeed" (UIResizable)
 
 local UIShiftScrollSpeed = _G["UIShiftScrollSpeed"]
 
+--- A window for setting the scroll speed of the camera while pressing the SHIFT key.
 function UIShiftScrollSpeed:UIShiftScrollSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col_bg)
 
@@ -611,11 +610,11 @@ function UIShiftScrollSpeed:close(ok)
   end
 end
 
---- Window to set the zoom speed of the scroll wheel while in-game.
 class "UIZoomSpeed" (UIResizable)
 
 local UIZoomSpeed = _G["UIZoomSpeed"]
 
+--- Window to set the zoom speed of the scroll wheel while in-game.
 function UIZoomSpeed:UIZoomSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col_bg)
 

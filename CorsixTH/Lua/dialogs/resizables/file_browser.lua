@@ -75,12 +75,12 @@ function FilteredFileTreeNode:getLabel()
   return label
 end
 
---- A sortable tree control that accommodates a certain file type and also possibly shows
---  their last modification dates.
 class "FilteredTreeControl" (TreeControl)
 
 local FilteredTreeControl = _G["FilteredTreeControl"]
 
+--- A sortable tree control that accommodates a certain file type and also possibly shows
+--  their last modification dates.
 function FilteredTreeControl:FilteredTreeControl(root, x, y, width, height, col_bg, col_fg, has_font, show_dates)
   self:TreeControl(root, x, y, width, height, col_bg, col_fg, 14, has_font)
 
@@ -149,7 +149,6 @@ function FilteredTreeControl:drawExtraOnRow(canvas, node, x, y)
   end
 end
 
---- A file browser with a scrollbar. Used by load_game and save_game.
 class "UIFileBrowser" (UIResizable)
 
 local UIFileBrowser = _G["UIFileBrowser"]
@@ -160,11 +159,13 @@ local col_caption = {
   blue = 218,
 }
 
---[[ Constructs the dialog.
-!param ui (UI) The active ui.
-!param mode (string) Either "menu" or "game" depending on which mode the game is in right now.
-!param title (string) The desired title of the dialog.
-]]
+--- A file browser with a scrollbar. Used by load_game and save_game.
+-- @param ui (UI) The active ui.
+-- @param mode (string) Either "menu" or "game" depending on which mode the game is in right now.
+-- @param title (string) The desired title of the dialog.
+-- @param vertical_size
+-- @param root
+-- @param show_dates
 function UIFileBrowser:UIFileBrowser(ui, mode, title, vertical_size, root, show_dates)
   self.col_bg = {
     red = 154,

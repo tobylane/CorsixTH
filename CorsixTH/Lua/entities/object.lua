@@ -244,11 +244,10 @@ function Object:setAnimation(animation, flags)
 end
 
 --- Get the primary tile which the object is attached to for rendering
---[[! For objects which attach to a single tile for rendering, this method will
-return the X and Y Lua world coordinates of that tile. For objects which split
-their rendering over multiple tiles, one of them is arbitrarily designated as
-the primary tile, and its coordinates are returned.
-]]
+-- For objects which attach to a single tile for rendering, this method will
+-- return the X and Y Lua world coordinates of that tile. For objects which split
+-- their rendering over multiple tiles, one of them is arbitrarily designated as
+-- the primary tile, and its coordinates are returned.
 function Object:getRenderAttachTile()
   local x, y = self.tile_x, self.tile_y
   local offset = self.object_type.orientations

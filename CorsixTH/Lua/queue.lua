@@ -296,7 +296,7 @@ end
 --- Values are relative to the reported humanoids in the queue
 -- @param index (int) Index number of the person to move.
 -- @param new_index (int) Destination of the person being moved.
--- @param new_index (string) 'front' or 'back' as relative markers
+-- or new_index (string) 'front' or 'back' as relative markers
 function Queue:movePatient(index, new_index)
   local first_patient_index = self:size() - self:reportedSize() + 1
   if type(new_index) == "string" then

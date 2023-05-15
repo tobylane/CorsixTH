@@ -702,6 +702,7 @@ end
 
 --- Called when the user presses a key on the keyboard
 -- @param rawchar (string) The name of the key the user pressed.
+-- @param modifiers
 -- @param is_repeat (boolean) True if this is a key repeat event
 function UI:onKeyDown(rawchar, modifiers, is_repeat)
   local handled = false

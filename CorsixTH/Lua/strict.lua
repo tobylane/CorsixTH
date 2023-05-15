@@ -68,10 +68,10 @@ function destrict(fn)
 end
 
 ---! Declare a global variable so that it can later be used
---[[!param name The name of the global to declare
-    !example
-     strict_declare_global "some_var"
-     some_var = 42 ]]
+-- @param name The name of the global to declare
+--    example
+--     strict_declare_global "some_var"
+--     some_var = 42 ]]
 function strict_declare_global(name)
   allowed_globals[name] = true
 end

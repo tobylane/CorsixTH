@@ -44,7 +44,6 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---- Manages entities, rooms, and the date.
 class "World"
 
 local World = _G["World"]
@@ -64,6 +63,7 @@ local earthquake_damage_time = 16 -- hours
 local earthquake_warning_period = 600 -- hours between warning and real thing
 local earthquake_warning_length = 25 -- length of early warning quake
 
+--- Manages entities, rooms, and the date.
 function World:World(app)
   self.app = app
   self.map = app.map
@@ -1284,7 +1284,7 @@ end
 ---   180% if reputation == 700
 ---   300% if reputation == 1000
 -- @param hospital (hospital): the hospital used to compute the
---- reputation impact
+---reputation impact
 function World:getReputationImpact(hospital)
   local result = 1 + ((hospital.reputation - 500) / 250)
 
@@ -1296,7 +1296,7 @@ function World:getReputationImpact(hospital)
   end
 end
 
--- Called when it is time to determine when the next emergency should happen
+--- Called when it is time to determine when the next emergency should happen
 function World:nextEmergency()
   local control = self.map.level_config.emergency_control
   -- Does this level use random emergencies?
@@ -1994,9 +1994,11 @@ function World:isOnMap(x, y)
 end
 
 ---
+-- @param x (int) X position of the coordinate to test.
+-- @param y (int) Y position of the coordinate to test.
+-- @param object (table) the object to test
 -- @param allowed_rooms_id_parameter Should be nil when the object is allowed to be placed in any room.
 -- @return {within_room, roomId}
----
 function World:willObjectsFootprintTileBeWithinItsAllowedRoomIfLocatedAt(x, y, object, allowed_rooms_id_parameter)
   local xy_rooms_id = self.map.th:getCellFlags(x, y, {}).roomId
 

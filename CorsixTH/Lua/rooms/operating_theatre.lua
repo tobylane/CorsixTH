@@ -200,6 +200,7 @@ function OperatingTheatreRoom:buildTableAction1(surgeon1, patient, operation_tab
 end
 
 --- Sends the surgeon to the nearest operation sink ("op_sink1") and makes him wash his hands.
+-- @param surgeon (Staff)
 -- @param at_front (boolean): If true, add the actions at the front the action queue.
 -- Add the actions at the end of the queue otherwise.
 -- Default value is true.
@@ -291,7 +292,7 @@ function OperatingTheatreRoom:commandEnteringPatient(patient)
     end
   end
 
-  ---- Everyone standby...and sync start the operation
+  -- -- Everyone standby...and sync start the operation
   --
   -- first surgeon walk over to the operating table
   local obj, ox, oy = self.world:findObjectNear(surgeon1, "operating_table")

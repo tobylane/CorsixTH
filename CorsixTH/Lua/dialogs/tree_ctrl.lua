@@ -180,13 +180,13 @@ function TreeNode:getNextVisible()
   end
 end
 
---- A tree node representing a file (or directory) in the physical file-system.
 class "FileTreeNode" (TreeNode)
 
 local FileTreeNode = _G["FileTreeNode"]
 
 local pathsep = package.config:sub(1, 1)
 
+--- A tree node representing a file (or directory) in the physical file-system.
 function FileTreeNode:FileTreeNode(path)
   self:TreeNode()
   if path:sub(-1) == pathsep and path ~= pathsep then
@@ -444,12 +444,12 @@ function FileTreeNode:select()
   self.is_valid_directory = true
 end
 
---- A tree node which can be used as a root node to give the effect of having
--- multiple root nodes.
 class "DummyRootNode" (TreeNode)
 
 local DummyRootNode = _G["DummyRootNode"]
 
+--- A tree node which can be used as a root node.
+-- To give the effect of having multiple root nodes.
 -- @param roots (array) An array of `TreeNode`s which should be displayed as
 -- root nodes.
 function DummyRootNode:DummyRootNode(roots)
@@ -476,12 +476,12 @@ function DummyRootNode:getIndexOfChild(child)
   return self.children[child]
 end
 
---- A control (to be placed on a window) which allows the user to navigate a
--- tree of items and select one item from it.
 class "TreeControl" (Window)
 
 local TreeControl = _G["TreeControl"]
 
+--- A control (to be placed on a window).
+-- Which allows the user to navigate a tree of items and select one item from it.
 -- @param root (TreeNode) The single root node of the tree (use a `DummyRootNode`
 -- here if multiple root nodes are desired).
 -- @param x (integer) The X-position, in pixels, where the control should start
@@ -494,6 +494,8 @@ local TreeControl = _G["TreeControl"]
 -- a table with `red`, `green`, and `blue` fields, each an integer between 0
 -- and 255.
 -- @param col_fg (table) The colour used for the scrollbar and highlighted items.
+-- @param y_offset (integer)
+-- @param has_font (boolean)
 function TreeControl:TreeControl(root, x, y, width, height, col_bg, col_fg, y_offset, has_font)
   -- Setup the base window
   self:Window()

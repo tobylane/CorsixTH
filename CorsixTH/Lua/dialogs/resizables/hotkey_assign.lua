@@ -551,11 +551,11 @@ function UIHotkeyAssign:showKeyPane(pane)
   end
 end
 
---- Child window for setting key bindings
 class "UIHotkeyAssignKeyPane" (Window)
 
 local UIHotkeyAssignKeyPane = _G["UIHotkeyAssignKeyPane"]
 
+--- Child window for setting key bindings.
 function UIHotkeyAssignKeyPane:UIHotkeyAssignKeyPane(x, y, ui, key_options, app_hotkeys)
   self:Window()
 

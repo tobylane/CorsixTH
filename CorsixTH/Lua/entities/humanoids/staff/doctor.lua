@@ -23,11 +23,11 @@ corsixth.require("entities.humanoids.staff")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---- A Doctor (Researcher,Surgan,Psychologist)
 class "Doctor" (Staff)
 
 local Doctor = _G["Doctor"]
 
+--- A Doctor (Researcher, Surgeon, Psychologist).
 -- @param ... Arguments to base class constructor.
 function Doctor:Doctor(...)
   self:Staff(...)

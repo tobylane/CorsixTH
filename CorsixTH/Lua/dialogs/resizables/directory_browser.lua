@@ -54,13 +54,11 @@ function DirTreeNode:getSelectColour(canvas)
 end
 
 
-
-
---- This tree only shows directories and highlights valid TH directories.
 class "InstallDirTreeNode" (DirTreeNode)
 
 local InstallDirTreeNode = _G["InstallDirTreeNode"]
 
+--- This tree only shows directories and highlights valid TH directories.
 function InstallDirTreeNode:InstallDirTreeNode(path)
   self:FileTreeNode(path)
 end
@@ -112,12 +110,11 @@ function InstallDirTreeNode:getHighlightColour(canvas)
   return highlight_colour or nil
 end
 
---- Prompter for Theme Hospital install directory
 class "UIDirectoryBrowser" (UIResizable)
 
 local UIDirectoryBrowser = _G["UIDirectoryBrowser"]
 
---- Creates a new directory browser window
+--- Creates a new directory browser window for the Theme Hospital install directory.
 -- @param ui The active UI to hook into.
 -- @param mode Whether the dialog has been opened from the main_menu or somewhere else. Currently
 --- valid are "menu" or "dir_browser".

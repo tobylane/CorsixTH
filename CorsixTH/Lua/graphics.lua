@@ -550,11 +550,11 @@ function Graphics:updateTarget(target)
   end
 end
 
---- Utility class for setting animation markers and querying animation length.
 class "AnimationManager"
 
 local AnimationManager = _G["AnimationManager"]
 
+--- Utility class for setting animation markers and querying animation length.
 function AnimationManager:AnimationManager(anims)
   self.anim_length_cache = {}
   self.anims = anims

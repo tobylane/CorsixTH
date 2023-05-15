@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 corsixth.require("persistance")
 
---- Base class for user-interface dialogs.
 class "Window"
 
 local Window = _G["Window"]
@@ -29,6 +28,7 @@ local Window = _G["Window"]
 -- i.e. mouse_left, mouse_middle, mouse_right
 Window.buttons_down = permanent"Window.buttons_down" {}
 
+--- Base class for user-interface dialogs.
 function Window:Window()
   self.x = 0
   self.y = 0
@@ -146,18 +146,17 @@ function Window:removeKeyHandler(keys)
   self.ui:removeKeyHandler(keys, self)
 end
 
+class "Panel"
+
+local Panel = _G["Panel"]
+
 --- The basic component which makes up most `Window`s.
---- The visual parts of most ingame dialogs are sprites from a sprite sheet.
+-- The visual parts of most ingame dialogs are sprites from a sprite sheet.
 -- A `Panel` is an instance of a particular sprite, consisting of a sprite
 -- index and a position. It is advantageous to construct dialogs out of panels
 -- (using `Window:addPanel`) as the common operations on panels (like drawing
 -- them and hit-testing against them) are implemented in the `Window` class,
 -- thus reducing the amount of work that each individual dialog has to do.
-class "Panel"
-
-local Panel = _G["Panel"]
-
--- !dummy
 function Panel:Panel()
   self.window = nil
   self.x = nil
@@ -552,12 +551,11 @@ function Window:getWindows(window_class)
   return matching_windows
 end
 
---- A region of a `Panel` which causes some action when clicked.
 class "Button"
 
 local Button = _G["Button"]
 
----dummy
+-- A region of a `Panel` which causes some action when clicked.
 function Button:Button()
   self.ui = nil
   self.is_toggle = nil
@@ -790,12 +788,11 @@ function Window:makeButtonOnPanel(panel, x, y, w, h, sprite, on_click, on_click_
   return button
 end
 
---- A window element used to scroll in lists
 class "Scrollbar"
 
 local Scrollbar = _G["Scrollbar"]
 
----dummy
+--- A window element used to scroll in lists
 function Scrollbar:Scrollbar()
   self.base = nil
   self.slider = nil
@@ -898,12 +895,11 @@ function Window:makeScrollbarOnPanel(panel, slider_colour, callback, min_value, 
   return scrollbar
 end
 
---- A window element used to enter text
 class "Textbox"
 
 local Textbox = _G["Textbox"]
 
----dummy
+--- A window element used to enter text.
 function Textbox:Textbox()
   self.panel = nil
   self.confirm_callback = nil
@@ -1294,12 +1290,11 @@ function Window:makeTextboxOnPanel(panel, confirm_callback, abort_callback)
   return textbox
 end
 
---- A window element used to accept hotkey configurations.
 class "HotkeyBox"
 
 local HotkeyBox = _G["HotkeyBox"]
 
----dummy
+--- A window element used to accept hotkey configurations.
 function HotkeyBox:HotkeyBox()
   self.panel = nil
   self.confirm_callback = nil

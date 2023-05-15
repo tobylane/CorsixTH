@@ -47,7 +47,7 @@ local flag_cache = {}
 
 --- Get the value of the given flag from the tile at x, y in the map.
 -- @param x (int) Horizontal position of the tile to query in the map.
--- @param x (int) Vertical position of the tile to query in the map.
+-- @param y (int) Vertical position of the tile to query in the map.
 -- @param flag (string) Name of the queried flag.
 -- @return (?) value of the queried flag.
 function Map:getCellFlag(x, y, flag)
@@ -56,7 +56,7 @@ end
 
 --- Get the ID of the room of the tile at x, y in the map.
 -- @param x (int) Horizontal position of the tile to query in the map.
--- @param x (int) Vertical position of the tile to query in the map.
+-- @param y (int) Vertical position of the tile to query in the map.
 -- @return ID of the room at the queried tile.
 function Map:getRoomId(x, y)
   return self.th:getCellFlags(math.floor(x), math.floor(y)).roomId

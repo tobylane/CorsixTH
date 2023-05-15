@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 corsixth.require("date")
 
---- Pr
 local AnnouncementPriority = {
   Critical = 1,
   High = 2,
@@ -41,7 +40,6 @@ local default_announcement_decay_hours = {
   [AnnouncementPriority.Low] = 3 * hoursPerDay
 }
 
---- An announcement queue based on priority
 class "AnnouncementQueue"
 
 local AnnouncementQueue = _G["AnnouncementQueue"]
@@ -101,8 +99,6 @@ function AnnouncementQueue:checkForDuplicates(sound, date)
   return false
 end
 
-
---- An announcement.
 class "AnnouncementEntry"
 
 local AnnouncementEntry = _G["AnnouncementEntry"]
@@ -117,16 +113,16 @@ function AnnouncementEntry:AnnouncementEntry()
   self.played_callback_delay = nil -- but not until delay has passed
 end
 
---- Announces audible messages to the player.
---- The announcer plays announcements based on their priority. If the caller requests an
--- announcement to be played, it will be played directly if there are no announcements
--- currently being announced. Note that announcements are only played if there is
--- a worker at the reception desk and announcements are enabled in the settings.
 class "Announcer"
 
 local Announcer = _G["Announcer"]
 
---- Constructor.
+--- Announces audible messages to the player.
+-- The announcer plays announcements based on their priority. If the caller requests an
+-- announcement to be played, it will be played directly if there are no announcements
+-- currently being announced. Note that announcements are only played if there is
+-- a worker at the reception desk and announcements are enabled in the settings.
+-- Constructor.
 -- @param app (App) The CorsixTH app
 function Announcer:Announcer(app)
   self.app = app

@@ -24,6 +24,7 @@ class "UIInformation" (Window)
 local UIInformation = _G["UIInformation"]
 
 --- Constructor for the Information Dialog.
+-- @param ui The UI class of the app
 -- @param text The text to show, held in a table. All elements of the table will be written
 -- beneath each other. If instead a table within the table is supplied the texts
 -- will be shown in consecutive dialogs.
