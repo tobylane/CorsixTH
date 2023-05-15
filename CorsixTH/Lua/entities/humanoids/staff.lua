@@ -22,13 +22,13 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
+--- A Doctor, Nurse, Receptionist, Handyman, or Surgeon
 class "Staff" (Humanoid)
 
 ---@type Staff
 local Staff = _G["Staff"]
 
---!param ... Arguments to base class constructor.
+-- @param ... Arguments to base class constructor.
 function Staff:Staff(...)
   self:Humanoid(...)
   self.hover_cursor = TheApp.gfx:loadMainCursor("staff")
@@ -37,8 +37,8 @@ function Staff:Staff(...)
   self.leave_priority = AnnouncementPriority.High
 end
 
---! Handle daily adjustments to staff.
---!return (boolean) Whether the caller should continue processing
+--- Handle daily adjustments to staff.
+-- @return (boolean) Whether the caller should continue processing
 function Staff:tickDay()
   if not Humanoid.tickDay(self) then
     return false
@@ -283,8 +283,8 @@ end
 -- Function which is called when the user clicks on the staff member.
 -- Responsible for opening a staff information dialog on left click and picking
 -- up the staff member on right click.
---!param ui (GameUI) The UI which the user in question is using.
---!param button (string) One of: "left", "middle", "right".
+-- @param ui (GameUI) The UI which the user in question is using.
+-- @param button (string) One of: "left", "middle", "right".
 function Staff:onClick(ui, button)
   if self.fired then
     return
@@ -461,7 +461,7 @@ function Staff:onPlaceInCorridor()
 end
 
 -- Sets the Hospital for a member of staff
---!param hospital (Hospital) - hospital to assign to member of staff
+-- @param hospital (Hospital) - hospital to assign to member of staff
 function Staff:setHospital(hospital)
   Humanoid.setHospital(self, hospital)
   self:updateDynamicInfo()
@@ -585,9 +585,9 @@ end
 
 -- Increases the wage of the staff member. Also increases happiness and clears
 -- any request raise dialogs.
---!param amount (integer) The amount, in game dollars per month, to increase
+-- @param amount (integer) The amount, in game dollars per month, to increase
 -- the salary by.
---!return (bool) Whether the wage actually increased
+-- @return (bool) Whether the wage actually increased
 function Staff:increaseWage(amount)
   -- Are we already paid the maximum?
   local max_salary = self.world.map.level_config.payroll.MaxSalary
@@ -607,14 +607,14 @@ function Staff:increaseWage(amount)
   return wage_raised
 end
 
---! Sets dynamic info text before the dynamic info update
---!param text (string) the string to append
+--- Sets dynamic info text before the dynamic info update
+-- @param text (string) the string to append
 function Staff:setDynamicInfoText(text)
   self.dynamic_text = text
   self:updateDynamicInfo()
 end
 
---! Updates a staff member's dynamic info
+--- Updates a staff member's dynamic info
 function Staff:updateDynamicInfo()
   local dynamic_text = self.dynamic_text or ""
   local fatigue_text = _S.dynamic_info.staff.tiredness
@@ -705,8 +705,8 @@ function Staff:getDrawingLayer()
   return 4
 end
 
---! Estimate staff service quality based on skills, restfulness (inverse of fatigue) and happiness.
---!return (float) between [0-1] indicating quality of the service.
+--- Estimate staff service quality based on skills, restfulness (inverse of fatigue) and happiness.
+-- @return (float) between [0-1] indicating quality of the service.
 function Staff:getServiceQuality()
   -- weights
   local skill_weight = 0.7

@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
---! An `Entity` which occupies at least a single map tile and does not move.
+--- An `Entity` which occupies at least a single map tile and does not move.
 class "Object" (Entity)
 
 ---@type Object
@@ -62,9 +62,9 @@ function Object:Object(hospital, object_type, x, y, direction, etc)
   self:setTile(x, y)
 end
 
---! Initializes the footprint, finds out what to draw and checks for
+--- Initializes the footprint, finds out what to draw and checks for
 --  split animations.
---!param direction The orientation in which the object is facing.
+-- @param direction The orientation in which the object is facing.
 function Object:initOrientation(direction)
   self.direction = direction
   local object_type = self.object_type
@@ -113,7 +113,7 @@ function Object:initOrientation(direction)
   self:setAnimation(anim, flags)
 end
 
---! Add methods to a class for creating and controlling a slave object
+--- Add methods to a class for creating and controlling a slave object
 function Object.slaveMixinClass(class_method_table)
   local name = class.name(class_method_table)
   local super = class.superclass(class_method_table)
@@ -244,7 +244,7 @@ function Object:setAnimation(animation, flags)
   end
 end
 
---! Get the primary tile which the object is attached to for rendering
+--- Get the primary tile which the object is attached to for rendering
 --[[! For objects which attach to a single tile for rendering, this method will
 return the X and Y Lua world coordinates of that tile. For objects which split
 their rendering over multiple tiles, one of them is arbitrarily designated as
@@ -264,8 +264,8 @@ function Object:getRenderAttachTile()
   return x, y
 end
 
---! Updates the object's dynamic info
---!param only_update (bool) If true, do not increase times_used.
+--- Updates the object's dynamic info
+-- @param only_update (bool) If true, do not increase times_used.
 function Object:updateDynamicInfo(only_update)
   if not only_update then
     self.times_used = self.times_used + 1
@@ -504,7 +504,7 @@ end
 -- Sets the user of this object to the given user. Note that if multiple_users_allowed
 -- is set to true for this object "user" will always be the last added user to this object.
 -- Please do not modify object.user directly.
---!param user The user that is about to use this object.
+-- @param user The user that is about to use this object.
 function Object:setUser(user)
   assert(user, "setUser: Expected a user, got nil") -- It makes no sense to add a nil value
   self.user = user

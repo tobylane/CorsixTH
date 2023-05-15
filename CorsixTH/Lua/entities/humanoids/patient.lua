@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! A `Humanoid` who is in the hospital for diagnosis and/or treatment.
+--- A `Humanoid` who is in the hospital for diagnosis and/or treatment.
 class "Patient" (Humanoid)
 
 ---@type Patient
@@ -137,7 +137,7 @@ function Patient:changeDisease(new_disease)
   self.disease = new_disease -- Finally, make the patient carry the new disease.
 end
 
---! Mark patient as being diagnosed.
+--- Mark patient as being diagnosed.
 function Patient:setDiagnosed()
   self.diagnosed = true
   self.treatment_history[#self.treatment_history + 1] = self.disease.name
@@ -199,7 +199,7 @@ end
 -- Sets the hospital for the patient - additionally removing them from a
 -- hospital if they already belong to one. For player hospitals, patients who
 -- are not debug or emergency patients are made to seek a reception desk.
---!param hospital (Hospital): hospital to assign to patient
+-- @param hospital (Hospital): hospital to assign to patient
 function Patient:setHospital(hospital)
   if self.hospital then
     self.hospital:removePatient(self)
@@ -211,9 +211,9 @@ function Patient:setHospital(hospital)
   hospital:addPatient(self)
 end
 
---! Decide the ID of the disease or treatment that the patient is paying for.
---!return (string or nil) Id of the disease or treatment, or nil if the Id could
---! not be decided.
+--- Decide the ID of the disease or treatment that the patient is paying for.
+-- @return (string or nil) Id of the disease or treatment, or nil if the Id could
+--- not be decided.
 function Patient:getTreatmentDiseaseId()
   if self.diagnosed then
     return self.disease.id
@@ -229,13 +229,13 @@ function Patient:getTreatmentDiseaseId()
   end
 end
 
---! Estimate the subjective perceived distortion between the price level the
---! patient might expect considering the reputation and the cure effectiveness
---! of a given treatment and the staff internal state.
---!param casebook (table): casebook entry for the treatment.
---!return (float) [-1, 1]. The smaller the value is, the more the patient
---! considers the bill to be under-priced. The bigger the value is, the more
---! the patient patient considers the bill to be over-priced.
+--- Estimate the subjective perceived distortion between the price level the
+--- patient might expect considering the reputation and the cure effectiveness
+--- of a given treatment and the staff internal state.
+-- @param casebook (table): casebook entry for the treatment.
+-- @return (float) [-1, 1]. The smaller the value is, the more the patient
+--- considers the bill to be under-priced. The bigger the value is, the more
+--- the patient patient considers the bill to be over-priced.
 function Patient:getPriceDistortion(casebook)
   -- weights
   local happiness_weight = 0.1
@@ -258,11 +258,11 @@ function Patient:getPriceDistortion(casebook)
   return price_level - expected_price_level
 end
 
---! Handle attempting to treat this patient
---!
---! If the treatment is effective the patient will be sent home, otherwise they
---! will die. The patient may or may not agree to pay for the treatment
---! depending on whether they consider the price reasonable.
+--- Handle attempting to treat this patient
+---
+--- If the treatment is effective the patient will be sent home, otherwise they
+--- will die. The patient may or may not agree to pay for the treatment
+--- depending on whether they consider the price reasonable.
 function Patient:treatDisease()
   local hospital = self.hospital
 
@@ -287,8 +287,8 @@ function Patient:treatDisease()
   end
 end
 
---! Returns true if patient agrees to pay for the given treatment.
---!param disease_id (string): The id of the disease to test
+--- Returns true if patient agrees to pay for the given treatment.
+-- @param disease_id (string): The id of the disease to test
 function Patient:agreesToPay(disease_id)
   local casebook = self.hospital.disease_casebook[disease_id]
   local price_distortion = self:getPriceDistortion(casebook)
@@ -297,8 +297,8 @@ function Patient:agreesToPay(disease_id)
   return not (is_over_priced and math.random(1, 5) == 1)
 end
 
---! Either the patient is cured, or he/she dies.
---!return (boolean) True if cured, false if died.
+--- Either the patient is cured, or he/she dies.
+-- @return (boolean) True if cured, false if died.
 function Patient:isTreatmentEffective()
   local cure_chance = self.hospital.disease_casebook[self.disease.id].cure_effectiveness
   cure_chance = cure_chance * self.diagnosis_progress
@@ -315,14 +315,14 @@ function Patient:isTreatmentEffective()
   return (cure_chance >= math.random(1,100))
 end
 
---! Change patient internal state to "cured".
+--- Change patient internal state to "cured".
 function Patient:cure()
   self.cured = true
   self.infected = false
   self.attributes["health"] = 1
 end
 
---! Patient died, process the event.
+--- Patient died, process the event.
 function Patient:die()
   -- It may happen that this patient was just cured and then the room blew up.
   self.hospital:humanoidDeath(self)
@@ -356,7 +356,7 @@ function Patient:canPeeOrPuke(current)
   return parcel ~= 0 and th:getPlotOwner(parcel) == self.hospital:getPlayerIndex()
 end
 
---! Animations for when there is an earth quake
+--- Animations for when there is an earth quake
 function Patient:falling()
   local current = self:getCurrentAction()
   current.keep_reserved = true
@@ -395,7 +395,7 @@ function Patient:fallingAnnounce()
   self.hospital:giveAdvice(msg)
 end
 
---! Perform 'shake fist' action.
+--- Perform 'shake fist' action.
 function Patient:shakeFist()
   if self.shake_fist_anim then
     self:queueAction(ShakeFistAction(), 1)
@@ -453,17 +453,17 @@ function Patient:tapFoot()
   end
 end
 
---! Make the patient leave the hospital. This function also handles some
---! statistics (number of cured/kicked out patients, etc.)
---! The mood icon is updated accordingly. Reputation is impacted accordingly.
---!param reason (string): the reason why the patient is sent home, which could be:
---! -"cured": When the patient is cured.
---! -"kicked": When the patient is kicked anyway, either manually,
---! either when no treatment can be found for her/him, etc.
---! -"over_priced": When the patient decided to leave because he/she believes
---! the last treatment is over-priced.
+--- Make the patient leave the hospital. This function also handles some
+--- statistics (number of cured/kicked out patients, etc.)
+--- The mood icon is updated accordingly. Reputation is impacted accordingly.
+-- @param reason (string): the reason why the patient is sent home, which could be:
+--- -"cured": When the patient is cured.
+--- -"kicked": When the patient is kicked anyway, either manually,
+--- either when no treatment can be found for her/him, etc.
+--- -"over_priced": When the patient decided to leave because he/she believes
+--- the last treatment is over-priced.
 --param disease_id (string): When the reason is "over_priced" this is the
---! id of the disease/diagnosis that the patient considered over_priced
+--- id of the disease/diagnosis that the patient considered over_priced
 function Patient:goHome(reason, disease_id)
   local hosp = self.hospital
   if self.going_home then
@@ -941,15 +941,15 @@ function Patient:addToTreatmentHistory(room)
   end
 end
 
---! Sets the dynamic text currently in use by the patient
---!param action_string (string) What text to say in dynamic text
+--- Sets the dynamic text currently in use by the patient
+-- @param action_string (string) What text to say in dynamic text
 function Patient:setDynamicInfoText(action_string)
   self.action_string = action_string
   self:updateDynamicInfo()
 end
 
---! Updates a patient's dynamic info
---! Can be called direct to refresh only
+--- Updates a patient's dynamic info
+--- Can be called direct to refresh only
 function Patient:updateDynamicInfo()
   local action_string = self.action_string or ""
   local info = ""

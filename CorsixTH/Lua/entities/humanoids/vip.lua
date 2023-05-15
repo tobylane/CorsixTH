@@ -56,7 +56,7 @@ If rating exceeds values, it will be capped as necessary
 corsixth.require("utility")
 
 
---! A `Vip` who is in the hospital to evaluate the hospital and produce a report
+--- A `Vip` who is in the hospital to evaluate the hospital and produce a report
 class "Vip" (Humanoid)
 
 ---@type Vip

@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
---! An `Object` which needs occasional repair (to prevent explosion).
+--- An `Object` which needs occasional repair (to prevent explosion).
 class "Machine" (Object)
 
 ---@type Machine
@@ -55,18 +55,18 @@ function Machine:setCrashedAnimation()
   self:setAnimation(self.object_type.crashed_animation)
 end
 
---! Calculates the number of times the machine can be used before crashing (unless repaired first)
+--- Calculates the number of times the machine can be used before crashing (unless repaired first)
 function Machine:getRemainingUses()
   return self.strength - self.times_used
 end
 
---! Returns true if a machine is smoking/needs repair
+--- Returns true if a machine is smoking/needs repair
 function Machine:isBreaking()
   local threshold = self:getRemainingUses()
   return threshold < 4
 end
 
---! Set whether the smoke animation should be showing
+--- Set whether the smoke animation should be showing
 local function setSmoke(self, isSmoking)
   -- If turning smoke on for this machine
   if isSmoking then
@@ -93,7 +93,7 @@ local function setSmoke(self, isSmoking)
   end
 end
 
---! Call on machine use. Handles crashing the machine & queueing repairs
+--- Call on machine use. Handles crashing the machine & queueing repairs
 function Machine:machineUsed(room)
   -- Do nothing if the room has already crashed
   if room.crashed then
@@ -177,7 +177,7 @@ function Machine:machineUsed(room)
   self:calculateSmoke(room)
 end
 
---! Calculates whether smoke gets displayed for this machine (and if so, how much)
+--- Calculates whether smoke gets displayed for this machine (and if so, how much)
 function Machine:calculateSmoke(room)
   -- Do nothing if the room has already crashed
   if room.crashed then
@@ -262,8 +262,8 @@ function Machine:createHandymanActions(handyman)
     :format(self.object_type.name))
 end
 
---! Replace this machine (make it pretend it's brand new)
---!param cost (int) Cost to replace the machine
+--- Replace this machine (make it pretend it's brand new)
+-- @param cost (int) Cost to replace the machine
 function Machine:replaceMachine(cost)
   -- Pay for the new machine
   self.hospital:spendMoney(cost, _S.transactions.machine_replacement)
@@ -301,9 +301,9 @@ function Machine:machineRepaired(room)
   self.hospital:removeHandymanTask(taskIndex, "repairing")
 end
 
---! Tells the machine to start showing the icon that it needs repair.
---!   also lock the room from patient entering
---!param handyman The handyman heading to this machine. nil if repairing is finished
+--- Tells the machine to start showing the icon that it needs repair.
+---   also lock the room from patient entering
+-- @param handyman The handyman heading to this machine. nil if repairing is finished
 function Machine:setRepairing(handyman)
   -- If mode is set to true manually through the dialog, boost the urgency despite of the strength
   local anim = {icon = 4564} -- The only icon for machinery

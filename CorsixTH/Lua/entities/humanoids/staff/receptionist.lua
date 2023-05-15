@@ -23,13 +23,13 @@ corsixth.require("entities.humanoids.staff")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
---! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
+--- A Doctor, Nurse, Receptionist, Handyman, or Surgeon
 class "Receptionist" (Staff)
 
 ---@type Receptionist
 local Receptionist = _G["Receptionist"]
 
---!param ... Arguments to base class constructor.
+-- @param ... Arguments to base class constructor.
 function Receptionist:Receptionist(...)
   self:Staff(...)
   self.leave_sounds = {"sack007.wav", "sack008.wav"}

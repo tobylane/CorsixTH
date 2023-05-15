@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! An `Entity` which occupies a single tile and is capable of moving around the map.
+--- An `Entity` which occupies a single tile and is capable of moving around the map.
 class "Humanoid" (Entity)
 
 ---@type Humanoid
@@ -283,7 +283,7 @@ for anim in values(door_animations, "*.leaving_swing") do
   anim_mgr:setMarker(anim, 0, {0.1, 0}, 9, {0, -1})
 end
 
---!param ... Arguments for base class constructor.
+-- @param ... Arguments for base class constructor.
 function Humanoid:Humanoid(...)
   self:Entity(...)
   self.action_queue = {}
@@ -351,8 +351,8 @@ function Humanoid:afterLoad(old, new)
 end
 
 -- Function which is called when the user clicks on the `Humanoid`.
---!param ui (GameUI) The UI which the user in question is using.
---!param button (string) One of: "left", "middle", "right".
+-- @param ui (GameUI) The UI which the user in question is using.
+-- @param button (string) One of: "left", "middle", "right".
 function Humanoid:onClick(ui, button) -- luacheck: ignore 212 keep args from parent class
   if TheApp.config.debug then
     self:dump()
@@ -387,7 +387,7 @@ end
 -- Set the `Hospital` which is responsible for treating or employing the
 -- `Humanoid`. In single player games, this has little effect, but it is very
 -- important in multiplayer games.
---!param hospital (Hospital) The `Hospital` which should be responsible
+-- @param hospital (Hospital) The `Hospital` which should be responsible
 -- for the `Humanoid`.
 function Humanoid:setHospital(hospital)
   self.hospital = hospital
@@ -396,7 +396,7 @@ function Humanoid:setHospital(hospital)
   end
 end
 
---! Despawn the humanoid.
+--- Despawn the humanoid.
 function Humanoid:despawn()
   local spawn_point = self.world.spawn_points[math.random(1, #self.world.spawn_points)]
   self:setNextAction(SpawnAction("despawn", spawn_point):setMustHappen(true))
@@ -460,7 +460,7 @@ function Humanoid:getCurrentMood()
   end
 end
 
---! Start the next (always first) action in the queue.
+--- Start the next (always first) action in the queue.
 function Humanoid:startAction()
   local action = self.action_queue[1]
 
@@ -592,7 +592,7 @@ function Humanoid:hasLeavingAction()
   return false
 end
 
---! Handle an empty action queue in some way instead of crashing.
+--- Handle an empty action queue in some way instead of crashing.
 function Humanoid:_handleEmptyActionQueue()
   -- if this is a patient that is going home, an empty
   -- action queue is not a problem
@@ -677,11 +677,11 @@ end
 -- Helper function for the common case of instructing a `Humanoid` to walk to
 -- a position on the map. Equivalent to calling `setNextAction` with a walk
 -- action.
---!param tile_x (integer) The X-component of the Lua tile coordinates of the
+-- @param tile_x (integer) The X-component of the Lua tile coordinates of the
 -- tile to walk to.
---!param tile_y (integer) The Y-component of the Lua tile coordinates of the
+-- @param tile_y (integer) The Y-component of the Lua tile coordinates of the
 -- tile to walk to.
---!param must_happen (boolean, nil) If true, then the walk action will not be
+-- @param must_happen (boolean, nil) If true, then the walk action will not be
 -- interrupted.
 function Humanoid:walkTo(tile_x, tile_y, must_happen)
   self:setNextAction(WalkAction(tile_x, tile_y)
@@ -733,8 +733,8 @@ function Humanoid:handleRemovedObject(object)
 end
 
 -- Adjusts one of the `Humanoid`'s attributes.
---!param attribute (string) One of: "happiness", "thirst", "toilet_need", "warmth".
---!param amount (number) This amount is added to the existing value for the attribute,
+-- @param attribute (string) One of: "happiness", "thirst", "toilet_need", "warmth".
+-- @param amount (number) This amount is added to the existing value for the attribute,
 --  and is then capped to be between 0 and 1.
 function Humanoid:changeAttribute(attribute, amount)
   -- Handle some happiness special cases
@@ -809,7 +809,7 @@ function Humanoid:goingToUseObject(object_type)
 end
 
 -- Registers a new build callback for this humanoid.
---!param callback (function) The callback to call when a room has been built.
+-- @param callback (function) The callback to call when a room has been built.
 function Humanoid:registerRoomBuildCallback(callback)
   if not self.build_callbacks[callback] then
     self.build_callbacks[callback] = true
@@ -819,7 +819,7 @@ function Humanoid:registerRoomBuildCallback(callback)
 end
 
 -- Unregisters a build callback for this humanoid.
---!param callback (function) The callback to remove.
+-- @param callback (function) The callback to remove.
 function Humanoid:unregisterRoomBuildCallback(callback)
   if self.build_callbacks[callback] then
     self.build_callbacks[callback] = nil
@@ -841,7 +841,7 @@ function Humanoid:notifyOfStaffChange(staff)
 end
 
 -- Registers a new remove callback for this humanoid.
---!param callback (function) The callback to call when a room has been removed.
+-- @param callback (function) The callback to call when a room has been removed.
 function Humanoid:registerRoomRemoveCallback(callback)
   if not self.remove_callbacks[callback] then
     self.world:registerRoomRemoveCallback(callback)
@@ -852,7 +852,7 @@ function Humanoid:registerRoomRemoveCallback(callback)
 end
 
 -- Unregisters a remove callback for this humanoid.
---!param callback (function) The callback to remove.
+-- @param callback (function) The callback to remove.
 function Humanoid:unregisterRoomRemoveCallback(callback)
   if self.remove_callbacks[callback] then
     self.world:unregisterRoomRemoveCallback(callback)
@@ -864,7 +864,7 @@ end
 
 
 -- Registers a new staff change callback for this humanoid.
---!param callback (function) The callback to call when a staff member has been hired or fired
+-- @param callback (function) The callback to call when a staff member has been hired or fired
 function Humanoid:registerStaffChangeCallback(callback)
   if self.staff_change_callbacks and not self.staff_change_callbacks[callback] then
     self.staff_change_callbacks[callback] = true
@@ -874,7 +874,7 @@ function Humanoid:registerStaffChangeCallback(callback)
 end
 
 -- Unregisters a staff change callback for this humanoid.
---!param callback (function) The callback to remove.
+-- @param callback (function) The callback to remove.
 function Humanoid:unregisterStaffChangeCallback(callback)
 
   if self.staff_change_callbacks and self.staff_change_callbacks[callback] then
@@ -977,8 +977,8 @@ function Humanoid:tostring()
   return result
 end
 
---! Unexpects humanoid from a room, if validly entering this room
---!param dest_room (Room) The room the humanoid maybe expected at
+--- Unexpects humanoid from a room, if validly entering this room
+-- @param dest_room (Room) The room the humanoid maybe expected at
 function Humanoid:unexpectFromRoom(dest_room)
   -- Unexpect the patient from a possible destination room.
   if dest_room and dest_room.door.queue then
