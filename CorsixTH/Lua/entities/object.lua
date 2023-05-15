@@ -23,7 +23,6 @@ local TH = require("TH")
 --- An `Entity` which occupies at least a single map tile and does not move.
 class "Object" (Entity)
 
----@type Object
 local Object = _G["Object"]
 
 local orient_mirror = {

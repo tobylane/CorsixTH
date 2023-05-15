@@ -40,7 +40,6 @@ object.orientations = {
 
 class "SurgeonScreen" (Object)
 
----@type SurgeonScreen
 local SurgeonScreen = _G["SurgeonScreen"]
 
 function SurgeonScreen:SurgeonScreen(...)

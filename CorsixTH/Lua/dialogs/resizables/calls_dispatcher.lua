@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Calls Dispatcher Window
 class "UICallsDispatcher" (UIResizable)
 
----@type UICallsDispatcher
 local UICallsDispatcher = _G["UICallsDispatcher"]
 
 local col_bg = {

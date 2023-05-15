@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "WalkAction" (HumanoidAction)
 
----@type WalkAction
 local WalkAction = _G["WalkAction"]
 
 --- Action to walk to a given position.

@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "SweepFloorAction" (HumanoidAction)
 
----@type SweepFloorAction
 local SweepFloorAction = _G["SweepFloorAction"]
 
 function SweepFloorAction:SweepFloorAction(litter)

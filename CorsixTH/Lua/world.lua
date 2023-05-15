@@ -47,7 +47,6 @@ local AnnouncementPriority = _G["AnnouncementPriority"]
 --- Manages entities, rooms, and the date.
 class "World"
 
----@type World
 local World = _G["World"]
 
 local local_criteria_variable = {

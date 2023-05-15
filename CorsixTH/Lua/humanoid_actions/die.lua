@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "DieAction" (HumanoidAction)
 
----@type DieAction
 local DieAction = _G["DieAction"]
 
 function DieAction:DieAction()

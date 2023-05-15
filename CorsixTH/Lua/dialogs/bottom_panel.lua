@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- The multi-purpose panel for launching dialogs / screens and dynamic information.
 class "UIBottomPanel" (Window)
 
----@type UIBottomPanel
 local UIBottomPanel = _G["UIBottomPanel"]
 
 function UIBottomPanel:UIBottomPanel(ui)

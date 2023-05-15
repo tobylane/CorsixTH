@@ -26,7 +26,6 @@ local AnnouncementPriority = _G["AnnouncementPriority"]
 --- A Doctor (Researcher,Surgan,Psychologist)
 class "Doctor" (Staff)
 
----@type Doctor
 local Doctor = _G["Doctor"]
 
 -- @param ... Arguments to base class constructor.

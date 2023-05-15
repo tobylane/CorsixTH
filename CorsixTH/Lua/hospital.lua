@@ -22,7 +22,6 @@ corsixth.require("announcer")
 
 class "Hospital"
 
----@type Hospital
 local Hospital = _G["Hospital"]
 
 function Hospital:Hospital(world, avail_rooms, name)

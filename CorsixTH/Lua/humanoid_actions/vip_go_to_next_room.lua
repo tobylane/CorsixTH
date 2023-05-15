@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "VipGoToNextRoomAction" (HumanoidAction)
 
----@type VipGoToNextRoomAction
 local VipGoToNextRoomAction = _G["VipGoToNextRoomAction"]
 
 function VipGoToNextRoomAction:VipGoToNextRoomAction()

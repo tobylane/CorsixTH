@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "UIMakeDebugPatient" (UIMenuList)
 
----@type UIMakeDebugPatient
 local UIMakeDebugPatient = _G["UIMakeDebugPatient"]
 
 function UIMakeDebugPatient:UIMakeDebugPatient(ui)

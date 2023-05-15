@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "Room"
 
----@type Room
 local Room = _G["Room"]
 
 local COST_RECOVERY = 0.40 -- Percentage cost recovery of destroyed room items

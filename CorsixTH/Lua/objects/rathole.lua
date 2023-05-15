@@ -52,7 +52,6 @@ object.orientations = {
 
 class "Rathole" (Object)
 
----@type Rathole
 local Rathole = _G["Rathole"]
 
 function Rathole:Rathole(hospital, oject_type, x, y, direction, etc)

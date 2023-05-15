@@ -50,7 +50,6 @@ litter_types[4] = 1900
 
 class "Litter" (Entity)
 
----@type Litter
 local Litter = _G["Litter"]
 
 function Litter:Litter(hospital, object_type, x, y)

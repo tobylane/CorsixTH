@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "MeanderAction" (HumanoidAction)
 
----@type MeanderAction
 local MeanderAction = _G["MeanderAction"]
 
 function MeanderAction:MeanderAction()

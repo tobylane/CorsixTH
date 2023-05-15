@@ -42,7 +42,6 @@ object.orientations = {
 
 class "SideObject" (Object)
 
----@type SideObject
 local SideObject = _G["SideObject"]
 
 function SideObject:SideObject(...)

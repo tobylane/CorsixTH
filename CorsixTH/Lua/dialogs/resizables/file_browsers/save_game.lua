@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Save Game Window
 class "UISaveGame" (UIFileBrowser)
 
----@type UISaveGame
 local UISaveGame = _G["UISaveGame"]
 
 local col_textbox = {

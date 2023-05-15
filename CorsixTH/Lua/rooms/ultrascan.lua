@@ -44,7 +44,6 @@ room.handyman_call_sound = "maint016.wav"
 
 class "UltrascanRoom" (Room)
 
----@type UltrascanRoom
 local UltrascanRoom = _G["UltrascanRoom"]
 
 function UltrascanRoom:UltrascanRoom(...)

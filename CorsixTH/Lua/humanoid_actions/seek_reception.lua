@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "SeekReceptionAction" (HumanoidAction)
 
----@type SeekReceptionAction
 local SeekReceptionAction = _G["SeekReceptionAction"]
 
 -- distance from queue that patient can join a reception desk queue

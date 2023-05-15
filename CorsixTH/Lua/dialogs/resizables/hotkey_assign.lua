@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Custom key bindings
 class "UIHotkeyAssign" (UIResizable)
 
----@type UIHotkeyAssign
 local UIHotkeyAssign = _G["UIHotkeyAssign"]
 
 local col_bg = {
@@ -555,7 +554,6 @@ end
 --- Child window for setting key bindings
 class "UIHotkeyAssignKeyPane" (Window)
 
----@type UIHotkeyAssignKeyPane
 local UIHotkeyAssignKeyPane = _G["UIHotkeyAssignKeyPane"]
 
 function UIHotkeyAssignKeyPane:UIHotkeyAssignKeyPane(x, y, ui, key_options, app_hotkeys)

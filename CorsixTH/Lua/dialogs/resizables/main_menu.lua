@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Class for main menu window.
 class "UIMainMenu" (UIResizable)
 
----@type UIMainMenu
 local UIMainMenu = _G["UIMainMenu"]
 
 local col_bg = {

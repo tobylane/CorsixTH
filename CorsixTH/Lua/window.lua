@@ -23,7 +23,6 @@ corsixth.require("persistance")
 --- Base class for user-interface dialogs.
 class "Window"
 
----@type Window
 local Window = _G["Window"]
 
 -- NB: pressed mouse buttons are denoted with a "mouse_" prefix in buttons_down,
@@ -156,7 +155,6 @@ end
 -- thus reducing the amount of work that each individual dialog has to do.
 class "Panel"
 
----@type Panel
 local Panel = _G["Panel"]
 
 -- !dummy
@@ -557,7 +555,6 @@ end
 --- A region of a `Panel` which causes some action when clicked.
 class "Button"
 
----@type Button
 local Button = _G["Button"]
 
 ---dummy
@@ -796,7 +793,6 @@ end
 --- A window element used to scroll in lists
 class "Scrollbar"
 
----@type Scrollbar
 local Scrollbar = _G["Scrollbar"]
 
 ---dummy
@@ -905,7 +901,6 @@ end
 --- A window element used to enter text
 class "Textbox"
 
----@type Textbox
 local Textbox = _G["Textbox"]
 
 ---dummy
@@ -1302,7 +1297,6 @@ end
 --- A window element used to accept hotkey configurations.
 class "HotkeyBox"
 
----@type HotkeyBox
 local HotkeyBox = _G["HotkeyBox"]
 
 ---dummy

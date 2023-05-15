@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Abstraction for visible gameplay things which sit somewhere on the map.
 class "Entity"
 
----@type Entity
 local Entity = _G["Entity"]
 
 local TH = require("TH")

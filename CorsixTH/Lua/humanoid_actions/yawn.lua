@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "YawnAction" (HumanoidAction)
 
----@type YawnAction
 local YawnAction = _G["YawnAction"]
 
 function YawnAction:YawnAction()

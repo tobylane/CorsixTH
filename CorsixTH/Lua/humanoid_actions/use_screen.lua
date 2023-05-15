@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "UseScreenAction" (HumanoidAction)
 
----@type UseScreenAction
 local UseScreenAction = _G["UseScreenAction"]
 
 --- Action to use the screen.

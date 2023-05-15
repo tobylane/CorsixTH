@@ -34,7 +34,6 @@ corsixth.require("queue")
 
 class "Door" (Object)
 
----@type Door
 local Door = _G["Door"]
 
 function Door:Door(...)

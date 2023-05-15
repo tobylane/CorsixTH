@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- A menu list with a scrollbar. Used by load_game, save_game and custom_game.
 class "UIMenuList" (UIResizable)
 
----@type UIMenuList
 local UIMenuList = _G["UIMenuList"]
 
 local col_caption = {

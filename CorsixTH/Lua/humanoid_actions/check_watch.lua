@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "CheckWatchAction" (HumanoidAction)
 
----@type CheckWatchAction
 local CheckWatchAction = _G["CheckWatchAction"]
 
 function CheckWatchAction:CheckWatchAction()

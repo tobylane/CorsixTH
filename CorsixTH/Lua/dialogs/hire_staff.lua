@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "UIHireStaff" (Window)
 
----@type UIHireStaff
 local UIHireStaff = _G["UIHireStaff"]
 
 function UIHireStaff:UIHireStaff(ui)

@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "UseStaffRoomAction" (HumanoidAction)
 
----@type UseStaffRoomAction
 local UseStaffRoomAction = _G["UseStaffRoomAction"]
 
 function UseStaffRoomAction:UseStaffRoomAction()

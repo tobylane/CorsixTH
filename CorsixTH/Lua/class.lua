@@ -24,7 +24,6 @@ SOFTWARE. --]]
 -- OR
 --  class "Name" (SuperclassName)
 --
---  ---@type Name
 --  local Name = _G["Name"]
 --
 --  function Name:Name(arguments)

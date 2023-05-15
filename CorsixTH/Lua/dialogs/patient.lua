@@ -28,7 +28,6 @@ end
 --- Individual patient information dialog
 class "UIPatient" (Window)
 
----@type UIPatient
 local UIPatient = _G["UIPatient"]
 
 function UIPatient:UIPatient(ui, patient)

@@ -22,7 +22,6 @@ SOFTWARE. --]]
 --- This dialog is also used for errors and requires some special handling
 class "UIConfirmDialog" (Window)
 
----@type UIConfirmDialog
 local UIConfirmDialog = _G["UIConfirmDialog"]
 
 local top_frame = 357

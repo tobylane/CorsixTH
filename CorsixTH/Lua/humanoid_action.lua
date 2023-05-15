@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Humanoid action base class.
 class "HumanoidAction"
 
----@type HumanoidAction
 local HumanoidAction = _G["HumanoidAction"]
 
 --- Construct a humanoid action (base class constructor).

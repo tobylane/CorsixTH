@@ -21,7 +21,6 @@ SOFTWARE. --]]
 --- Tip of the Day Window
 class "UITipOfTheDay" (UIResizable)
 
----@type UITipOfTheDay
 local UITipOfTheDay = _G["UITipOfTheDay"]
 
 local col_bg = {

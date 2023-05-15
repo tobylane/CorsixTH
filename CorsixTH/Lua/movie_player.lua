@@ -25,7 +25,6 @@ local pathsep = package.config:sub(1, 1)
 
 class "MoviePlayer"
 
----@type MoviePlayer
 local MoviePlayer = _G["MoviePlayer"]
 
 --- Calculate the position and size for a movie

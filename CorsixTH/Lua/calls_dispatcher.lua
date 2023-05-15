@@ -24,7 +24,6 @@ local AnnouncementPriority = _G["AnnouncementPriority"]
 
 class "CallsDispatcher"
 
----@type CallsDispatcher
 local CallsDispatcher = _G["CallsDispatcher"]
 
 local debug = false -- Turn on for debug message

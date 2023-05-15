@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "OnGroundAction" (HumanoidAction)
 
----@type OnGroundAction
 local OnGroundAction = _G["OnGroundAction"]
 
 function OnGroundAction:OnGroundAction()

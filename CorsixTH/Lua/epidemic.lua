@@ -24,7 +24,6 @@ local AnnouncementPriority = _G["AnnouncementPriority"]
 
 class "Epidemic"
 
----@type Epidemic
 local Epidemic = _G["Epidemic"]
 
 --[[Manages the epidemics that occur in hospitals. Generally, any epidemic

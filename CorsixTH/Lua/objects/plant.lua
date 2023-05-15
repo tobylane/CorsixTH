@@ -87,7 +87,6 @@ local days_unreachable = 10
 --- An `Object` which needs watering now and then.
 class "Plant" (Object)
 
----@type Plant
 local Plant = _G["Plant"]
 
 function Plant:Plant(hospital, object_type, x, y, direction, etc)

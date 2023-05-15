@@ -23,7 +23,6 @@ SOFTWARE. --]]
 --any of the corners.
 class "UIResizable" (Window)
 
----@type UIResizable
 local UIResizable = _G["UIResizable"]
 
 local border_offset_x = 9

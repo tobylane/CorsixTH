@@ -28,7 +28,6 @@ SOFTWARE. --]]
 
 class "Date"
 
----@type Date
 local Date = _G["Date"]
 
 local month_length = {

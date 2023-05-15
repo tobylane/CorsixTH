@@ -24,7 +24,6 @@ local AnnouncementPriority = _G["AnnouncementPriority"]
 
 class "PlayerHospital" (Hospital)
 
----@type PlayerHospital
 local PlayerHospital = _G["PlayerHospital"]
 
 local num_sitting_ratios = 15 -- Number of stored recent sitting ratio measurements.

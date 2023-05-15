@@ -20,7 +20,6 @@ SOFTWARE. --]]
 
 class "QueueAction" (HumanoidAction)
 
----@type QueueAction
 local QueueAction = _G["QueueAction"]
 
 --- Queue for something (door or reception desk).
