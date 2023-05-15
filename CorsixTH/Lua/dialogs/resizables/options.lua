@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Options window used in the main menu and ingame.
+--- Options window used in the main menu and ingame.
 class "UIOptions" (UIResizable)
 
 ---@type UIOptions
@@ -303,13 +303,13 @@ function UIOptions:selectResolution(number)
   end
 end
 
---! Changes check for update setting to on/of
+--- Changes check for update setting to on/of
 function UIOptions:toggleUpdateCheck()
   self.ui.app.config.check_for_updates = not self.ui.app.config.check_for_updates
   self.ui.app:saveConfig()
 end
 
---! Function handles button toggle of checking for updates
+--- Function handles button toggle of checking for updates
 function UIOptions:buttonUpdates()
   self:toggleUpdateCheck()
   local new_updates_string = self.ui.app.config.check_for_updates and
@@ -417,7 +417,7 @@ function UIOptions:close()
   end
 end
 
---! A custom resolution selection window
+--- A custom resolution selection window
 class "UIResolution" (UIResizable)
 
 ---@type UIResolution
@@ -481,8 +481,8 @@ function UIResolution:ok()
   end
 end
 
---! Closes the resolution dialog
---!param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
+--- Closes the resolution dialog
+-- @param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
 function UIResolution:close(ok)
   UIResizable.close(self)
   if ok and self.callback then
@@ -490,7 +490,7 @@ function UIResolution:close(ok)
   end
 end
 
---! A window for setting the scroll speed of the camera.
+--- A window for setting the scroll speed of the camera.
 class "UIScrollSpeed" (UIResizable)
 
 ---@type UIScrollSpeed
@@ -539,7 +539,7 @@ function UIScrollSpeed:cancel()
   self:close(false)
 end
 
---!param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
+-- @param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
 function UIScrollSpeed:close(ok)
   UIResizable.close(self)
 
@@ -553,7 +553,7 @@ function UIScrollSpeed:close(ok)
 end
 
 
---! A window for setting the scroll speed of the camera while pressing the SHIFT key..
+--- A window for setting the scroll speed of the camera while pressing the SHIFT key..
 class "UIShiftScrollSpeed" (UIResizable)
 
 ---@type UIShiftScrollSpeed
@@ -602,7 +602,7 @@ function UIShiftScrollSpeed:cancel()
   self:close(false)
 end
 
---!param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
+-- @param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
 function UIShiftScrollSpeed:close(ok)
   UIResizable.close(self)
 
@@ -615,7 +615,7 @@ function UIShiftScrollSpeed:close(ok)
   end
 end
 
---! Window to set the zoom speed of the scroll wheel while in-game.
+--- Window to set the zoom speed of the scroll wheel while in-game.
 class "UIZoomSpeed" (UIResizable)
 
 ---@type UIZoomSpeed
@@ -667,7 +667,7 @@ function UIZoomSpeed:cancel()
   self:close(false)
 end
 
---!param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
+-- @param ok (boolean or nil) whether the resolution entry was confirmed (true) or aborted (false)
 function UIZoomSpeed:close(ok)
   UIResizable.close(self)
 

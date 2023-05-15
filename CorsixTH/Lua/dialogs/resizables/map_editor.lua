@@ -296,9 +296,9 @@ local PAGES = {
   {name = _S.map_editor_window.pages.helipad,    spr_data = helipad}
 }
 -- {{{ Functions
---! Normalize the editor sprite in the table to always have a 'sprites' field, as well as have sizes and a column width (for the display).
---!param (table) Sprite from the 'PAGES[#].spr_data' table.
---!return (table 'sprites', 'xsize', 'ysize', 'width', and 'height')
+--- Normalize the editor sprite in the table to always have a 'sprites' field, as well as have sizes and a column width (for the display).
+-- @param (table) Sprite from the 'PAGES[#].spr_data' table.
+-- @return (table 'sprites', 'xsize', 'ysize', 'width', and 'height')
 local function normalizeEditSprite(spr)
   assert(MAX_HEIGHT >= spr.height) -- Verify that sprite fits in the maximum height.
 
@@ -343,10 +343,10 @@ local function normalizeEditSprite(spr)
   end
 end
 
---!Decide the highest possible placement for 'width' columns.
---!param cols (list int) First available position in each column, higher number is lower.
---!param width (int) Required width as number of columns.
---!return (int, int) Starting column and placement height.
+---Decide the highest possible placement for 'width' columns.
+-- @param cols (list int) First available position in each column, higher number is lower.
+-- @param width (int) Required width as number of columns.
+-- @return (int, int) Starting column and placement height.
 local function getHighestRowcol(cols, width)
   local best = cols[1] + 100000
   local best_col = 0
@@ -369,10 +369,10 @@ local function getHighestRowcol(cols, width)
   return best_col, best
 end
 
---! Layout buttons from a tab of editor sprites.
---!param esprs (list) Editor sprite tab to layout.
---!param num_cols (int) Number of columns available in the layout.
---!return (list) Sprites with button positions in ('column', 'row').
+--- Layout buttons from a tab of editor sprites.
+-- @param esprs (list) Editor sprite tab to layout.
+-- @param num_cols (int) Number of columns available in the layout.
+-- @return (list) Sprites with button positions in ('column', 'row').
 local function layoutButtons(esprs, num_cols)
   local buttons = {}
 
@@ -558,9 +558,9 @@ end
 
 -- {{{ function UIMapEditor:pageClicked(name)
 
---! Update how the button is displayed based on the provided new state.
---!param button (Panel) to update.
---!param action (str) New state of the button.
+--- Update how the button is displayed based on the provided new state.
+-- @param button (Panel) to update.
+-- @param action (str) New state of the button.
 local function updateToggleButton(button, action)
   if action == "raised" then
     button:enable(true)
@@ -586,8 +586,8 @@ local function updateToggleButton(button, action)
   end
 end
 
---! Callback function of the page select buttons.
---!param name (string) Name of the clicked page.
+--- Callback function of the page select buttons.
+-- @param name (string) Name of the clicked page.
 function UIMapEditor:pageClicked(name)
   local map = self.ui.app.map
   if name == "paste" then
@@ -651,7 +651,7 @@ function UIMapEditor:pageClicked(name)
   end
 end
 
---! Do layout of the sprite buttons of the page.
+--- Do layout of the sprite buttons of the page.
 function UIMapEditor:buildSpriteButtons(buttons)
   self.selected_block = buttons
 
@@ -716,15 +716,15 @@ function UIMapEditor:buildSpriteButtons(buttons)
 end
 -- }}}
 
---! Should the given type of sprite be considered a floor sprite?
---!param sprite_type (string) Type of sprite.
---!return The (boolean) type is a floor sprite type.
+--- Should the given type of sprite be considered a floor sprite?
+-- @param sprite_type (string) Type of sprite.
+-- @return The (boolean) type is a floor sprite type.
 local function isFloorSpriteType(sprite_type)
   return sprite_type == "floor" or sprite_type == "hospital" or sprite_type == "road"
 end
 
---! Construct cell flags for a given kind of floor sprite.
---!param sprite_type (string) Type of sprite.
+--- Construct cell flags for a given kind of floor sprite.
+-- @param sprite_type (string) Type of sprite.
 local function makeCellFlags(sprite_type)
   if sprite_type == "floor" then
     return {buildable=false, passable=false, hospital=false}
@@ -738,12 +738,12 @@ local function makeCellFlags(sprite_type)
   assert(false) -- Should never get here
 end
 
---! Get the tile area covered by two points.
---!param x1 (jnt) Horizontal coordinate of the first point.
---!param y1 (int) Vertical   coordinate of the first point.
---!param x2 (jnt) Horizontal coordinate of the second point.
---!param y2 (int) Vertical   coordinate of the second point.
---!return (4 int) Smallest horizontal, smallest vertical, largest horizontal,
+--- Get the tile area covered by two points.
+-- @param x1 (jnt) Horizontal coordinate of the first point.
+-- @param y1 (int) Vertical   coordinate of the first point.
+-- @param x2 (jnt) Horizontal coordinate of the second point.
+-- @param y2 (int) Vertical   coordinate of the second point.
+-- @return (4 int) Smallest horizontal, smallest vertical, largest horizontal,
 --  and largest vertical coordinate.
 local function getCoveredArea(x1, y1, x2, y2)
   local minx, maxx, miny, maxy
@@ -752,40 +752,40 @@ local function getCoveredArea(x1, y1, x2, y2)
   return minx, miny, maxx, maxy
 end
 
---! Get the size of an area covered by two points.
---!param x1 (jnt) Horizontal coordinate of the first point.
---!param y1 (int) Vertical   coordinate of the first point.
---!param x2 (jnt) Horizontal coordinate of the second point.
---!param y2 (int) Vertical   coordinate of the second point.
---!return (2 int) Horizontal and vertical size of the area.
+--- Get the size of an area covered by two points.
+-- @param x1 (jnt) Horizontal coordinate of the first point.
+-- @param y1 (int) Vertical   coordinate of the first point.
+-- @param x2 (jnt) Horizontal coordinate of the second point.
+-- @param y2 (int) Vertical   coordinate of the second point.
+-- @return (2 int) Horizontal and vertical size of the area.
 local function getAreaSize(x1, y1, x2, y2)
   local minx, miny, maxx, maxy = getCoveredArea(x1, y1, x2, y2)
   return maxx - minx + 1, maxy - miny + 1
 end
 
---! Test whether (px, py) is inside the given area.
---!param px (int) Horizontal coordinate of the point to test.
---!param py (int) Vertical   coordinate of the point to test.
---!param minx (jnt) Smallest horizontal coordinate of the area.
---!param miny (int) Smallest vertical   coordinate of the area.
---!param maxx (jnt) Largest horizontal coordinate of the area.
---!param maxy (int) Largest vertical   coordinate of the area.
---!return (bool) Whether the point is inside the given area.
+--- Test whether (px, py) is inside the given area.
+-- @param px (int) Horizontal coordinate of the point to test.
+-- @param py (int) Vertical   coordinate of the point to test.
+-- @param minx (jnt) Smallest horizontal coordinate of the area.
+-- @param miny (int) Smallest vertical   coordinate of the area.
+-- @param maxx (jnt) Largest horizontal coordinate of the area.
+-- @param maxy (int) Largest vertical   coordinate of the area.
+-- @return (bool) Whether the point is inside the given area.
 local function isPointInside(px, py, minx, miny, maxx, maxy)
   return px >= minx and px <= maxx and py >= miny and py <= maxy
 end
 
 
---! Compute x/y pairs to draw the cursor sprite over the area.
---!param minx (int) First horizontal position to draw the sprite.
---!param miny (int) First vertical   position to draw the sprite.
---!param maxx (int) Last horizontal position to draw the sprite.
---!param maxy (int) Last vertical   position to draw the sprite.
---!param dx (nil or int) Horizontal step size of drawing, usually same size as
+--- Compute x/y pairs to draw the cursor sprite over the area.
+-- @param minx (int) First horizontal position to draw the sprite.
+-- @param miny (int) First vertical   position to draw the sprite.
+-- @param maxx (int) Last horizontal position to draw the sprite.
+-- @param maxy (int) Last vertical   position to draw the sprite.
+-- @param dx (nil or int) Horizontal step size of drawing, usually same size as
 --  the width of the sprite being drawn, default is 1.
---!param dy (nil or int) Vertical step size of drawing, usually same size as
+-- @param dy (nil or int) Vertical step size of drawing, usually same size as
 --  the height of the sprite being drawn, default is 1.
---!return (array of (xpos, ypos) pairs) Points to draw the sprite cursor.
+-- @return (array of (xpos, ypos) pairs) Points to draw the sprite cursor.
 local function computeCursorSpriteAtArea(minx, miny, maxx, maxy, dx, dy)
   local coords = {}
 
@@ -807,8 +807,8 @@ local function computeCursorSpriteAtArea(minx, miny, maxx, maxy, dx, dy)
   return coords
 end
 
---! Compute the positions to draw the selected sprite in the world.
---!return (array of {xpos, ypos} tables) Coordinates to draw the selected sprite.
+--- Compute the positions to draw the selected sprite in the world.
+-- @return (array of {xpos, ypos} tables) Coordinates to draw the selected sprite.
 function UIMapEditor:getDrawPoints()
   if self.cursor.state == "disabled" then
     return {} -- Nothing to compute
@@ -870,13 +870,13 @@ function UIMapEditor:getDrawPoints()
   return {}
 end
 
---! Fill an area of tiles with red cursor rectangles. Caller must make sure that
+--- Fill an area of tiles with red cursor rectangles. Caller must make sure that
 --   the area is completely inside the world boundaries.
---!param canvas Canvas to draw at.
---!param xpos (int) Horizontal base tile position (of the top corner).
---!param ypos (int) Vertical   base tile position (of the top corner).
---!param xsize (int) Horizontal size in tiles.
---!param ysize (int) Vertical size in tiles.
+-- @param canvas Canvas to draw at.
+-- @param xpos (int) Horizontal base tile position (of the top corner).
+-- @param ypos (int) Vertical   base tile position (of the top corner).
+-- @param xsize (int) Horizontal size in tiles.
+-- @param ysize (int) Vertical size in tiles.
 function UIMapEditor:fillCursorArea(canvas, xpos, ypos, xsize, ysize)
   local ui = self.ui
   local zoom = ui.zoom_factor
@@ -889,8 +889,8 @@ function UIMapEditor:fillCursorArea(canvas, xpos, ypos, xsize, ysize)
   end
 end
 
---! Draw the display (map editor window, and main world display)
---!param canvas (draw object) Canvas to draw on.
+--- Draw the display (map editor window, and main world display)
+-- @param canvas (draw object) Canvas to draw on.
 function UIMapEditor:draw(canvas, ...)
   local ui = self.ui
 
@@ -924,8 +924,8 @@ function UIMapEditor:draw(canvas, ...)
 end
 
 -- {{{ several useful functions
---! User clicked at a block (a button with a sprite).
---!param num Index block number.
+--- User clicked at a block (a button with a sprite).
+-- @param num Index block number.
 function UIMapEditor:blockClicked(num)
   -- Reset toggle of other block buttons.
   for bnum = 1, #self.block_buttons do
@@ -946,10 +946,10 @@ function UIMapEditor:blockClicked(num)
   end
 end
 
---! Convert mouse coordinates to tile coordinates in the world.
---!param mx (int) Mouse X screen coordinate.
---!param my (int) Mouse y screen coordinate.
---!return (int, int) Tile x,y coordinates, limited to the map.
+--- Convert mouse coordinates to tile coordinates in the world.
+-- @param mx (int) Mouse X screen coordinate.
+-- @param my (int) Mouse y screen coordinate.
+-- @return (int, int) Tile x,y coordinates, limited to the map.
 function UIMapEditor:mouseToWorld(mx, my)
   local ui = self.ui
 
@@ -959,12 +959,12 @@ function UIMapEditor:mouseToWorld(mx, my)
   return self:areaOnWorld(wx, wy, 1, 1)
 end
 
---! Stay on world with the entire area, by moving the base position (if needed).
---!param xpos (int) Horizontal base position.
---!param ypos (int) Vertical base position.
---!param xsize (int) Horizontal size.
---!param ysize (int) Vertical size.
---!return (int, int) Allowed base position
+--- Stay on world with the entire area, by moving the base position (if needed).
+-- @param xpos (int) Horizontal base position.
+-- @param ypos (int) Vertical base position.
+-- @param xsize (int) Horizontal size.
+-- @param ysize (int) Vertical size.
+-- @return (int, int) Allowed base position
 function UIMapEditor:areaOnWorld(xpos, ypos, xsize, ysize)
   local map = self.ui.app.map
 
@@ -974,8 +974,8 @@ function UIMapEditor:areaOnWorld(xpos, ypos, xsize, ysize)
 end
 -- }}}
 
---! Retrieve what drag capabilities are allowed by the currently selected world cursor sprite.
---!return (string) "none"=not draggable, "east-west"=dragging only in east-west direction,
+--- Retrieve what drag capabilities are allowed by the currently selected world cursor sprite.
+-- @return (string) "none"=not draggable, "east-west"=dragging only in east-west direction,
 --  "north-south"=dragging only in north-south direction, "area"=dragging in both directions.
 function UIMapEditor:getCursorDragCapabilities()
   -- Parcel and delete modes have unrestricted movement.
@@ -998,11 +998,11 @@ function UIMapEditor:getCursorDragCapabilities()
   assert(false) -- Should never get here
 end
 
---! The user moved the mouse!
---!param x (int) New horizontal position of the mouse at the screen.
---!param y (int) New vertical   position of the mouse at the screen.
---!param dx (int) Horizontal shift in position of the mouse at the screen.
---!param dy (int) Vertical   shift in position of the mouse at the screen.
+--- The user moved the mouse!
+-- @param x (int) New horizontal position of the mouse at the screen.
+-- @param y (int) New vertical   position of the mouse at the screen.
+-- @param dx (int) Horizontal shift in position of the mouse at the screen.
+-- @param dy (int) Vertical   shift in position of the mouse at the screen.
 function UIMapEditor:onMouseMove(x, y, dx, dy)
   local repaint = UIResizable.onMouseMove(self, x, y, dx, dy)
 
@@ -1042,11 +1042,11 @@ function UIMapEditor:onMouseMove(x, y, dx, dy)
   end
 end
 
---! Mouse button got pressed.
---!param button (string) Mouse button being pressed.
---!param xpos (int) Horizontal position of the mouse at the time of the mouse button press.
---!param ypos (int) Vertical   position of the mouse at the time of the mouse button press.
---!return (bool) Whether to repaint the display.
+--- Mouse button got pressed.
+-- @param button (string) Mouse button being pressed.
+-- @param xpos (int) Horizontal position of the mouse at the time of the mouse button press.
+-- @param ypos (int) Vertical   position of the mouse at the time of the mouse button press.
+-- @return (bool) Whether to repaint the display.
 function UIMapEditor:onMouseDown(button, xpos, ypos)
   if UIResizable.onMouseDown(self, button, xpos, ypos) then -- Button in this window.
     return true
@@ -1128,11 +1128,11 @@ function UIMapEditor:onMouseDown(button, xpos, ypos)
   return repaint
 end
 
---! Add an object to the map. Currently, only "entrance_door" is supported.
---!param obj_type (str) Type of object ("entrance_door")
---!param xpos (int) Desired x position of the new object.
---!param ypos (int) Desired y position of the new object.
---!param direction (str) Direction of the new object ("north" or "west").
+--- Add an object to the map. Currently, only "entrance_door" is supported.
+-- @param obj_type (str) Type of object ("entrance_door")
+-- @param xpos (int) Desired x position of the new object.
+-- @param ypos (int) Desired y position of the new object.
+-- @param direction (str) Direction of the new object ("north" or "west").
 function UIMapEditor:drawObject(obj_type, xpos, ypos, direction)
   local world = self.ui.app.world
 
@@ -1150,8 +1150,8 @@ function UIMapEditor:drawObject(obj_type, xpos, ypos, direction)
   end
 end
 
---! Remove an entrance door from the world.
---!param door Entrance door to remove.
+--- Remove an entrance door from the world.
+-- @param door Entrance door to remove.
 function UIMapEditor:removeDoor(door)
   local world = self.ui.app.world
 
@@ -1161,24 +1161,24 @@ function UIMapEditor:removeDoor(door)
   end
 end
 
---! Collect other objects that use the space needed for the specified new object.
+--- Collect other objects that use the space needed for the specified new object.
 --  If they exist, return them or delete them.
---!param obj_type (str) Type of object ("entrance_door")
---!param xpos (int) Desired x position of the new object.
---!param ypos (int) Desired y position of the new object.
---!param direction (str) Direction of the new object ("north" or "west").
---!param remove (bool) If set, remove the found objects.
---!return (list) The objects that use the space, if they are not removed.
+-- @param obj_type (str) Type of object ("entrance_door")
+-- @param xpos (int) Desired x position of the new object.
+-- @param ypos (int) Desired y position of the new object.
+-- @param direction (str) Direction of the new object ("north" or "west").
+-- @param remove (bool) If set, remove the found objects.
+-- @return (list) The objects that use the space, if they are not removed.
 function UIMapEditor:checkObjectSpace(obj_type, xpos, ypos, direction, remove)
   local world = self.ui.app.world
   local right_door = world.object_types["entrance_right_door"]
   local left_door  = world.object_types["entrance_left_door"]
   local th = self.ui.app.map.th
 
-  --! Check single tile for conflicts with other doors.
-  --!param x X position of the tile to check.
-  --!param y Y position of the tile to check.
-  --!return (int, int) position of the conflicting door, or (nil, nil) if no conflict.
+  --- Check single tile for conflicts with other doors.
+  -- @param x X position of the tile to check.
+  -- @param y Y position of the tile to check.
+  -- @return (int, int) position of the conflicting door, or (nil, nil) if no conflict.
   local function checkTile(x, y)
     local all_flags = th:getCellFlags(x, y)
     if not all_flags.thob then
@@ -1223,11 +1223,11 @@ function UIMapEditor:checkObjectSpace(obj_type, xpos, ypos, direction, remove)
   return doors
 end
 
---! Recognize objects in the collection of thob+tallWest entries
---!param minx (int) Base horizontal position (objects should be put relative to it).
---!param miny (int) Base vertical position (objects should be put relative to it).
---!param thobdir_positions (table xy to {thob, tallWest}) Found thobs.
---!return (array of {type, xpos, ypos, direction}) Found objects.
+--- Recognize objects in the collection of thob+tallWest entries
+-- @param minx (int) Base horizontal position (objects should be put relative to it).
+-- @param miny (int) Base vertical position (objects should be put relative to it).
+-- @param thobdir_positions (table xy to {thob, tallWest}) Found thobs.
+-- @return (array of {type, xpos, ypos, direction}) Found objects.
 function UIMapEditor:findObjects(minx, miny, thobdir_positions)
   local world = self.ui.app.world
   local right_door = world.object_types["entrance_right_door"]
@@ -1255,8 +1255,8 @@ function UIMapEditor:findObjects(minx, miny, thobdir_positions)
   return objects
 end
 
---! Draw the selected sprite at the given coordinates.
---!param coords (array or {xpos, ypos} tables) Coordinates to draw the selected sprite.
+--- Draw the selected sprite at the given coordinates.
+-- @param coords (array or {xpos, ypos} tables) Coordinates to draw the selected sprite.
 function UIMapEditor:drawCursorSpriteAtArea(coords)
   local th = self.ui.app.map.th
 
@@ -1295,8 +1295,8 @@ function UIMapEditor:drawCursorSpriteAtArea(coords)
   end
 end
 
---! Copy area from the game.
---!return (bool) Whether copying succeeded.
+--- Copy area from the game.
+-- @return (bool) Whether copying succeeded.
 function UIMapEditor:copyArea()
   local th = self.ui.app.map.th
 
@@ -1344,7 +1344,7 @@ function UIMapEditor:copyArea()
   return true
 end
 
---! Paste copied area into the destination area (one or more times).
+--- Paste copied area into the destination area (one or more times).
 function UIMapEditor:pasteArea()
   local th = self.ui.app.map.th
 
@@ -1399,8 +1399,8 @@ function UIMapEditor:pasteArea()
   end
 end
 
---! Delete the walls at the given coordinates.
---!param coords (array or {xpos, ypos} tables) Coordinates to remove the walls.
+--- Delete the walls at the given coordinates.
+-- @param coords (array or {xpos, ypos} tables) Coordinates to remove the walls.
 function UIMapEditor:deleteWallsAtArea(coords)
   local th = self.ui.app.map.th
 
@@ -1428,9 +1428,9 @@ function UIMapEditor:deleteWallsAtArea(coords)
   end
 end
 
---! Set parcel number at the given coordinates.
---!param coords (array or {xpos, ypos} tables) Coordinates to set parcel.
---!param parcel_num (int) Parcel number to set.
+--- Set parcel number at the given coordinates.
+-- @param coords (array or {xpos, ypos} tables) Coordinates to set parcel.
+-- @param parcel_num (int) Parcel number to set.
 function UIMapEditor:setParcelAtArea(coords, parcel_num)
   local th = self.ui.app.map.th
 
@@ -1440,11 +1440,11 @@ function UIMapEditor:setParcelAtArea(coords, parcel_num)
   end
 end
 
---! Mouse button was released.
---!param button (string) Mouse button being released.
---!param x (int) Horizontal position of the mouse at the time of the mouse button release.
---!param y (int) Vertical   position of the mouse at the time of the mouse button release.
---!return (bool) Whether to repaint the display.
+--- Mouse button was released.
+-- @param button (string) Mouse button being released.
+-- @param x (int) Horizontal position of the mouse at the time of the mouse button release.
+-- @param y (int) Vertical   position of the mouse at the time of the mouse button release.
+-- @return (bool) Whether to repaint the display.
 function UIMapEditor:onMouseUp(button, x, y)
   local map = self.ui.app.map
 
@@ -1456,8 +1456,8 @@ function UIMapEditor:onMouseUp(button, x, y)
     return true
   end
 
-  --! Get the cursor mode to jump to after ending the drag mode.
-  --!return (string) New cursor mode.
+  --- Get the cursor mode to jump to after ending the drag mode.
+  -- @return (string) New cursor mode.
   local function newState()
     if self.cursor.sprite then
       return "grid"

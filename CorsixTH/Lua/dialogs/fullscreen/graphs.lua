@@ -19,7 +19,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Charts fullscreen window
+--- Charts fullscreen window
 class "UIGraphs" (UIFullscreen)
 
 ---@type UIGraphs
@@ -97,10 +97,10 @@ local VERT_DX = 25 -- Spacing between the vertical lines in the graph
 local VERT_COUNT = 12 -- Number of vertical lines in the graph
 local GRAPH_HEIGHT = BOTTOM_Y - TOP_Y
 
---! Compute the vertical position of a value in the graph given the line extremes
---!param graph_line (table) Meta data of the line, including extreme values.
---!param value (number) Value to position vertically in the graph.
---!return Y position in the graph of the value.
+--- Compute the vertical position of a value in the graph given the line extremes
+-- @param graph_line (table) Meta data of the line, including extreme values.
+-- @param value (number) Value to position vertically in the graph.
+-- @return Y position in the graph of the value.
 local function computeVerticalValuePosition(graph_line, value)
   -- 0 is always included in the range.
   assert(graph_line.maximum >= 0 and graph_line.minimum <= 0)
@@ -110,9 +110,9 @@ local function computeVerticalValuePosition(graph_line, value)
   return BOTTOM_Y - math.floor(((value - graph_line.minimum) / range) * GRAPH_HEIGHT)
 end
 
---! Convert graph scale to a stepsize in months.
---!param graph_scale (int, 1 to 3) Graph scale to display.
---!return Number of months to jump between statistics values in the hospital statistics data.
+--- Convert graph scale to a stepsize in months.
+-- @param graph_scale (int, 1 to 3) Graph scale to display.
+-- @return Number of months to jump between statistics values in the hospital statistics data.
 local function getStatisticsStepsize(graph_scale)
   local stepsize = 4 * 12 -- Four years
   if graph_scale == 2 then
@@ -123,9 +123,9 @@ local function getStatisticsStepsize(graph_scale)
   return stepsize
 end
 
---! Get the statistics from the hospital that should be displayed.
---! Selection starts at the last (=newest) entry, and goes back in time.
---!return The values of all statistics to plot in the graph display.
+--- Get the statistics from the hospital that should be displayed.
+--- Selection starts at the last (=newest) entry, and goes back in time.
+-- @return The values of all statistics to plot in the graph display.
 function UIGraphs:getHospitalStatistics()
   local statistics = self.hospital.statistics
 
@@ -139,11 +139,11 @@ function UIGraphs:getHospitalStatistics()
   return values
 end
 
---! Reposition the given sequence of text entries vertically such that the maximum
+--- Reposition the given sequence of text entries vertically such that the maximum
 --  absolute deviation from the ideal position is minimized.
---!param label_datas (array) Text entries
---!param start_index (int) First entry to move.
---!param last_index (int) Last entry to move.
+-- @param label_datas (array) Text entries
+-- @param start_index (int) First entry to move.
+-- @param last_index (int) Last entry to move.
 local function moveSequence(label_datas, start_index, last_index)
   -- min_y, max_y Smallest and biggest vertical position of the labels. Since
   --    they are sorted on y, it's the position of the first and last visible entry.
@@ -192,8 +192,8 @@ local function moveSequence(label_datas, start_index, last_index)
   end
 end
 
---! Compute new actual position of the labels.
---!param graph (UIGraphs) Graph window object
+--- Compute new actual position of the labels.
+-- @param graph (UIGraphs) Graph window object
 local function updateTextPositions(graph)
   -- Reset vertical position of the text back to its ideal position.
   -- Disable computations on invisible graphs by removing the actual y position of it.

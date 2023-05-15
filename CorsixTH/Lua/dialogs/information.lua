@@ -18,17 +18,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Dialog that informs the player of for example what the goals for the level are.
+--- Dialog that informs the player of for example what the goals for the level are.
 class "UIInformation" (Window)
 
 ---@type UIInformation
 local UIInformation = _G["UIInformation"]
 
---! Constructor for the Information Dialog.
---!param text The text to show, held in a table. All elements of the table will be written
+--- Constructor for the Information Dialog.
+-- @param text The text to show, held in a table. All elements of the table will be written
 -- beneath each other. If instead a table within the table is supplied the texts
 -- will be shown in consecutive dialogs.
---!param use_built_in_font Whether the built-in font should be used to make sure that
+-- @param use_built_in_font Whether the built-in font should be used to make sure that
 -- the given message can be read without distortions.
 function UIInformation:UIInformation(ui, text, use_built_in_font)
   self:Window()

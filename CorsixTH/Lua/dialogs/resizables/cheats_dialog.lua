@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 
---! A dialog for activating cheats
+--- A dialog for activating cheats
 class "UICheats" (UIResizable)
 
 ---@type UICheats

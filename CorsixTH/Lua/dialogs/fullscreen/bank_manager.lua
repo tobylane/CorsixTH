@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Bank manager (for loans / insurance companies) and bank statement fullscreen windows.
+--- Bank manager (for loans / insurance companies) and bank statement fullscreen windows.
 class "UIBankManager" (UIFullscreen)
 
 ---@type UIBankManager
@@ -133,9 +133,9 @@ function UIBankManager:afterLoad(old, new)
   UIFullscreen.afterLoad(self, old, new)
 end
 
---! Sum the values in the provided array.
---!param t Array to sum.
---!return (int) The sum of all values from the t array.
+--- Sum the values in the provided array.
+-- @param t Array to sum.
+-- @return (int) The sum of all values from the t array.
 local function sum(t)
   local total = 0
   for _, entry in ipairs(t) do
@@ -144,7 +144,7 @@ local function sum(t)
   return total
 end
 
---! Animation function.
+--- Animation function.
 function UIBankManager:onTick()
   self.counter = self.counter + 1
   -- animate the eyes to blink

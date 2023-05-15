@@ -18,21 +18,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Dropdown "window" used for selection of one item from a list.
+--- Dropdown "window" used for selection of one item from a list.
 class "UIDropdown" (UIResizable)
 
 ---@type UIDropdown
 local UIDropdown = _G["UIDropdown"]
 
---! Constructor for the dropdown "window"
---!param ui (UI) The ui the window is created in
---!param parent_window (Window) The window that this dropdown will be attached to
---!param parent_button (Button) The button in the parent_window that this dropdown will be positioned under
---!param items (table) A list of items for the list to display, where each item is a table with at least
+--- Constructor for the dropdown "window"
+-- @param ui (UI) The ui the window is created in
+-- @param parent_window (Window) The window that this dropdown will be attached to
+-- @param parent_button (Button) The button in the parent_window that this dropdown will be positioned under
+-- @param items (table) A list of items for the list to display, where each item is a table with at least
 --       the field text, and optionally fields font and/or tooltip, which is a table containing text, x and y positions.
---!param callback (function) A function to be called when an item is selected. It is called with two parameters:
+-- @param callback (function) A function to be called when an item is selected. It is called with two parameters:
 --       The parent window and the index of the selected item
---!param colour (table) A colour in the form of {red = ..., green = ..., blue = ...}. Optional if parent_window is a UIResizable
+-- @param colour (table) A colour in the form of {red = ..., green = ..., blue = ...}. Optional if parent_window is a UIResizable
 function UIDropdown:UIDropdown(ui, parent_window, parent_button, items, callback, colour)
   local col = colour or parent_window.colour
   self:UIResizable(ui, 1, 1, col, true, true)
@@ -88,11 +88,11 @@ function UIDropdown:beginDrag(x, y)
   return false
 end
 
---! Let dropdown close when clicked outside of
---!param button (button) mouseclick
---!param x (coord) x coordinate
---!param y (coord) y coordinate
---!return continue triggering parent function
+--- Let dropdown close when clicked outside of
+-- @param button (button) mouseclick
+-- @param x (coord) x coordinate
+-- @param y (coord) y coordinate
+-- @return continue triggering parent function
 function UIDropdown:onMouseDown(button, x, y)
   if not self:hitTest(x, y) then
     self.parent_button:toggle()

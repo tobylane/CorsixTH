@@ -24,13 +24,13 @@ local --[[persistable:staff_dialog_is_in_view_circle]] function is_in_view_circl
   return (x - 55)^2 + (y - circle_center_y)^2 < 39^2
 end
 
---! Individual staff information dialog
+--- Individual staff information dialog
 class "UIStaff" (Window)
 
 ---@type UIStaff
 local UIStaff = _G["UIStaff"]
 
---! Callback function for handyman to change his parcel.
+--- Callback function for handyman to change his parcel.
 function UIStaff:changeParcel()
   local index = 0
   for i, v in ipairs(self.staff.hospital.ownedPlots) do
@@ -314,9 +314,9 @@ function UIStaff:fireStaff()
 end
 
 
---! Function to balance 'cleaning','watering', and 'repairing', where
---! one of them is increased, and the other two are decreased.
---!param increased Attribute to increase.
+--- Function to balance 'cleaning','watering', and 'repairing', where
+--- one of them is increased, and the other two are decreased.
+-- @param increased Attribute to increase.
 function UIStaff:changeHandymanAttributes(increased)
   if not self.staff.attributes[increased] then
     return
@@ -357,17 +357,17 @@ function UIStaff:changeHandymanAttributes(increased)
   end
 end
 
---! UI callback function to increase 'cleaning' (wiping litter).
+--- UI callback function to increase 'cleaning' (wiping litter).
 function UIStaff:doMoreCleaning()
   self:changeHandymanAttributes("cleaning")
 end
 
---! UI callback function to increase 'watering' (plants).
+--- UI callback function to increase 'watering' (plants).
 function UIStaff:doMoreWatering()
   self:changeHandymanAttributes("watering")
 end
 
---! UI callback function to increase 'repairing' (machines).
+--- UI callback function to increase 'repairing' (machines).
 function UIStaff:doMoreRepairing()
   self:changeHandymanAttributes("repairing")
 end

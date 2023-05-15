@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local math_floor = math.floor
 
---! Staff management screen
+--- Staff management screen
 class "UIStaffManagement" (UIFullscreen)
 
 ---@type UIStaffManagement
@@ -517,14 +517,14 @@ function UIStaffManagement:scrollDown()
   self:updateTooltips()
 end
 
---! Updates the position of the paging scroll indicator
+--- Updates the position of the paging scroll indicator
 function UIStaffManagement:updateScrollDot()
   local numPages = math.ceil(#self.staff_members[self.category] / 10)
   local yOffset = math_floor(83 * ((self.page - 1) / (numPages - 1)))
   self.scroll_dot.y = 168 + yOffset
 end
 
---! Updates whether the paging scroll indicator is visible and its position if visible
+--- Updates whether the paging scroll indicator is visible and its position if visible
 function UIStaffManagement:updateScrollDotVisibility()
   if #self.staff_members[self.category] > 10 then
     self.scroll_dot.visible = true

@@ -102,7 +102,7 @@ function UIBuildRoom:UIBuildRoom(ui)
   self:makeTooltip(_S.tooltip.build_room_window.cost, 160, 228, 282, 242)
 end
 
---! Checks what rooms are now available to build
+--- Checks what rooms are now available to build
 function UIBuildRoom:updateBuildableRooms()
   local app = self.ui.app
   self.category_rooms = {}

@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Save Map Window
+--- Save Map Window
 class "UISaveMap" (UIFileBrowser)
 
 ---@type UISaveMap
@@ -57,20 +57,20 @@ function UISaveMap:UISaveMap(ui)
     --[[persistable:save_map_new_map_textbox_abort_callback]] function() self:abortName() end)
 end
 
---! Function called when textbox is aborted (e.g. by pressing escape)
+--- Function called when textbox is aborted (e.g. by pressing escape)
 function UISaveMap:abortName()
   self.new_map_textbox.text = ""
   self.new_map_textbox.panel:setLabel(_S.save_map_window.new_map)
 end
 
---! Updates the textbox to selected file
---!param label (string) Selected file name
+--- Updates the textbox to selected file
+-- @param label (string) Selected file name
 function UISaveMap:setInputValue(label)
   local name = string.gsub(label, "%.map$", "")
   self.new_map_textbox:setText(name)
 end
 
---! Function called when textbox is confirmed (e.g. by pressing enter)
+--- Function called when textbox is confirmed (e.g. by pressing enter)
 function UISaveMap:confirmName()
   local filename = self.new_map_textbox.text
   local app = self.ui.app
@@ -81,12 +81,12 @@ function UISaveMap:confirmName()
   self:trySave(app.user_level_dir .. filename .. ".map")
 end
 
---! Function called by clicking button of existing save #num
+--- Function called by clicking button of existing save #num
 function UISaveMap:choiceMade(name)
   self:trySave(name)
 end
 
---! Try to save the game with given filename; if already exists, create confirmation window first.
+--- Try to save the game with given filename; if already exists, create confirmation window first.
 function UISaveMap:trySave(filename)
   if lfs.attributes(filename, "size") ~= nil then
     self.ui:addWindow(UIConfirmDialog(self.ui, false, _S.confirmation.overwrite_save, --[[persistable:save_map_confirmation]] function() self:doSave(filename) end))
@@ -95,7 +95,7 @@ function UISaveMap:trySave(filename)
   end
 end
 
---! Actually do save the map with given filename.
+--- Actually do save the map with given filename.
 function UISaveMap:doSave(filename)
   filename = filename
   local ui = self.ui

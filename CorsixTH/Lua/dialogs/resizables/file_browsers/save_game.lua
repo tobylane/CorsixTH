@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Save Game Window
+--- Save Game Window
 class "UISaveGame" (UIFileBrowser)
 
 ---@type UISaveGame
@@ -57,20 +57,20 @@ function UISaveGame:UISaveGame(ui)
     --[[persistable:save_game_new_savegame_textbox_abort_callback]] function() self:abortName() end)
 end
 
---! Function called when textbox is aborted (e.g. by pressing escape)
+--- Function called when textbox is aborted (e.g. by pressing escape)
 function UISaveGame:abortName()
   self.new_savegame_textbox.text = ""
   self.new_savegame_textbox.panel:setLabel(_S.save_game_window.new_save_game)
 end
 
---! Updates the textbox to selected file
---!param label (string) Selected file name
+--- Updates the textbox to selected file
+-- @param label (string) Selected file name
 function UISaveGame:setInputValue(label)
   local name = string.gsub(label, "%.sav$", "")
   self.new_savegame_textbox:setText(name)
 end
 
---! Function called when textbox is confirmed (e.g. by pressing enter)
+--- Function called when textbox is confirmed (e.g. by pressing enter)
 function UISaveGame:confirmName()
   local filename = self.new_savegame_textbox.text
   local app = self.ui.app
@@ -81,12 +81,12 @@ function UISaveGame:confirmName()
   self:trySave(app.savegame_dir .. filename .. ".sav")
 end
 
---! Function called by clicking button of existing save #num
+--- Function called by clicking button of existing save #num
 function UISaveGame:choiceMade(name)
   self:trySave(name)
 end
 
---! Try to save the game with given filename; if already exists, create confirmation window first.
+--- Try to save the game with given filename; if already exists, create confirmation window first.
 function UISaveGame:trySave(filename)
   if lfs.attributes(filename, "size") ~= nil then
     self.ui:addWindow(UIConfirmDialog(self.ui, false, _S.confirmation.overwrite_save, --[[persistable:save_game_confirmation]] function() self:doSave(filename) end))
@@ -95,7 +95,7 @@ function UISaveGame:trySave(filename)
   end
 end
 
---! Actually do save the game with given filename.
+--- Actually do save the game with given filename.
 function UISaveGame:doSave(filename)
   filename = filename
   local ui = self.ui

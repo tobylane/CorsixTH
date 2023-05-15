@@ -19,7 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 
---! Dialog for staff member requesting a salaray raise.
+--- Dialog for staff member requesting a salaray raise.
 class "UIStaffRise" (Window)
 
 ---@type UIStaffRise

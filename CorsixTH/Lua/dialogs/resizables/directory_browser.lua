@@ -23,7 +23,7 @@ local TH = require("TH")
 local iso_fs = TH.iso_fs()
 local lfsext = TH.lfsExt()
 
---! A tree node representing a directory in the physical file-system.
+--- A tree node representing a directory in the physical file-system.
 class "DirTreeNode" (FileTreeNode)
 
 ---@type DirTreeNode
@@ -57,7 +57,7 @@ end
 
 
 
---! This tree only shows directories and highlights valid TH directories.
+--- This tree only shows directories and highlights valid TH directories.
 class "InstallDirTreeNode" (DirTreeNode)
 
 ---@type InstallDirTreeNode
@@ -71,9 +71,9 @@ function InstallDirTreeNode:createNewNode(path)
   return InstallDirTreeNode(path)
 end
 
---! Test whether this file node is a directory or iso file.
+--- Test whether this file node is a directory or iso file.
 --
---!return (bool) true if directory or iso, false otherwise
+-- @return (bool) true if directory or iso, false otherwise
 function InstallDirTreeNode:isValidFile(name)
   -- Check parent criteria and that it's a directory.
   if FileTreeNode.isValidFile(self, name) then
@@ -87,11 +87,11 @@ function InstallDirTreeNode:select()
   -- Do nothing as an override. getHighlightColour solves this instead.
 end
 
---! Check whether this node is a valid install selection.
+--- Check whether this node is a valid install selection.
 --
 -- Sets self.is_valid_directory to true if the selection is valid.
 --
---!return (colour) A highlight colour if the node is a valid selection, or nil
+-- @return (colour) A highlight colour if the node is a valid selection, or nil
 -- otherwise.
 function InstallDirTreeNode:getHighlightColour(canvas)
   local highlight_colour = self.highlight_colour
@@ -114,20 +114,20 @@ function InstallDirTreeNode:getHighlightColour(canvas)
   return highlight_colour or nil
 end
 
---! Prompter for Theme Hospital install directory
+--- Prompter for Theme Hospital install directory
 class "UIDirectoryBrowser" (UIResizable)
 
 ---@type UIDirectoryBrowser
 local UIDirectoryBrowser = _G["UIDirectoryBrowser"]
 
---! Creates a new directory browser window
---!param ui The active UI to hook into.
---!param mode Whether the dialog has been opened from the main_menu or somewhere else. Currently
---! valid are "menu" or "dir_browser".
---!param instruction The textual instruction what the user should do in the dialog.
---!param treenode_class What TreeNode subclass the nodes will be built from. E.g. "InstallDirTreeNode"
---!param callback The function that is called when the user has chosen a directory. Gets
---! a path string as argument.
+--- Creates a new directory browser window
+-- @param ui The active UI to hook into.
+-- @param mode Whether the dialog has been opened from the main_menu or somewhere else. Currently
+--- valid are "menu" or "dir_browser".
+-- @param instruction The textual instruction what the user should do in the dialog.
+-- @param treenode_class What TreeNode subclass the nodes will be built from. E.g. "InstallDirTreeNode"
+-- @param callback The function that is called when the user has chosen a directory. Gets
+--- a path string as argument.
 function UIDirectoryBrowser:UIDirectoryBrowser(ui, mode, instruction, treenode_class, callback)
   self.col_bg = {
     red = 154,

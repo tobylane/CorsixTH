@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Custom key bindings
+--- Custom key bindings
 class "UIHotkeyAssign" (UIResizable)
 
 ---@type UIHotkeyAssign
@@ -82,11 +82,11 @@ local key_hierarchy = {
   "keypad 7", "keypad 8", "keypad 9", "keypad .",
 }
 
---! Removes qualifiers like left and right from modifier keys
---! e.g. left shift becomes shift.
---!
---!param noted_keys (table) Array of keys to normalize
---!return (table) New array of normalized keys
+--- Removes qualifiers like left and right from modifier keys
+--- e.g. left shift becomes shift.
+---
+-- @param noted_keys (table) Array of keys to normalize
+-- @return (table) New array of normalized keys
 local function normalize_modifiers(noted_keys)
   local res = shallow_clone(noted_keys)
 
@@ -117,8 +117,8 @@ local function normalize_modifiers(noted_keys)
   return res
 end
 
---! Return an array of the keys from the given array, sorted into a
---! deterministic order.
+--- Return an array of the keys from the given array, sorted into a
+--- deterministic order.
 local function sort_noted_keys(noted_keys)
   -- Go through the new noted_keys and order it according to the key hairarchy.
   local result = {}
@@ -136,11 +136,11 @@ local function sort_noted_keys(noted_keys)
   return result
 end
 
---! Return an array with the modifier keys removed.
---! Used when assigning the scroll keys.
---!
---!param noted_keys (table) Array of keys to check for modifiers
---!return (table) New array of keys without modifiers
+--- Return an array with the modifier keys removed.
+--- Used when assigning the scroll keys.
+---
+-- @param noted_keys (table) Array of keys to check for modifiers
+-- @return (table) New array of keys without modifiers
 local function remove_modifiers(noted_keys)
   local res = shallow_clone(noted_keys)
 
@@ -170,12 +170,12 @@ local function remove_modifiers(noted_keys)
   return res
 end
 
---! Determine if the given key sequence is already being used for an action in
---! the app.
---!
---!param keys (table) A sorted array of the key sequence to test
---!param app (App) The App
---!return (boolean,string) Whether the key is used, and if so, for what action
+--- Determine if the given key sequence is already being used for an action in
+--- the app.
+---
+-- @param keys (table) A sorted array of the key sequence to test
+-- @param app (App) The App
+-- @return (boolean,string) Whether the key is used, and if so, for what action
 local function is_hotkey_used(keys, app)
   -- Find out if there is another hotkey with the same key assignment.
   -- Make sure it's not the same key we are currently mapping.
@@ -198,15 +198,15 @@ local function is_hotkey_used(keys, app)
   return false
 end
 
---! Assign the given key sequence to a hotkey.
---!
---! Validates a given key sequence and applies it to the given hotkey.
---! If the key sequence is already used, first swap that hotkey with the given
---! one to prevent duplicates.
---!
---!param hotkey (string) The hotkey to change
---!param hotkey_buttons_table (table) Configuration table of all hotkeys
---!param app (App) The App
+--- Assign the given key sequence to a hotkey.
+---
+--- Validates a given key sequence and applies it to the given hotkey.
+--- If the key sequence is already used, first swap that hotkey with the given
+--- one to prevent duplicates.
+---
+-- @param hotkey (string) The hotkey to change
+-- @param hotkey_buttons_table (table) Configuration table of all hotkeys
+-- @param app (App) The App
 local function hotkey_input(hotkey, hotkey_buttons_table, app)
   --[[
   TODO:
@@ -552,7 +552,7 @@ function UIHotkeyAssign:showKeyPane(pane)
   end
 end
 
---! Child window for setting key bindings
+--- Child window for setting key bindings
 class "UIHotkeyAssignKeyPane" (Window)
 
 ---@type UIHotkeyAssignKeyPane

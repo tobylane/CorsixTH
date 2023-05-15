@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Hospital policy fullscreen window (set staff tiredness and patient cure thresholds, etc.).
+--- Hospital policy fullscreen window (set staff tiredness and patient cure thresholds, etc.).
 class "UIPolicy" (UIFullscreen)
 
 ---@type UIPolicy
@@ -198,10 +198,10 @@ function UIPolicy:onMouseUp(code, x, y)
   return UIFullscreen.onMouseUp(self, code, x, y)
 end
 
---! Detect which slider is clicked by the mouse.
---!param x (int) X position of the mouse.
---!param y (int) Y position of the mouse.
---!return Slider that was detected at the given position, or nil
+--- Detect which slider is clicked by the mouse.
+-- @param x (int) X position of the mouse.
+-- @param y (int) Y position of the mouse.
+-- @return Slider that was detected at the given position, or nil
 function UIPolicy:panelHit(x, y)
   for _, panel in ipairs(self.sliders_z) do
     if x > panel.x and y > panel.y and x < panel.x + panel.w and y < panel.y + panel.h then
@@ -211,7 +211,7 @@ function UIPolicy:panelHit(x, y)
   return nil
 end
 
---! Close the window.
+--- Close the window.
 function UIPolicy:close()
   -- Save new slider positions in the hospital policies again for the next use.
   for key, s in pairs(self.sliders or {}) do

@@ -20,12 +20,11 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
---! The (ideally) helpful advisor who pops up from the bottom dialog during a game.
 class "UIAdviser" (Window)
 
----@type UIAdviser
 local UIAdviser = _G["UIAdviser"]
 
+--- The (ideally) helpful advisor who pops up from the bottom dialog during a game.
 function UIAdviser:UIAdviser(ui)
   self:Window()
 
@@ -58,7 +57,7 @@ function UIAdviser:UIAdviser(ui)
   self.th = th
 end
 
--- Shows the adviser by running the "popup" animation.
+--- Shows the adviser by running the "popup" animation.
 -- Then moves on to the next phase automatically.
 function UIAdviser:show()
   self.phase = 1
@@ -67,8 +66,7 @@ function UIAdviser:show()
   self.number_frames = 4
 end
 
--- Displays the text bubble along with the next message
--- from the queue.
+--- Displays the text bubble along with the next message from the queue.
 function UIAdviser:talk()
   self.phase = 2
   self.th:setAnimation(self.ui.app.world.anims, 460)
@@ -104,7 +102,7 @@ function UIAdviser:talk()
   end
 end
 
--- Makes the adviser idle for a while before disappearing.
+--- Makes the adviser idle for a while before disappearing.
 -- This means that the text bubble is removed.
 function UIAdviser:idle()
   self.phase = 3
@@ -116,7 +114,7 @@ function UIAdviser:idle()
   end
 end
 
--- Hides the adviser by running the appropriate animation.
+--- Hides the adviser by running the appropriate animation.
 function UIAdviser:hide()
   self.timer = nil
   self.phase = 4
@@ -125,9 +123,9 @@ function UIAdviser:hide()
   self.number_frames = 4
 end
 
---! Function checks if the adviser has been asked to say something already queued
---!param speech (string) Text to check
---!return (boolean) true if duplicate found
+--- Function checks if the adviser has been asked to say something already queued.
+-- @param speech (string) Text to check
+-- @return (boolean) true if duplicate found
 function UIAdviser:checkForDuplicates(speech)
   local speech_to_check = speech.text -- Humanise for clarity
   for _, text in ipairs(self.queued_messages) do
@@ -136,11 +134,11 @@ function UIAdviser:checkForDuplicates(speech)
   end
 end
 
--- Makes the adviser say something
---!param speech The table containing the text he should say and the priority.
---!param talk_until_next_announce Whether he should stay up
+--- Makes the adviser say something.
+-- @param speech The table containing the text he should say and the priority.
+-- @param talk_until_next_announce Whether he should stay up
 -- until the next say() call is made. Useful for the tutorial.
---!param override_current Cancels previous messages (if any) immediately
+-- @param override_current Cancels previous messages (if any) immediately
 -- and shows this new one instead.
 function UIAdviser:say(speech, talk_until_next_announce, override_current)
   assert(type(speech) == "table")

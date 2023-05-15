@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! The multi-purpose panel for launching dialogs / screens and dynamic information.
+--- The multi-purpose panel for launching dialogs / screens and dynamic information.
 class "UIBottomPanel" (Window)
 
 ---@type UIBottomPanel
@@ -218,10 +218,10 @@ function UIBottomPanel:drawReputationMeter(canvas, x_left, y)
   self.panel_sprites:draw(canvas, 36, x_left + math.floor(step * (self.ui.hospital.reputation - self.ui.hospital.reputation_min)), y)
 end
 
---! Adds dynamic text to the bottom panel based on cursor position
---!param canvas
---!param x (num) coordinate
---!param y (num) coordinate
+--- Adds dynamic text to the bottom panel based on cursor position
+-- @param canvas
+-- @param x (num) coordinate
+-- @param y (num) coordinate
 function UIBottomPanel:drawDynamicInfo(canvas, x, y)
   if self.world:isCurrentSpeed("Pause") then
     if not self.world.user_actions_allowed then
@@ -259,22 +259,22 @@ function UIBottomPanel:drawDynamicInfo(canvas, x, y)
   end
 end
 
---! Update the information shown in the information box on the panel.
---!
---! If the info is nil then a cooldown timer is used before removing the
---! information from the display.
---!
---!param info (table) A table containing the information to display. The text
---! key is required and contains an array of lines to show. An optional
---! progress key may be given to draw a progress bar, following the text and
---! and an array of dividers may be provided to draw extra vertical lines in
---! the progress bar.
---!
---! info = {
---!   text: { "He's not the saviour", "He's very naughty boy" },
---!   progress: 50,
---!   dividers: { 25, 50, 75 }
---! }
+--- Update the information shown in the information box on the panel.
+---
+--- If the info is nil then a cooldown timer is used before removing the
+--- information from the display.
+---
+-- @param info (table) A table containing the information to display. The text
+--- key is required and contains an array of lines to show. An optional
+--- progress key may be given to draw a progress bar, following the text and
+--- and an array of dividers may be provided to draw extra vertical lines in
+--- the progress bar.
+---
+--- info = {
+---   text: { "He's not the saviour", "He's very naughty boy" },
+---   progress: 50,
+---   dividers: { 25, 50, 75 }
+--- }
 function UIBottomPanel:setDynamicInfo(info)
   if info and not info["text"] then
     self.world:gameLog("")
@@ -322,16 +322,16 @@ function UIBottomPanel:hitTest(x, y, x_offset)
   return x >= (x_offset and x_offset or 0) and y >= 0 and x < self.width and y < self.height
 end
 
---! Queue a fax notification message to appear.
---! The arguments specify a message, which is added to a FIFO queue, and will
+--- Queue a fax notification message to appear.
+--- The arguments specify a message, which is added to a FIFO queue, and will
 -- appear on screen once there is space.
---!param type (string) The type of message, can be: "emergency", "epidemy", "personality", "information", "disease", "report" or "strike"
---!param message (table or number) If type == "strike", the amount of pay rise. Else a list of texts to display, including a "choices" table with choices. See below for structure.
---!param owner (humanoid or nil) Some messages are related to one staff or patient. Otherwise this is nil.
---!param timeout (number or nil) If given, the message will expire after that many world ticks and be removed.
---!param default_choice (number or nil) If given, the choice with this number will be executed on expiration of the message.
---!param callback (function or nil) If given, it will be called when the message is closed.
---! Structure of message (except strike):
+-- @param type (string) The type of message, can be: "emergency", "epidemy", "personality", "information", "disease", "report" or "strike"
+-- @param message (table or number) If type == "strike", the amount of pay rise. Else a list of texts to display, including a "choices" table with choices. See below for structure.
+-- @param owner (humanoid or nil) Some messages are related to one staff or patient. Otherwise this is nil.
+-- @param timeout (number or nil) If given, the message will expire after that many world ticks and be removed.
+-- @param default_choice (number or nil) If given, the choice with this number will be executed on expiration of the message.
+-- @param callback (function or nil) If given, it will be called when the message is closed.
+--- Structure of message (except strike):
 -- message = {
 --   { text = "first line of text", offset (integer, optional) }
 --   { text = "second line of text", offset (integer, optional) }
@@ -427,7 +427,7 @@ function UIBottomPanel:openLastMessage()
   self.message_windows[#self.message_windows]:openMessage()
 end
 
---! Trigger a message to be moved from the queue into a actual window, after
+--- Trigger a message to be moved from the queue into a actual window, after
 -- first performing the necessary animation.
 function UIBottomPanel:showMessage()
   if self.factory_direction ~= -1 then
@@ -472,7 +472,7 @@ function UIBottomPanel:removeMessage(owner)
   return false
 end
 
---! Pop the message with the given index from the message queue and turn it into an actual
+--- Pop the message with the given index from the message queue and turn it into an actual
 -- message window; if no index is provided the first message in the queue is popped.
 function UIBottomPanel:createMessageWindow(index)
   local --[[persistable:bottom_panel_message_window_close]] function onClose(window)

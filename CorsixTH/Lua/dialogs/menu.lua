@@ -22,7 +22,7 @@ local ipairs, math_floor, unpack, select, assert
     = ipairs, math.floor, unpack, select, assert
 local TH = require("TH")
 
---! The ingame menu bar which sits (nominally hidden) at the top of the screen.
+--- The ingame menu bar which sits (nominally hidden) at the top of the screen.
 class "UIMenuBar" (Window)
 
 ---@type UIMenuBar
@@ -128,9 +128,9 @@ local function assign_menu_levels(menu, level)
   end
 end
 
---! Add a menu to the menu bar.
---!param title Title of the menu (at the bar).
---!param menu Menu to add.
+--- Add a menu to the menu bar.
+-- @param title Title of the menu (at the bar).
+-- @param menu Menu to add.
 function UIMenuBar:addMenu(title, menu)
   assign_menu_levels(menu, 1)
   local menu_item = {
@@ -529,9 +529,9 @@ end
 -- A function to set the menu hotkey strings, whether a string or table.
 -- Usage: hotkey_value_label(hotkey name as string)
 -- Ex: hotkey_value_label("ingame_loadMenu") will produce (SHIFT+L) by default.
---!param hotkey_name (string) Name of hotkey to be converted to string.
---!param hotkeys (table) The app's hotkey table. I.E. app.hotkeys
---!return (string) The hotkey returned in this format: (KEY+KEY)
+-- @param hotkey_name (string) Name of hotkey to be converted to string.
+-- @param hotkeys (table) The app's hotkey table. I.E. app.hotkeys
+-- @return (string) The hotkey returned in this format: (KEY+KEY)
 local function hotkey_value_label(hotkey_name, hotkeys)
   local hotkey_value = hotkeys[hotkey_name]
   if hotkey_value == nil then
@@ -540,8 +540,8 @@ local function hotkey_value_label(hotkey_name, hotkeys)
   return string.upper(array_join(hotkey_value, "+"))
 end
 
---! Make a menu for the map editor.
---!param app Application.
+--- Make a menu for the map editor.
+-- @param app Application.
 function UIMenuBar:makeMapeditorMenu(app)
   local menu = UIMenu()
   local hotkeys = app.hotkeys
@@ -559,8 +559,8 @@ function UIMenuBar:makeMapeditorMenu(app)
   self:addMenu(_S.menu.player_count, menu)
 end
 
---! Make a menu for the game.
---!param app Application.
+--- Make a menu for the game.
+-- @param app Application.
 function UIMenuBar:makeGameMenu(app)
   local menu = UIMenu()
   local hotkeys = app.hotkeys

@@ -22,7 +22,7 @@ local math_floor
     = math.floor
 local TH = require("TH")
 
---! Invisible window which handles placing a `Staff` member in the world.
+--- Invisible window which handles placing a `Staff` member in the world.
 class "UIPlaceStaff" (Window)
 
 ---@type UIPlaceStaff
@@ -77,7 +77,7 @@ end
 
 local flag_cache = {}
 local flag_altpal = 16
---! Private function. Is the staff member (self) permitted
+--- Private function. Is the staff member (self) permitted
 -- to be placed where the user is hovering or clicking?
 function UIPlaceStaff:_isValidStaffPlacement()
   local world, x, y = self.world, self.tile_x, self.tile_y

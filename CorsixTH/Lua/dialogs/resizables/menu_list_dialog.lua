@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! A menu list with a scrollbar. Used by load_game, save_game and custom_game.
+--- A menu list with a scrollbar. Used by load_game, save_game and custom_game.
 class "UIMenuList" (UIResizable)
 
 ---@type UIMenuList
@@ -101,7 +101,7 @@ function UIMenuList:getSavedWindowPositionName()
 end
 
 -- Function stub for dialogs to override. This function is called each time a button is clicked.
---!param num (integer) Number of the button pressed.
+---param num (integer) Number of the button pressed.
 function UIMenuList:buttonClicked(num) -- luacheck: ignore 212 keep args from parent class
 end
 

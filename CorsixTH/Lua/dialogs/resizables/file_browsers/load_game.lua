@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Load Game Window
+--- Load Game Window
 class "UILoadGame" (UIFileBrowser)
 
 ---@type UILoadGame
@@ -45,8 +45,8 @@ function UILoadGame:choiceMade(name)
   end
 end
 
---! Output the error when trying to load a game
---!param err The error given
+--- Output the error when trying to load a game
+-- @param err The error given
 function UILoadGame:loadError(err)
   print(err)
   TheApp:loadMainMenu()

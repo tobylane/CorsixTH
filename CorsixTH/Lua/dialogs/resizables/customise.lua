@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Customise window used in the main menu and ingame.
+--- Customise window used in the main menu and ingame.
 class "UICustomise" (UIResizable)
 
 ---@type UICustomise

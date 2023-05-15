@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Custom Campaign Window
+--- Custom Campaign Window
 class "UICustomCampaign" (UIMenuList)
 
 ---@type UICustomCampaign
@@ -32,9 +32,9 @@ local col_scrollbar = {
 
 local details_width = 280
 
---! Collect the campaign levels at the provided path
---!param path (str) File system path to search.
---!return (array) The found levels, with some basic information about each level.
+--- Collect the campaign levels at the provided path
+-- @param path (str) File system path to search.
+-- @return (array) The found levels, with some basic information about each level.
 local function createCampaignList(path)
   local campaigns = {}
 

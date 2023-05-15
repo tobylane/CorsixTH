@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
---! Room / door / reception desk queue visualisation dialog.
+--- Room / door / reception desk queue visualisation dialog.
 class "UIQueue" (Window)
 
 ---@type UIQueue

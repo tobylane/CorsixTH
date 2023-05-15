@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Interface for items within a UI tree control
+--- Interface for items within a UI tree control
 class "TreeNode"
 
 ---@type TreeNode
@@ -29,61 +29,61 @@ function TreeNode:TreeNode()
   self.num_visible_descendants = 0
 end
 
---! Get the number of childrem which the item has
+--- Get the number of childrem which the item has
 function TreeNode:getChildCount()
   error("To be implemented in subclasses")
 end
 
---! Query if the item has any children at all.
---! The simple way of doing this is checking if getChildCount() is non-zero,
+--- Query if the item has any children at all.
+--- The simple way of doing this is checking if getChildCount() is non-zero,
 -- but often this can be implemented in a more efficient manner.
 function TreeNode:hasChildren()
   return self:getChildCount() ~= 0
 end
 
---! Get a child of the item.
---!param idx (integer) An integer between 1 and getChildCount() (inclusive).
+--- Get a child of the item.
+-- @param idx (integer) An integer between 1 and getChildCount() (inclusive).
 function TreeNode:getChildByIndex(idx) -- luacheck: ignore 212 keep args for child class
   error("To be implemented in subclasses")
 end
 
---! Given a child of the item, determine which index it is
---!param child (TreeNode) A value returned from getChildByIndex()
+--- Given a child of the item, determine which index it is
+-- @param child (TreeNode) A value returned from getChildByIndex()
 function TreeNode:getIndexOfChild(child) -- luacheck: ignore 212 keep args for child class
   error("To be implemented in subclasses")
 end
 
---! Get the text to be displayed for the item
+--- Get the text to be displayed for the item
 function TreeNode:getLabel()
   error("To be implemented in subclasses")
 end
 
---! Get the item's parent, if it has one
+--- Get the item's parent, if it has one
 function TreeNode:getParent()
   return self.parent
 end
 
---! Get the tree control within which the item is displayed
+--- Get the tree control within which the item is displayed
 function TreeNode:getControl()
   return self.control or self:getParent():getControl()
 end
 
---! Query whether the item's children are visible
+--- Query whether the item's children are visible
 function TreeNode:isExpanded()
   return self.is_expanded
 end
 
---! Get the background colour for when the item is highlighted
+--- Get the background colour for when the item is highlighted
 function TreeNode:getHighlightColour(canvas) -- luacheck: ignore 212 keep args for child class
   return nil
 end
 
---! Get the background colour for when the item is selected
+--- Get the background colour for when the item is selected
 function TreeNode:getSelectColour(canvas)
   return canvas:mapRGB(174, 166, 218)
 end
 
---! Make the children of the item visible
+--- Make the children of the item visible
 function TreeNode:expand()
   if self.is_expanded then return end
   self.is_expanded = true
@@ -101,7 +101,7 @@ function TreeNode:expand()
   self:getControl():onNumVisibleNodesChange()
 end
 
---! Make the children of the item invisible
+--- Make the children of the item invisible
 function TreeNode:contract()
   if not self.is_expanded then return end
   self.is_expanded = false
@@ -115,7 +115,7 @@ function TreeNode:contract()
   self:getControl():onNumVisibleNodesChange()
 end
 
---! The number of visible items in the set of this item and all its descendants
+--- The number of visible items in the set of this item and all its descendants
 function TreeNode:numVisibleDescendants()
   if self.hidden then
     return self.num_visible_descendants
@@ -124,8 +124,8 @@ function TreeNode:numVisibleDescendants()
   end
 end
 
---! Get the depth from the root item to this item.
---! The root item has level 0, its direct children have level 1, etc.
+--- Get the depth from the root item to this item.
+--- The root item has level 0, its direct children have level 1, etc.
 function TreeNode:getLevel()
   local level = self.level
   if not level then
@@ -140,7 +140,7 @@ function TreeNode:getLevel()
   return level
 end
 
---! Get the previous item in the on-screen display order
+--- Get the previous item in the on-screen display order
 function TreeNode:getPrevVisible()
   local parent = self:getParent()
   if not parent then
@@ -162,7 +162,7 @@ function TreeNode:getPrevVisible()
   end
 end
 
---! Get the next item in the on-screen display order
+--- Get the next item in the on-screen display order
 function TreeNode:getNextVisible()
   if self:isExpanded() and self:hasChildren() then
     return self:getChildByIndex(1)
@@ -181,7 +181,7 @@ function TreeNode:getNextVisible()
   end
 end
 
---! A tree node representing a file (or directory) in the physical file-system.
+--- A tree node representing a file (or directory) in the physical file-system.
 class "FileTreeNode" (TreeNode)
 
 ---@type FileTreeNode
@@ -295,7 +295,7 @@ function FileTreeNode:hasChildren()
   return self.has_children
 end
 
---! Returns whether the given file name is valid
+--- Returns whether the given file name is valid
 --  in this tree. Override for desired behaviour.
 function FileTreeNode:isValidFile(name)
   return name ~= "." and name ~= ".."
@@ -335,9 +335,9 @@ local function sort_by_key(t1, t2)
   end
 end
 
---! Sorts the node and its children either by date or by name.
---!param sort_by What to sort by. Either "name" or "date".
---!param order If the ordering should be "ascending" or "descending".
+--- Sorts the node and its children either by date or by name.
+-- @param sort_by What to sort by. Either "name" or "date".
+-- @param order If the ordering should be "ascending" or "descending".
 function FileTreeNode:reSortChildren(sort_by, order)
   for _, child in ipairs(self.children) do
     if sort_by == "date" then
@@ -440,20 +440,20 @@ function FileTreeNode:getLastModification()
   return lfs.attributes(self.path, "modification")
 end
 
---! Selects an item. By default everything selected is valid. Can be overridden
+--- Selects an item. By default everything selected is valid. Can be overridden
 -- by inheriting classes.
 function FileTreeNode:select()
   self.is_valid_directory = true
 end
 
---! A tree node which can be used as a root node to give the effect of having
+--- A tree node which can be used as a root node to give the effect of having
 -- multiple root nodes.
 class "DummyRootNode" (TreeNode)
 
 ---@type DummyRootNode
 local DummyRootNode = _G["DummyRootNode"]
 
---!param roots (array) An array of `TreeNode`s which should be displayed as
+-- @param roots (array) An array of `TreeNode`s which should be displayed as
 -- root nodes.
 function DummyRootNode:DummyRootNode(roots)
   self:TreeNode()
@@ -479,25 +479,25 @@ function DummyRootNode:getIndexOfChild(child)
   return self.children[child]
 end
 
---! A control (to be placed on a window) which allows the user to navigate a
+--- A control (to be placed on a window) which allows the user to navigate a
 -- tree of items and select one item from it.
 class "TreeControl" (Window)
 
 ---@type TreeControl
 local TreeControl = _G["TreeControl"]
 
---!param root (TreeNode) The single root node of the tree (use a `DummyRootNode`
+-- @param root (TreeNode) The single root node of the tree (use a `DummyRootNode`
 -- here if multiple root nodes are desired).
---!param x (integer) The X-position, in pixels, where the control should start
+-- @param x (integer) The X-position, in pixels, where the control should start
 -- within its parent.
---!param y (integer) The Y-position, in pixels, where the control should start
+-- @param y (integer) The Y-position, in pixels, where the control should start
 -- within its parent.
---!param width (integer) The width, in pixels, of the control.
---!param height (integer) The height, in pixels, of the control.
---!param col_bg (table) The background colour of the control - this should be
+-- @param width (integer) The width, in pixels, of the control.
+-- @param height (integer) The height, in pixels, of the control.
+-- @param col_bg (table) The background colour of the control - this should be
 -- a table with `red`, `green`, and `blue` fields, each an integer between 0
 -- and 255.
---!param col_fg (table) The colour used for the scrollbar and highlighted items.
+-- @param col_fg (table) The colour used for the scrollbar and highlighted items.
 function TreeControl:TreeControl(root, x, y, width, height, col_bg, col_fg, y_offset, has_font)
   -- Setup the base window
   self:Window()
@@ -599,19 +599,19 @@ function TreeControl:onMouseDown(button, x, y)
   return redraw
 end
 
---! Function to handle (final) selection by user that needs to feed back data to
---! another dialog.
---!param callback (function) Code to execute on trigger
---!return self
+--- Function to handle (final) selection by user that needs to feed back data to
+--- another dialog.
+-- @param callback (function) Code to execute on trigger
+-- @return self
 function TreeControl:setSelectCallback(callback)
   self.select_callback = callback
   return self
 end
 
---! Function for where an action in the file tree needs to feed back data to another
---! dialog. Its specific usage should be noted in the parent element
---!param callback (function) Code to execute on trigger
---!return self
+--- Function for where an action in the file tree needs to feed back data to another
+--- dialog. Its specific usage should be noted in the parent element
+-- @param callback (function) Code to execute on trigger
+-- @return self
 function TreeControl:setValueChangeCallback(callback)
   self.val_change_callback = callback
   return self
@@ -671,7 +671,7 @@ function TreeControl:onScroll()
   self.first_visible_ordinal = self.scrollbar.value
 end
 
---! Override this function if a certain row should have certain text
+--- Override this function if a certain row should have certain text
 -- or additional flavour to it.
 function TreeControl:drawExtraOnRow(canvas, node, x, y) -- luacheck: ignore 212 keep args for child class
 end

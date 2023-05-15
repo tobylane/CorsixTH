@@ -87,7 +87,7 @@ function UIFax:UIFax(ui, icon)
   self:addPanel(0, 326, 382):makeButton(0, 0, 44, 11, 13, button("#"))
 end
 
--- Faxes pause the game
+--- Faxes pause the game.
 function UIFax:mustPause()
   return true
 end
@@ -125,8 +125,8 @@ function UIFax:draw(canvas, x, y)
   end
 end
 
---A choice was made for the fax.
---!param choice_number (integer) Number of the choice
+--- A choice was made for the fax.
+-- @param choice_number (integer) Number of the choice
 function UIFax:choice(choice_number)
   local choices = self.message.choices
   local choice, additionalInfo

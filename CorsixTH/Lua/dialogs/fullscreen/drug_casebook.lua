@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Drug Casebook fullscreen window (view disease statistics and set prices).
+--- Drug Casebook fullscreen window (view disease statistics and set prices).
 class "UICasebook" (UIFullscreen)
 
 ---@type UICasebook
@@ -106,7 +106,7 @@ function UICasebook:close()
   self.ui:getWindow(UIBottomPanel):updateButtonStates()
 end
 
---! The diseases list has been changed, update the list.
+--- The diseases list has been changed, update the list.
 function UICasebook:updateDiseaseList()
   -- A sorted list of known diseases and pseudo diseases.
   -- Used to be able to list the diseases in, believe it or not,
@@ -130,8 +130,8 @@ function UICasebook:updateDiseaseList()
   end
 end
 
---! Select a disease by name.
---!param disease (string) Name of the disease
+--- Select a disease by name.
+-- @param disease (string) Name of the disease
 function UICasebook:selectDisease(disease)
   for i = 1, #self.names_sorted do
     if disease == self.names_sorted[i] then
@@ -143,8 +143,8 @@ function UICasebook:selectDisease(disease)
   self:updateIcons()
 end
 
---! Function that is called when a new entry is selected in some way
---! It updates all icons etc. that react to what is selected
+--- Function that is called when a new entry is selected in some way
+--- It updates all icons etc. that react to what is selected
 function UICasebook:updateIcons()
   local disease = self.selected_disease
   local hosp = self.hospital

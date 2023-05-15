@@ -25,7 +25,7 @@ local --[[persistable:patient_window_is_in_view_circle]] function is_in_view_cir
   return (x - 55)^2 + (y - 254)^2 < 39^2
 end
 
---! Individual patient information dialog
+--- Individual patient information dialog
 class "UIPatient" (Window)
 
 ---@type UIPatient
@@ -100,9 +100,9 @@ function UIPatient:registerKeyHandlers()
   self:addKeyHandler("ingame_patient_gohome", self.goHome)
 end
 
---! Normalise warmth of a patient.
---!param warmth (number or nil) If given, the fraction of warmth of the patient.
---!return (float) Normalized warmth level.
+--- Normalise warmth of a patient.
+-- @param warmth (number or nil) If given, the fraction of warmth of the patient.
+-- @return (float) Normalized warmth level.
 function UIPatient.normaliseWarmth(warmth)
   if not warmth then return 0.5 end -- Return 1/2 if unknown.
 
@@ -116,13 +116,13 @@ function UIPatient.normaliseWarmth(warmth)
   return warmth
 end
 
---! Draw a bar in the patient dialogue window.
---!param canvas Canvas to draw at.
---!param xbase Horizontal base position.
---!param ybase Vertical base position.
---!param xpos Horizontal offset.
---!param ypos Vertical offset.
---!param value Fraction to draw.
+--- Draw a bar in the patient dialogue window.
+-- @param canvas Canvas to draw at.
+-- @param xbase Horizontal base position.
+-- @param ybase Vertical base position.
+-- @param xpos Horizontal offset.
+-- @param ypos Vertical offset.
+-- @param value Fraction to draw.
 function UIPatient:drawBar(canvas, xbase, ybase, xpos, ypos, value)
   local width = math.floor(value * 40 + 0.5)
   for dx = 0, width - 1 do
@@ -171,20 +171,20 @@ function UIPatient:draw(canvas, x_, y_)
   end
 end
 
---! List the treatments that were performed on the patient.
---!param canvas Destination to draw on.
---!param x (int) X position of the top of the list.
---!param y (int) Y position of the top of the list.
+--- List the treatments that were performed on the patient.
+-- @param canvas Destination to draw on.
+-- @param x (int) X position of the top of the list.
+-- @param y (int) Y position of the top of the list.
 function UIPatient:drawTreatmentHistory(canvas, x, y)
   for _, room in ipairs(self.patient.treatment_history) do
     y = self.font:drawWrapped(canvas, room, x, y, 95)
   end
 end
 
---! Draw the health graph of the patient.
---!param canvas Destination to draw on.
---!param x (int) X position of the top-left of the graph.
---!param y (int) Y position of the top-left of the graph.
+--- Draw the health graph of the patient.
+-- @param canvas Destination to draw on.
+-- @param x (int) X position of the top-left of the graph.
+-- @param y (int) Y position of the top-left of the graph.
 function UIPatient:drawHealthHistory(canvas, x, y)
   -- Sizes and positions of the graph in the window.
   local hor_length = 76
@@ -270,7 +270,7 @@ function UIPatient:onTick()
   return Window.onTick(self)
 end
 
---! Go through the buttons in the patient dialog to check whether they should be visible
+--- Go through the buttons in the patient dialog to check whether they should be visible
 function UIPatient:updateInformation()
   local patient = self.patient
   -- Show casebook?

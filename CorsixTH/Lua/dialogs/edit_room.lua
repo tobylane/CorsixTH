@@ -1122,16 +1122,16 @@ local window_floor_blueprint_markers = {
   west = 36,
 }
 
---! Check walls for having room for the door
---!param x (int) X tile position of the door.
---!param y (int) Y tile position of the door.
---!param wall (string) Name of the wall (either 'north' or 'west').
---!param has_swingdoor (boolean) Whether the room has a normal door (false) or a swing door (true) as entrance.
---!return (int) bit flags indicating invalid tile position using 1 based power of 2 as this works with ipairs
---!  values returned are the enumeration of
---!  4 = centre door in swing door or for single door the value can just be non-zero but uses the same bit of code
---!  2 (door section closer to top of screen) - smaller x or y
---!  8 (door section closer to bottom of screen) - larger x or y
+--- Check walls for having room for the door
+-- @param x (int) X tile position of the door.
+-- @param y (int) Y tile position of the door.
+-- @param wall (string) Name of the wall (either 'north' or 'west').
+-- @param has_swingdoor (boolean) Whether the room has a normal door (false) or a swing door (true) as entrance.
+-- @return (int) bit flags indicating invalid tile position using 1 based power of 2 as this works with ipairs
+---  values returned are the enumeration of
+---  4 = centre door in swing door or for single door the value can just be non-zero but uses the same bit of code
+---  2 (door section closer to top of screen) - smaller x or y
+---  8 (door section closer to bottom of screen) - larger x or y
 local function checkDoorWalls(x, y, wall, has_swingdoor)
   local th = TheApp.map.th
 
@@ -1162,12 +1162,12 @@ local function checkDoorWalls(x, y, wall, has_swingdoor)
   return invalid_tile
 end
 
---! Check whether the given tile can function as a door entry/exit tile.
---!param xpos (int) X position of the tile.
---!param ypos (int) Y position of the tile.
---!param player_id (int) Player id owning the hospital.
---!param world - reference to world object instance
---!return (boolean) whether the tile is considered to be valid.
+--- Check whether the given tile can function as a door entry/exit tile.
+-- @param xpos (int) X position of the tile.
+-- @param ypos (int) Y position of the tile.
+-- @param player_id (int) Player id owning the hospital.
+-- @param world - reference to world object instance
+-- @return (boolean) whether the tile is considered to be valid.
 local function validDoorTile(xpos, ypos, player_id, world)
   local th = TheApp.map.th
   local tile_flags = th:getCellFlags(xpos, ypos)
@@ -1180,15 +1180,15 @@ local function validDoorTile(xpos, ypos, player_id, world)
   return true
 end
 
---! Calculate position offsets and door blueprint wall values
---! param x (int) doors blueprint x value
---! param y (int) doors blueprint y value
---! param wall (string) original wall orientation
---! return x (int) updated x value
---! return y (int) updated y value
---! return x_mod (int) offset value to apply to tile count to determine relative position
---! return y_mod (int) offset value to apply to tile count to determine relatitve position
---! return wall (string) wall orientation style (only 2 styles)
+--- Calculate position offsets and door blueprint wall values
+--- param x (int) doors blueprint x value
+--- param y (int) doors blueprint y value
+--- param wall (string) original wall orientation
+--- return x (int) updated x value
+--- return y (int) updated y value
+--- return x_mod (int) offset value to apply to tile count to determine relative position
+--- return y_mod (int) offset value to apply to tile count to determine relatitve position
+--- return wall (string) wall orientation style (only 2 styles)
 local function doorWallOffsetCalculations(x, y, wall)
   local x_mod
   local y_mod

@@ -21,7 +21,7 @@ SOFTWARE. --]]
 strict_declare_global "_"
 _ = nil
 
---! Interactive Lua Console for ingame debugging.
+--- Interactive Lua Console for ingame debugging.
 class "UILuaConsole" (UIResizable)
 
 ---@type UILuaConsole

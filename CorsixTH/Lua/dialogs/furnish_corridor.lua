@@ -22,7 +22,7 @@ local TH = require("TH")
 local math_floor
     = math.floor
 
---! Dialog for purchasing `Object`s (for the corridor or for rooms).
+--- Dialog for purchasing `Object`s (for the corridor or for rooms).
 class "UIFurnishCorridor" (Window)
 
 ---@type UIFurnishCorridor

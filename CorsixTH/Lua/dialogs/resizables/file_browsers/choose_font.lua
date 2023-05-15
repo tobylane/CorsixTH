@@ -21,7 +21,7 @@ SOFTWARE. --]]
 local TH = require("TH")
 local lfsext = TH.lfsExt()
 
---! Window where the user can choose a font file.
+--- Window where the user can choose a font file.
 class "UIChooseFont" (UIFileBrowser)
 
 ---@type UIChooseFont
@@ -42,7 +42,7 @@ function UIChooseFont:UIChooseFont(ui, mode)
   self:UIFileBrowser(ui, mode, _S.font_location_window.caption:format(".ttc, .otf, .ttf"), 265, root)
 end
 
---! Function called by clicking button of existing save #num
+--- Function called by clicking button of existing save #num
 function UIChooseFont:choiceMade(name)
   local app = TheApp
   app.config.unicode_font = name

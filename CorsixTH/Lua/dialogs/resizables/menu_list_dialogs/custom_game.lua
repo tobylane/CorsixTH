@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Custom Game Window
+--- Custom Game Window
 class "UICustomGame" (UIMenuList)
 
 ---@type UICustomGame
@@ -32,9 +32,9 @@ local col_scrollbar = {
 
 local details_width = 280
 
---! Compile metainfo for all of the levels in the given path.
---!param path (string) The path that should contain level files.
---!param items (table) Table to insert the level metadata into.
+--- Compile metainfo for all of the levels in the given path.
+-- @param path (string) The path that should contain level files.
+-- @param items (table) Table to insert the level metadata into.
 local findLevelsInDir = function(path, items)
   for file in lfs.dir(path) do
     if file:match("%.level$") then

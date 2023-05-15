@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local lfs = require("lfs")
 
---! A tree node representing a file (or directory) in the physical file-system
+--- A tree node representing a file (or directory) in the physical file-system
 --  that meets a given file extension criterion.
 class "FilteredFileTreeNode" (FileTreeNode)
 
@@ -76,7 +76,7 @@ function FilteredFileTreeNode:getLabel()
   return label
 end
 
---! A sortable tree control that accommodates a certain file type and also possibly shows
+--- A sortable tree control that accommodates a certain file type and also possibly shows
 --  their last modification dates.
 class "FilteredTreeControl" (TreeControl)
 
@@ -118,9 +118,9 @@ function FilteredTreeControl:sortByDate()
   end
 end
 
---! Sorts the list according to the given parameters.
---!param sort_by Either "name" or "date".
---!param order Either "ascending" or "descending"
+--- Sorts the list according to the given parameters.
+-- @param sort_by Either "name" or "date".
+-- @param order Either "ascending" or "descending"
 function FilteredTreeControl:sortBy(sort_by, order)
   self.sort_by = sort_by
   self.order = order
@@ -151,7 +151,7 @@ function FilteredTreeControl:drawExtraOnRow(canvas, node, x, y)
   end
 end
 
---! A file browser with a scrollbar. Used by load_game and save_game.
+--- A file browser with a scrollbar. Used by load_game and save_game.
 class "UIFileBrowser" (UIResizable)
 
 ---@type UIFileBrowser
@@ -223,19 +223,19 @@ function UIFileBrowser:UIFileBrowser(ui, mode, title, vertical_size, root, show_
     end)):setTooltip(_S.tooltip.menu_list_window.ok)
 end
 
---! Function stub for dialogs to override. This function is called each time a file is chosen.
---!param name (string) Name of the file chosen.
+--- Function stub for dialogs to override. This function is called each time a file is chosen.
+-- @param name (string) Name of the file chosen.
 function UIFileBrowser:choiceMade(name) -- luacheck: ignore 212 keep args from parent class
 end
 
---! Function stub for dialogs with user input option. This will be called for
---! updating inputs, override it for a proper implementation in the derived class.
---!param label (string) Name of the file chosen
+--- Function stub for dialogs with user input option. This will be called for
+--- updating inputs, override it for a proper implementation in the derived class.
+-- @param label (string) Name of the file chosen
 function UIFileBrowser:setInputValue(label) -- luacheck: ignore 212 keep args from parent class
 end
 
---! Check selection is a valid file, and not a directory
---!param node (table) user selected element
+--- Check selection is a valid file, and not a directory
+-- @param node (table) user selected element
 function UIFileBrowser:checkChoice(node)
   return node.is_valid_file and (lfs.attributes(node.path, "mode") ~= "directory")
 end

@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Class for main menu window.
+--- Class for main menu window.
 class "UIMainMenu" (UIResizable)
 
 ---@type UIMainMenu
@@ -48,9 +48,9 @@ function UIMainMenu:UIMainMenu(ui)
   }
   self.no_menu_entries = #menu_items
 
-  --! Work out the size of non-false items in array
-  --!param items (list) what is to be checked
-  --!return calculated size
+  --- Work out the size of non-false items in array
+  -- @param items (list) what is to be checked
+  -- @return calculated size
   local function computeSize(items)
     local size = 0
     for _, item in pairs(items) do
@@ -86,12 +86,12 @@ function UIMainMenu:UIMainMenu(ui)
   end
 end
 
---! Adds a single menu item to the main menu.
---!param label (string) The (localized) label to use for the new button.
---!param callback (function) Function to call when the user clicks the button.
---!param tooltip (string) Text to show when the player hovers over the button.
---!param y_pos (integer) Y-position from where to add the menu item.
---!return (integer) Y-position below which more items can be added.
+--- Adds a single menu item to the main menu.
+-- @param label (string) The (localized) label to use for the new button.
+-- @param callback (function) Function to call when the user clicks the button.
+-- @param tooltip (string) Text to show when the player hovers over the button.
+-- @param y_pos (integer) Y-position from where to add the menu item.
+-- @return (integer) Y-position below which more items can be added.
 --        This function has added a menu item between y_pos and the return value.
 function UIMainMenu:addMenuItem(label, callback, tooltip, y_pos)
   self:addBevelPanel(20, y_pos, 160, menu_item_height, col_bg)

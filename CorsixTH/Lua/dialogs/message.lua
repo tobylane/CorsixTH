@@ -18,7 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Small fax notification window which sits on the bottom bar.
+--- Small fax notification window which sits on the bottom bar.
 class "UIMessage" (Window)
 
 ---@type UIMessage
@@ -103,7 +103,7 @@ function UIMessage:adjustToggle()
   end
 end
 
---! Displays the fax/strike message to the player when opened from the bottom_panel.
+--- Displays the fax/strike message to the player when opened from the bottom_panel.
 function UIMessage:openMessage()
   if TheApp.world:isUserActionProhibited() and not self.ui:checkForMustPauseWindows() then
     self.ui:playSound("wrong2.wav")
@@ -131,7 +131,7 @@ function UIMessage:openMessage()
 end
 
 -- Removes the Message, executing a choice if given, else just deletes it
---!param choice_number (number) if given, removes the message by executing this choice.
+-- @param choice_number (number) if given, removes the message by executing this choice.
 function UIMessage:removeMessage(choice_number)
   if choice_number then
     if not self.fax then

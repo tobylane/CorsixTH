@@ -18,8 +18,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
---! Class for resizable windows.
---! If resizable is set to true, the user can resize by clicking and dragging
+--- Class for resizable windows.
+--- If resizable is set to true, the user can resize by clicking and dragging
 --any of the corners.
 class "UIResizable" (Window)
 
@@ -137,10 +137,10 @@ function UIResizable:hitTest(x, y)
   return self:hitTestCorners(x, y) and true
 end
 
---! Tests if any of the four corners of the window border is hit
---!param x the x coordinate to test
---!param y the y coordinate to test
---!return (boolean or string) false if not hit, else a string to denote which corner was hit (can be "ul", "ur", "ll" or "lr")
+--- Tests if any of the four corners of the window border is hit
+-- @param x the x coordinate to test
+-- @param y the y coordinate to test
+-- @return (boolean or string) false if not hit, else a string to denote which corner was hit (can be "ul", "ur", "ll" or "lr")
 function UIResizable:hitTestCorners(x, y)
   if self.border_sprites then
     local yzone = (-9 <= y and y < 0) and "u" or (self.height <= y and y < self.height + 9) and "l"

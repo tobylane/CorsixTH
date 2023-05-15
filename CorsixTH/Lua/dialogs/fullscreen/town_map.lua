@@ -20,7 +20,7 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
---! Town map fullscreen window (purchase land, set radiator levels, map overview).
+--- Town map fullscreen window (purchase land, set radiator levels, map overview).
 class "UITownMap" (UIFullscreen)
 
 ---@type UITownMap
@@ -229,9 +229,9 @@ function UITownMap:draw(canvas, x, y)
     end
   end
 
-  --! Select entities of the world by their id.
-  --!param id Id of the objects to select.
-  --!return (list) The selected entities.
+  --- Select entities of the world by their id.
+  -- @param id Id of the objects to select.
+  -- @return (list) The selected entities.
   local function get_objects_by_id(id)
     local ret = {}
     for _, obj_list in pairs(world.objects) do
