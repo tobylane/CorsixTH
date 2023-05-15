@@ -24,7 +24,7 @@ class "PickupAction" (HumanoidAction)
 local PickupAction = _G["PickupAction"]
 
 -- Construct a pick-up action
---!param ui User interface
+-- @param ui User interface
 function PickupAction:PickupAction(ui)
   assert(class.is(ui, UI), "Invalid value for parameter 'ui'")
 

@@ -23,9 +23,9 @@ class "KnockDoorAction" (HumanoidAction)
 ---@type KnockDoorAction
 local KnockDoorAction = _G["KnockDoorAction"]
 
---! Constructor for knocking on the door action.
---!param door (Object) Door to knock on.
---!param direction (string) Direction of facing.
+--- Constructor for knocking on the door action.
+-- @param door (Object) Door to knock on.
+-- @param direction (string) Direction of facing.
 function KnockDoorAction:KnockDoorAction(humanoid, door, direction)
   assert(class.is(humanoid, Humanoid), "Invalid value for parameter 'humanoid'")
   assert(class.is(door, Door), "Invalid value for parameter 'door'")

@@ -23,9 +23,9 @@ class "WalkAction" (HumanoidAction)
 ---@type WalkAction
 local WalkAction = _G["WalkAction"]
 
---! Action to walk to a given position.
---!param x (int) X coordinate of the destination tile.
---!param y (int) Y coordinate of the destination tile.
+--- Action to walk to a given position.
+-- @param x (int) X coordinate of the destination tile.
+-- @param y (int) Y coordinate of the destination tile.
 function WalkAction:WalkAction(x, y)
   assert(type(x) == "number", "Invalid value for parameter 'x'")
   assert(type(y) == "number", "Invalid value for parameter 'y'")
@@ -43,16 +43,16 @@ function WalkAction:truncateOnHighPriority()
   return self
 end
 
---! Nurse is walking with the intention to vaccinate.
---!return (action) self, for daisy-chaining.
+--- Nurse is walking with the intention to vaccinate.
+-- @return (action) self, for daisy-chaining.
 function WalkAction:enableWalkingToVaccinate()
   self.walking_to_vaccinate = true
   return self
 end
 
---! Set a flag whether the walk enters a room.
---!param entering (bool) If set or nil, set the flag of entering the room.
---!return (action) self, for daisy-chaining.
+--- Set a flag whether the walk enters a room.
+-- @param entering (bool) If set or nil, set the flag of entering the room.
+-- @return (action) self, for daisy-chaining.
 function WalkAction:setIsEntering(entering)
   assert(type(entering) == "boolean", "Invalid value for parameter 'entering'")
 

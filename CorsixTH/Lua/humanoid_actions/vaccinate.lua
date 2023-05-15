@@ -24,8 +24,8 @@ class "VaccinateAction" (HumanoidAction)
 local VaccinateAction = _G["VaccinateAction"]
 
 -- Vaccinate action constructor for a nurse.
---!param patient (Patient) Patient to vaccinate.
---!param fee Amount of money to pay.
+-- @param patient (Patient) Patient to vaccinate.
+-- @param fee Amount of money to pay.
 function VaccinateAction:VaccinateAction(patient, fee)
   assert(class.is(patient, Patient), "Invalid value for parameter 'patient'")
   assert(type(fee) == "number", "Invalid value for parameter 'fee'")

@@ -23,10 +23,10 @@ class "QueueAction" (HumanoidAction)
 ---@type QueueAction
 local QueueAction = _G["QueueAction"]
 
---! Queue for something (door or reception desk).
---!param x X position of the queue.
---!param y Y position of the queue.
---!param queue (Queue) Queue to join
+--- Queue for something (door or reception desk).
+-- @param x X position of the queue.
+-- @param y Y position of the queue.
+-- @param queue (Queue) Queue to join
 function QueueAction:QueueAction(x, y, queue)
   assert(type(x) == "number", "Invalid value for parameter 'x'")
   assert(type(y) == "number", "Invalid value for parameter 'y'")
@@ -41,9 +41,9 @@ function QueueAction:QueueAction(x, y, queue)
   self.reserve_when_done = nil -- Object to reserve when leaving the queue.
 end
 
---! Set the object to reserve when queueing is done.
---!param door (object) Object to reserve when leaving the queue.
---!return (action) self, for daisy-chaining.
+--- Set the object to reserve when queueing is done.
+-- @param door (object) Object to reserve when leaving the queue.
+-- @return (action) self, for daisy-chaining.
 function QueueAction:setReserveWhenDone(door)
   assert(class.is(door, Door), "Invalid value for parameter 'door'")
 
@@ -51,10 +51,10 @@ function QueueAction:setReserveWhenDone(door)
   return self
 end
 
---! Set the tile to face.
---!param face_x (int) X coordinate of the tile to face.
---!param face_y (int) Y coordinate of the tile to face.
---!return (action) self, for daisy-chaining.
+--- Set the tile to face.
+-- @param face_x (int) X coordinate of the tile to face.
+-- @param face_y (int) Y coordinate of the tile to face.
+-- @return (action) self, for daisy-chaining.
 function QueueAction:setFaceDirection(face_x, face_y)
   assert(type(face_x) == "number", "Invalid value for parameter 'face_x'")
   assert(type(face_y) == "number", "Invalid value for parameter 'face_y'")

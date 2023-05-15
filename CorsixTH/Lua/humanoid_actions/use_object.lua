@@ -26,8 +26,8 @@ class "UseObjectAction" (HumanoidAction)
 ---@type UseObjectAction
 local UseObjectAction = _G["UseObjectAction"]
 
---! Construct a 'use object' action.
---!param object (Object) Object to use.
+--- Construct a 'use object' action.
+-- @param object (Object) Object to use.
 function UseObjectAction:UseObjectAction(object)
   assert(class.is(object, Object), "Invalid value for parameter 'object'")
 
@@ -37,16 +37,16 @@ function UseObjectAction:UseObjectAction(object)
   self.prolonged_usage = nil -- If true, the usage is prolonged.
 end
 
---! Set the 'watering plant' flag.
---!return (action) self, for daisy chaining.
+--- Set the 'watering plant' flag.
+-- @return (action) self, for daisy chaining.
 function UseObjectAction:enableWateringPlant()
   self.watering_plant = true
   return self
 end
 
---! Set prolonged usage of the object.
---!param prolonged (bool or nil) If set, enable prolonged usage of the object.
---!return (action) self, for daisy-chaining.
+--- Set prolonged usage of the object.
+-- @param prolonged (bool or nil) If set, enable prolonged usage of the object.
+-- @return (action) self, for daisy-chaining.
 function UseObjectAction:setProlongedUsage(prolonged)
   assert(prolonged == nil or type(prolonged) == "boolean",
       "Invalid value for parameter 'prolonged'")
@@ -112,9 +112,9 @@ local function action_use_next_phase(action, phase)
   return phase
 end
 
---! Compute the position of the animated humanoid from the footprint.
---!param action (UseObbjectAction) Action being performed.
---!param humanoid (Humanoid) Person using the object.
+--- Compute the position of the animated humanoid from the footprint.
+-- @param action (UseObbjectAction) Action being performed.
+-- @param humanoid (Humanoid) Person using the object.
 local function setHumanoidTileSpeed(action, humanoid)
   local object = action.object
   local obj_orient = object.object_type.orientations[object.direction]

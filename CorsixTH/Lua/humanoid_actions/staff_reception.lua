@@ -24,7 +24,7 @@ class "StaffReceptionAction" (HumanoidAction)
 local StaffReceptionAction = _G["StaffReceptionAction"]
 
 -- Action class for the "staff reception desk" action.
---!param desk (object) Desk to staff.
+-- @param desk (object) Desk to staff.
 function StaffReceptionAction:StaffReceptionAction(desk)
   assert(class.is(desk, ReceptionDesk), "Invalid value for parameter 'desk'") -- luacheck: ignore 113
 

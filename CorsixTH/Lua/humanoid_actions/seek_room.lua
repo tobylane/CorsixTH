@@ -23,8 +23,8 @@ class "SeekRoomAction" (HumanoidAction)
 ---@type SeekRoomAction
 local SeekRoomAction = _G["SeekRoomAction"]
 
---! Find another room (and go to it).
---!param room_type Type of the new room.
+--- Find another room (and go to it).
+-- @param room_type Type of the new room.
 function SeekRoomAction:SeekRoomAction(room_type)
   assert(type(room_type) == "string", "Invalid value for parameter 'room_type'")
 
@@ -34,8 +34,8 @@ function SeekRoomAction:SeekRoomAction(room_type)
   self.diagnosis_room = nil
 end
 
---! Denote that the room being looked for is a treatment room.
---!return (action) self, for daisy-chaining.
+--- Denote that the room being looked for is a treatment room.
+-- @return (action) self, for daisy-chaining.
 function SeekRoomAction:enableTreatmentRoom()
   self.treatment_room = true
   return self
@@ -48,9 +48,9 @@ function SeekRoomAction:setDiagnosisRoom(room)
   return self
 end
 
---! Finds a relevant diagnosis/treatment room(s) for a patient
---! If diagnosis room, attempt to use GP's choice first, else select any other available
---! room at random.
+--- Finds a relevant diagnosis/treatment room(s) for a patient
+--- If diagnosis room, attempt to use GP's choice first, else select any other available
+--- room at random.
 local action_seek_room_find_room = permanent"action_seek_room_find_room"( function(action, humanoid)
   local room_type = action.room_type
   if action.diagnosis_room then

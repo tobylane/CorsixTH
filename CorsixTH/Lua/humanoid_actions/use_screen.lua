@@ -23,8 +23,8 @@ class "UseScreenAction" (HumanoidAction)
 ---@type UseScreenAction
 local UseScreenAction = _G["UseScreenAction"]
 
---! Action to use the screen.
---!param screen (object) Screen to use.
+--- Action to use the screen.
+-- @param screen (object) Screen to use.
 function UseScreenAction:UseScreenAction(screen)
   assert(class.is(screen, Object) and (
       screen.object_type.id == "screen" or
