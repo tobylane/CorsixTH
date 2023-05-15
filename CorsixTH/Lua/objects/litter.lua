@@ -92,7 +92,7 @@ function Litter:setLitterType(anim_type, mirrorFlag)
   end
 end
 
---! Remove the litter from the world.
+--- Remove the litter from the world.
 function Litter:remove()
   assert(self:isCleanable() or TheApp.config.remove_destroyed_rooms)
 

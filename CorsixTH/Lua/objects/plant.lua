@@ -84,7 +84,7 @@ local days_between_states = 64
 -- days before we reannouncing our watering status if we were unreachable
 local days_unreachable = 10
 
---! An `Object` which needs watering now and then.
+--- An `Object` which needs watering now and then.
 class "Plant" (Object)
 
 ---@type Plant
@@ -102,8 +102,8 @@ function Plant:Plant(hospital, object_type, x, y, direction, etc)
   self.phases = 5
 end
 
---! Goes one step forward (or backward) in the states of the plant.
---!param restoring (boolean) If true the plant improves its health instead of drooping.
+--- Goes one step forward (or backward) in the states of the plant.
+-- @param restoring (boolean) If true the plant improves its health instead of drooping.
 function Plant:setNextState(restoring)
   if restoring then
     if self.current_state > 0 then
@@ -127,7 +127,7 @@ local plant_restoring; plant_restoring = permanent"plant_restoring"( function(pl
   end
 end)
 
---! Restores the plant to its initial state. (i.e. healthy)
+--- Restores the plant to its initial state. (i.e. healthy)
 function Plant:restoreToFullHealth()
   self.ticks = true
   self.phase = self.current_state
@@ -141,7 +141,7 @@ function Plant:restoreToFullHealth()
   end
 end
 
---! Overridden since the plant animates slowly over time
+--- Overridden since the plant animates slowly over time
 function Plant:tick()
   local timer = self.timer_time
   if timer then
@@ -157,12 +157,12 @@ function Plant:tick()
   end
 end
 
---! Returns whether the plant is in need of watering right now.
+--- Returns whether the plant is in need of watering right now.
 function Plant:needsWatering()
   return self.current_state ~= 0
 end
 
---! When the plant needs water it periodically calls for a nearby handyman.
+--- When the plant needs water it periodically calls for a nearby handyman.
 function Plant:callForWatering()
   -- If self.ticks is true it means that a handyman is currently watering the plant.
   -- If there are no tiles to water from, just die.
@@ -185,11 +185,11 @@ function Plant:callForWatering()
   end
 end
 
---! When a handyman is about to be summoned this function queues the complete set of actions necessary,
+--- When a handyman is about to be summoned this function queues the complete set of actions necessary,
 --  including entering and leaving any room involved. It also queues a meander action at the end.
 --  Note that if there are more plants that need watering inside the room he will continue to water
 --  those too before leaving.
---!param handyman (Staff) The handyman that is about to get the actions.
+-- @param handyman (Staff) The handyman that is about to get the actions.
 function Plant:createHandymanActions(handyman)
   local this_room = self:getRoom()
   local handyman_room = handyman:getRoom()
@@ -225,10 +225,10 @@ function Plant:createHandymanActions(handyman)
   handyman:queueAction(AnswerCallAction())
 end
 
---! When a handyman should go to the plant he should approach it from the
+--- When a handyman should go to the plant he should approach it from the
 -- closest reachable tile within hospital buildings.
---!param from_x (integer) The x coordinate of tile to calculate from.
---!param from_y (integer) The y coordinate of tile to calculate from.
+-- @param from_x (integer) The x coordinate of tile to calculate from.
+-- @param from_y (integer) The y coordinate of tile to calculate from.
 function Plant:getBestUsageTileXY(from_x, from_y)
   local access_points = {{dx =  0, dy =  1, direction = "north"},
                          {dx =  0, dy = -1, direction = "south"},
@@ -258,7 +258,7 @@ function Plant:getBestUsageTileXY(from_x, from_y)
   end
 end
 
---! Counts down to eventually let the plant droop.
+--- Counts down to eventually let the plant droop.
 function Plant:tickDay()
   if not self.picked_up then
     -- The plant will need water a little more often if it is hot where it is.
@@ -279,7 +279,7 @@ function Plant:tickDay()
   end
 end
 
---! The plant needs to retain its animation and reset its unreachable flag when being moved
+--- The plant needs to retain its animation and reset its unreachable flag when being moved
 function Plant:onClick(ui, button)
   if button == "right" then
     self.unreachable = false
@@ -289,13 +289,13 @@ function Plant:onClick(ui, button)
   Object.onClick(self, ui, button)
 end
 
---! Plant health/state should be used on evaluations of pleasantness
---! returns (integer) score of this plants health, 1 to 5 (best)
+--- Plant health/state should be used on evaluations of pleasantness
+--- returns (integer) score of this plants health, 1 to 5 (best)
 function Plant:isPleasingFactor()
   return self.phases - self.current_state
 end
 
---! Check if a plant is dying or about to start dying
+--- Check if a plant is dying or about to start dying
 function Plant:isDying()
   if self.current_state ~= 0 or self.days_left < 3 then
     return true

@@ -54,7 +54,7 @@ function Door:getRoom()
   return self.room
 end
 
---! Updates a door's dynamic info
+--- Updates a door's dynamic info
 function Door:updateDynamicInfo()
   if self.room and self.queue then
     if not self.room:hasQueueDialog() then

@@ -162,7 +162,7 @@ function Chair:Chair(...)
   self:Object(...)
 end
 
---! This function is automatically called after loading a game and serves for compatibility.
+--- This function is automatically called after loading a game and serves for compatibility.
 function Chair:afterLoad(old, new)
   if old < 119 then
     self.footprint = object.orientations[self.direction].footprint

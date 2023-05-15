@@ -34,7 +34,7 @@ object.orientations = {
   },
 }
 
---! An `Object` which drops off emergency patients.
+--- An `Object` which drops off emergency patients.
 class "Helicopter" (Object)
 
 ---@type Helicopter
@@ -75,7 +75,7 @@ function Helicopter:tick()
   Object.tick(self)
 end
 
---! When the helicopter has landed this method is called each time a patient should spawn from it.
+--- When the helicopter has landed this method is called each time a patient should spawn from it.
 function Helicopter:spawnPatient()
   local hospital = self.hospital
   self.spawned_patients = self.spawned_patients + 1

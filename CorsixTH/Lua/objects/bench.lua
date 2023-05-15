@@ -194,7 +194,7 @@ function Bench:onDestroy()
   Object.onDestroy(self)
 end
 
---! This function is automatically called after loading a game and serves for compatibility.
+--- This function is automatically called after loading a game and serves for compatibility.
 function Bench:afterLoad(old, new)
   if old < 119 then
     self.footprint = object.orientations[self.direction].footprint

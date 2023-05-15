@@ -92,10 +92,10 @@ function ReceptionDesk:onClick(ui, button)
 end
 
 function ReceptionDesk:tick()
-  --! Handle a patient at the reception desk.
-  --!param patient The patient at the front of queue.
-  --!param is_new (boolean) Have they just entered the hospital?
-  --!return action taken by patient
+  --- Handle a patient at the reception desk.
+  ---param patient The patient at the front of queue.
+  ---param is_new (boolean) Have they just entered the hospital?
+  ---return action taken by patient
   local function handlePatient(patient, is_new)
     if not is_new then
       -- Patient redirected to reception, send them on their way
@@ -132,9 +132,9 @@ function ReceptionDesk:tick()
     end
   end
 
-  --! Advance the front humanoid of the queue.
-  --!param humanoid (entity) NPC to be checked/advanced
-  --!return (boolean) true if ready to be dealt with, else false.
+  --- Advance the front humanoid of the queue.
+  ---param humanoid (entity) NPC to be checked/advanced
+  ---return (boolean) true if ready to be dealt with, else false.
   local function advanceQueue(humanoid)
     if humanoid:getCurrentAction().name == "idle" then
       self.queue_advance_timer = self.queue_advance_timer + 1
@@ -171,8 +171,8 @@ function ReceptionDesk:tick()
   return Object.tick(self)
 end
 
---! Reception desk looks for a receptionist.
---!return (boolean) Desk has a receptionist attached to it (may still be on her way to the desk).
+--- Reception desk looks for a receptionist.
+-- @return (boolean) Desk has a receptionist attached to it (may still be on her way to the desk).
 function ReceptionDesk:checkForNearbyStaff()
   if self.receptionist or self.reserved_for then
     -- Already got staff, or a staff member is on the way
