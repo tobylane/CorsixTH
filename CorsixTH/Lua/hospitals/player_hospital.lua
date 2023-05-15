@@ -46,8 +46,8 @@ function PlayerHospital:PlayerHospital(world, avail_rooms, name)
   self.announce_vip = 0 -- Number of spawned VIPs who need to be announced
 end
 
---! Give advice to the player at the end of a day.
---! Note: For patient/staff warmth checks, advice is only on one or the other per month
+--- Give advice to the player at the end of a day.
+-- Note: For patient/staff warmth checks, advice is only on one or the other per month
 function PlayerHospital:dailyAdviceChecks()
   local current_date = self.world:date()
   local day = current_date:dayOfMonth()
@@ -109,9 +109,9 @@ function PlayerHospital:dailyAdviceChecks()
   end
 end
 
---! Private function to check if our financial situation needs advice.
---! This must occur after monthly maintenance and salary costs
---! or it may give invalid advice
+--- Private function to check if our financial situation needs advice.
+-- This must occur after monthly maintenance and salary costs
+-- or it may give invalid advice
 function PlayerHospital:_adviseMoney()
   local current_date = self.world:date()
   local current_month = current_date:monthOfYear()
@@ -133,7 +133,7 @@ function PlayerHospital:_adviseMoney()
   end
 end
 
---! Private function to warn about lack of a staff room.
+--- Private function to warn about lack of a staff room.
 function PlayerHospital:_adviseStaffRoom()
   if self:countRoomOfType("staff_room", 1) > 0 then return end
   local staffroom_advice = {
@@ -143,7 +143,7 @@ function PlayerHospital:_adviseStaffRoom()
   self:giveAdvice(staffroom_advice)
 end
 
---! Private function to warn about a lack of toilets.
+--- Private function to warn about a lack of toilets.
 function PlayerHospital:_adviseToilets()
   if self:countRoomOfType("toilets", 1) > 0 then return end
   local toilet_advice = {
@@ -153,7 +153,7 @@ function PlayerHospital:_adviseToilets()
   self:giveAdvice(toilet_advice)
 end
 
---! Private function to check if patients have adequate seating
+--- Private function to check if patients have adequate seating
 function PlayerHospital:_adviseBenches()
   -- Compute average sitting ratio.
   local sum_ratios = 0
@@ -189,8 +189,8 @@ function PlayerHospital:_adviseBenches()
   end
 end
 
---! Private function to check warmth of the patients.
---! Only too hot or cold triggers advice
+--- Private function to check warmth of the patients.
+-- Only too hot or cold triggers advice
 function PlayerHospital:_adviseHeatingForPatients()
   if self.adviser_data.temperature_advice
       or self.heating.heating_broke then return end
@@ -213,8 +213,8 @@ function PlayerHospital:_adviseHeatingForPatients()
   end
 end
 
---! Private function to check warmth of the staff.
---! Only too hot or cold triggers advise
+--- Private function to check warmth of the staff.
+-- Only too hot or cold triggers advise
 function PlayerHospital:_adviseHeatingForStaff()
   if self.adviser_data.temperature_advice
       or self.heating.heating_broke then return end
@@ -229,7 +229,7 @@ function PlayerHospital:_adviseHeatingForStaff()
   end
 end
 
---! Private function to check if patients are getting thirsty
+--- Private function to check if patients are getting thirsty
 function PlayerHospital:_adviseDrinksMachines()
   local current_date = self.world:date()
   local thirst = self:getAveragePatientAttribute("thirst", 0)
@@ -246,8 +246,8 @@ function PlayerHospital:_adviseDrinksMachines()
   end
 end
 
---! Private function to advise about long queues
---! Rooms requiring a doctor occasionally trigger the generic message
+--- Private function to advise about long queues
+-- Rooms requiring a doctor occasionally trigger the generic message
 function PlayerHospital:_warnForLongQueues()
   local chosen_room = self:getRandomBusyRoom()
   if not chosen_room then return end
@@ -265,8 +265,8 @@ function PlayerHospital:_warnForLongQueues()
   end
 end
 
---! Give advice to the user about maintenance of plants.
---!param placed (bool) If a plant was placed
+--- Give advice to the user about maintenance of plants.
+-- @param placed (bool) If a plant was placed
 function PlayerHospital:advisePlants(placed)
   if self:countStaffOfCategory("Handyman", 1) > 0 then return end
 
@@ -275,7 +275,7 @@ function PlayerHospital:advisePlants(placed)
   self:giveAdvice({_A.staff_advice.need_handyman_plants})
 end
 
---! Give advice to the player at the end of a month.
+--- Give advice to the player at the end of a month.
 function PlayerHospital:monthlyAdviceChecks()
   local today = self.world:date()
   local current_month = today:monthOfYear()
@@ -288,9 +288,9 @@ function PlayerHospital:monthlyAdviceChecks()
   end
 end
 
---! Make players aware of the need for a receptionist and desk.
---!param current_month (int) Month of the year.
---!param current_year (int) Current game year.
+--- Make players aware of the need for a receptionist and desk.
+-- @param current_month (int) Month of the year.
+-- @param current_year (int) Current game year.
 function PlayerHospital:checkReceptionAdvice(current_month, current_year)
   if current_year > 1 then return end -- Playing too long.
 
@@ -317,7 +317,7 @@ function PlayerHospital:checkReceptionAdvice(current_month, current_year)
   end
 end
 
---! Give advice to the user about the need to buy the first reception desk.
+--- Give advice to the user about the need to buy the first reception desk.
 function PlayerHospital:msgNeedFirstReceptionDesk()
   if self.adviser_data.reception_advice then return end
 
@@ -327,7 +327,7 @@ function PlayerHospital:msgNeedFirstReceptionDesk()
   end
 end
 
---! Give advice to the user about having bought a reception desk.
+--- Give advice to the user about having bought a reception desk.
 function PlayerHospital:msgReceptionDesk()
   local num_receptionists = self:countStaffOfCategory("Receptionist", 1)
 
@@ -340,7 +340,7 @@ function PlayerHospital:msgReceptionDesk()
   end
 end
 
---! Give advice about having more desks.
+--- Give advice about having more desks.
 function PlayerHospital:msgMultiReceptionDesks()
   -- Compute total queue length at staffed receptions.
   local num_desks = 0
@@ -365,8 +365,8 @@ function PlayerHospital:msgMultiReceptionDesks()
   end
 end
 
---! Show the 'Gates to hell' animation.
---!param entity (Entity) Gates to hell.
+--- Show the 'Gates to hell' animation.
+-- @param entity (Entity) Gates to hell.
 function PlayerHospital:showGatesToHell(entity)
   local anim_func = --[[persistable:lava_hole_spawn_animation_end]]
     function(anim_entity)
@@ -379,12 +379,12 @@ function PlayerHospital:showGatesToHell(entity)
   entity:setAnimation(2550)
 end
 
---! Advises the player.
---!param msgs (array of string) Messages to select from.
---!param rnd_frac (optional float in range (0, 1]) Fraction of times that the
+--- Advises the player.
+-- @param msgs (array of string) Messages to select from.
+-- @param rnd_frac (optional float in range (0, 1]) Fraction of times that the
 --    call actually says something.
---!param stay_up (bool) If true, let the adviser remain visible afterwards.
---!return (boolean) Whether a message was given to the user.
+-- @param stay_up (bool) If true, let the adviser remain visible afterwards.
+-- @return (boolean) Whether a message was given to the user.
 function PlayerHospital:giveAdvice(msgs, rnd_frac, stay_up)
   local max_rnd = #msgs
   if rnd_frac and rnd_frac > 0 and rnd_frac < 1 then
@@ -400,7 +400,7 @@ function PlayerHospital:giveAdvice(msgs, rnd_frac, stay_up)
   return false
 end
 
---! Give the user possibly a message about a cured patient.
+--- Give the user possibly a message about a cured patient.
 function PlayerHospital:msgCured()
   self.world.ui:playSound("cheer.wav") -- This sound is always heard
 
@@ -416,7 +416,7 @@ function PlayerHospital:msgCured()
   end
 end
 
---! Give the user possibly a message about a dead patient.
+--- Give the user possibly a message about a dead patient.
 function PlayerHospital:msgKilled()
   self.world.ui:playSound("boo.wav") -- this sound is always heard
 
@@ -452,8 +452,8 @@ function PlayerHospital:adviseDiscoverDisease(disease)
   end
 end
 
---! Select a relevant message to be displayed to the user
---!param broken_heat (0 or 1) Boiler output due to being broken.
+--- Select a relevant message to be displayed to the user
+-- @param broken_heat (0 or 1) Boiler output due to being broken.
 function PlayerHospital:adviseBoilerBreakdown(broken_heat)
   local ui = self.world.ui
   if broken_heat == 0 then
@@ -465,8 +465,8 @@ function PlayerHospital:adviseBoilerBreakdown(broken_heat)
   end
 end
 
---! Announces a machine needing repair
---!param room The room of the machine
+--- Announces a machine needing repair
+-- @param room The room of the machine
 function PlayerHospital:announceRepair(room)
   local sound = room.room_info.handyman_call_sound
   local earthquake = self.world.next_earthquake
@@ -481,7 +481,7 @@ function PlayerHospital:onSpawnVIP()
   self.announce_vip = self.announce_vip + 1
 end
 
---! Called at the end of each day.
+--- Called at the end of each day.
 function PlayerHospital:onEndDay()
   -- Advise the player.
   if self:hasStaffedDesk() then
@@ -513,7 +513,7 @@ function PlayerHospital:onEndDay()
   Hospital.onEndDay(self)
 end
 
--- Called at the end of each day.
+--- Called at the end of each day.
 function PlayerHospital:onEndMonth()
   -- Advise the player on the need for a staffed reception desk and cash flow.
   self:monthlyAdviceChecks()
@@ -533,16 +533,16 @@ function PlayerHospital:onEndMonth()
   Hospital.onEndMonth(self)
 end
 
---! Give visual warning that player doesn't have enough $ to build
+--- Give visual warning that player doesn't have enough $ to build.
 -- Let the message remain until cancelled by the player as it is being displayed behind the town map
 function PlayerHospital:adviseCannotAffordPlot()
   self.world.ui.adviser:say(_A.warnings.cannot_afford_2, true, true)
 end
 
---! Tell the player, through the advisor, about the impact of casebook prices
---!param judgment (string - under, over, fair) The judgment of the price,
+--- Tell the player, through the advisor, about the impact of casebook prices.
+-- @param judgment (string - under, over, fair) The judgment of the price,
 -- from Hospital:computePriceLevelImpact
---!param name (string) The name of the casebook entry of the diagnosis or disease
+-- @param name (string) The name of the casebook entry of the diagnosis or disease
 function PlayerHospital:advisePriceLevelImpact(judgment, name)
   local message
   if judgment == "under" then
@@ -556,9 +556,9 @@ function PlayerHospital:advisePriceLevelImpact(judgment, name)
   self.world.ui.adviser:say(message)
 end
 
---! Makes the raise request for a staff member
---!param amount (num) the requested raise increase
---!param staff (table) the staff member
+--- Makes the raise request for a staff member.
+-- @param amount (num) the requested raise increase
+-- @param staff (table) the staff member
 function PlayerHospital:makeRaiseRequest(amount, staff)
   -- Show advice if it is the first time the player has experienced
   -- a staff member requesting a raise.
@@ -570,14 +570,14 @@ function PlayerHospital:makeRaiseRequest(amount, staff)
   self.world.ui.bottom_panel:queueMessage("strike", amount, staff)
 end
 
---! Announce to the player that a staff member is leaving the hospital
---!param staff (table) The staff member
+--- Announce to the player that a staff member is leaving the hospital.
+-- @param staff (table) The staff member
 function PlayerHospital:announceStaffLeave(staff)
   self.world.ui:playRandomAnnouncement(staff.leave_sounds, staff.leave_priority)
 end
 
---! Makes the fax requesting player action for the patient who needs a diagnosis room
---!param patient (table)
+--- Makes the fax requesting player action for the patient who needs a diagnosis room.
+-- @param patient (table)
 function PlayerHospital:makeNoTreatmentRoomFax(patient)
   local strings = _S.fax.disease_discovered_patient_choice
   -- Can this room be built right now? What is then missing?
@@ -614,8 +614,8 @@ function PlayerHospital:makeNoTreatmentRoomFax(patient)
   self.world.ui.bottom_panel:queueMessage("information", message, patient)
 end
 
---! Makes the fax requesting player action for the patient who needs a diagnosis room
---!param patient (table)
+--- Makes the fax requesting player action for the patient who needs a diagnosis room.
+-- @param patient (table)
 function PlayerHospital:makeNoDiagnosisRoomFax(patient)
   local guess_enabled = self.disease_casebook[patient.disease.id].discovered
   local diag_failed = _S.fax.diagnosis_failed
@@ -636,7 +636,7 @@ function PlayerHospital:makeNoDiagnosisRoomFax(patient)
   self.world.ui.bottom_panel:queueMessage("information", message, patient)
 end
 
---! Makes the fax at the start of an emergency
+--- Makes the fax at the start of an emergency.
 function PlayerHospital:makeEmergencyStartFax()
   -- The last room in the list of treatment rooms is considered when checking for availability.
   -- It works for all original diseases, but if we introduce new multiple room diseases it might break.
@@ -691,7 +691,7 @@ function PlayerHospital:makeEmergencyStartFax()
   self.world.ui.bottom_panel:queueMessage("emergency", message, nil, Date.hoursPerDay() * 16, 2)
 end
 
---! Makes the fax at the end of an emergency
+--- Makes the fax at the end of an emergency.
 function PlayerHospital:makeEmergencyEndFax(rescued_patients, total, max_bonus, earned)
   local message = {
     {text = _S.fax.emergency_result.saved_people:format(rescued_patients, total)},
@@ -704,7 +704,7 @@ function PlayerHospital:makeEmergencyEndFax(rescued_patients, total, max_bonus, 
   self.world.ui.bottom_panel:queueMessage("report", message, nil, Date.hoursPerDay() * 25, 1)
 end
 
---! Makes the fax which may spawn a VIP
+--- Makes the fax which may spawn a VIP.
 function PlayerHospital:createVip()
   local vipName = _S.vip_names[math.random(1,10)]
   local message = {
@@ -718,19 +718,19 @@ function PlayerHospital:createVip()
   self.world.ui.bottom_panel:queueMessage("personality", message, nil, Date.hoursPerDay() * 20, 2)
 end
 
---! Remove any message (fax) relating to this humanoid
---!param humanoid (table) The humanoid
+--- Remove any message (fax) relating to this humanoid.
+-- @param humanoid (table) The humanoid
 function PlayerHospital:removeMessage(humanoid)
   if humanoid.message then
     self.world.ui.bottom_panel:removeMessage(humanoid)
   end
 end
 
---! Called when the vip is out of the hospital grounds and ready to make their report
---!param vip_rating (int)
---!param name (string)
---!param cash_reward (int)
---!param vip_message (int)
+--- Called when the vip is out of the hospital grounds and ready to make their report.
+-- @param vip_rating (int)
+-- @param name (string)
+-- @param cash_reward (int)
+-- @param vip_message (int)
 function PlayerHospital:makeVipEndFax(vip_rating, name, cash_reward, vip_message)
   local message
   -- First of all there's a special message if we're in free build mode.
