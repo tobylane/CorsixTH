@@ -95,7 +95,7 @@ local function wait_for_object(humanoid, obj, must_happen)
   return IdleAction():setMustHappen(must_happen):setLoopCallback(loop_callback_wait)
 end
 
---! Returns true if an operation is ongoing
+--- Returns true if an operation is ongoing
 function OperatingTheatreRoom:isOperating()
   for k, _ in pairs(self.staff_member_set) do
     if k:getCurrentAction().name == "multi_use_object" then
@@ -106,14 +106,14 @@ function OperatingTheatreRoom:isOperating()
   return false
 end
 
---! Builds the second operation action (i.e. with the surgeon whose we
---! see the back). Called either when the operation starts or when the
---! operation is resumed after interruption caused by the picking up of
---! the second surgeon.
---! Note: Must be part of OperatingTheatreRoom and not a local function
---! because of the use in the persisted callback function operation_standby.
---!param multi_use (action): the first operation action (built with via buildTableAction1()).
---!param operation_table_b (OperatingTable): slave object representing the operation table.
+--- Builds the second operation action (i.e. with the surgeon whose we
+-- see the back). Called either when the operation starts or when the
+-- operation is resumed after interruption caused by the picking up of
+-- the second surgeon.
+-- Note: Must be part of OperatingTheatreRoom and not a local function
+-- because of the use in the persisted callback function operation_standby.
+-- @param multi_use (action): the first operation action (built with via buildTableAction1()).
+-- @param operation_table_b (OperatingTable): slave object representing the operation table.
 function OperatingTheatreRoom._buildTableAction2(multi_use, operation_table_b)
   local num_loops = math.random(2, 5)
 
@@ -174,12 +174,12 @@ function OperatingTheatreRoom:setStaffMembersAttribute(attribute, value)
   end
 end
 
---! Builds the first operation action (i.e. with the surgeon whose we see the front).
---!param surgeon1 (Staff): the surgeon who does this operation action. He must
---! be the same as the surgeon who gets the action on his queue.
---!param patient (Patient): the patient to be operated.
---!param operation_table (OperatingTable): master object representing
---! the operation table.
+--- Builds the first operation action (i.e. with the surgeon whose we see the front).
+-- @param surgeon1 (Staff): the surgeon who does this operation action. He must
+-- be the same as the surgeon who gets the action on his queue.
+-- @param patient (Patient): the patient to be operated.
+-- @param operation_table (OperatingTable): master object representing
+-- the operation table.
 function OperatingTheatreRoom:buildTableAction1(surgeon1, patient, operation_table)
   local loop_callback_multi_use = --[[persistable:operatring_theatre_multi_use_callback]] function()
     -- dirty hack to make the truncated animation work
@@ -200,11 +200,10 @@ function OperatingTheatreRoom:buildTableAction1(surgeon1, patient, operation_tab
       :setMustHappen(true):disableTruncate()
 end
 
---! Sends the surgeon to the nearest operation sink ("op_sink1")
---! and makes him wash his hands
---!param at_front (boolean): If true, add the actions at the front the action queue.
---! Add the actions at the end of the queue otherwise.
---! Default value is true.
+--- Sends the surgeon to the nearest operation sink ("op_sink1") and makes him wash his hands.
+-- @param at_front (boolean): If true, add the actions at the front the action queue.
+-- Add the actions at the end of the queue otherwise.
+-- Default value is true.
 function OperatingTheatreRoom:queueWashHands(surgeon, at_front)
   local sink, sink_x, sink_y = self.world:findObjectNear(surgeon, "op_sink1")
   local walk = WalkAction(sink_x, sink_y):setMustHappen(true):disableTruncate()
@@ -220,8 +219,8 @@ function OperatingTheatreRoom:queueWashHands(surgeon, at_front)
   end
 end
 
---! Turn on/off x-ray viewer - if it's been found
---!param turn_on (boolean): true to switch on and false to switch off
+--- Turn on/off x-ray viewer - if it's been found
+-- @param turn_on (boolean): true to switch on and false to switch off
 function OperatingTheatreRoom:setXRayOn(turn_on)
   if self.x_ray_viewer then
     self.x_ray_viewer:setLayer(11, (turn_on and 2 or 0))
