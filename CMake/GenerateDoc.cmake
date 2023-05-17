@@ -30,11 +30,11 @@ endif()
 
 if(LUA_PROGRAM_PATH)
   add_custom_target(doc_corsixth_lua
-    ${LUA_PROGRAM_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/LDocGen/main.lua
+    ldoc --testing -c scripts/config.ld ..
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/LDocGen/output/corner_right.gif ${CMAKE_CURRENT_BINARY_DIR}/doc/corsixth_lua
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/LDocGen/output/logo.png         ${CMAKE_CURRENT_BINARY_DIR}/doc/corsixth_lua
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/LDocGen/output/main.css         ${CMAKE_CURRENT_BINARY_DIR}/doc/corsixth_lua
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating API documentation for corsixth_lua" VERBATIM
   )
   add_dependencies(doc doc_corsixth_lua)
