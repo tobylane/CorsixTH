@@ -1,4 +1,0 @@
-<a href="<!= class:getId() !>.html"><!= class:getName() !></a>
-<! if class:getSuperClass() then !>
-  » <!= template "class_inheritance" {class = class:getSuperClass()} !>
-<! end !>
