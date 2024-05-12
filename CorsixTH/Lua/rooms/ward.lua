@@ -56,7 +56,6 @@ local WardRoom = _G["WardRoom"]
 
 function WardRoom:WardRoom(...)
   self:Room(...)
-  self.staff_member_set = {}
   self.healing_amount = 0 -- The size of progress towards a diagnostic step
 end
 
@@ -83,12 +82,7 @@ function WardRoom:roomFinished()
   Room.roomFinished(self)
 end
 
-function WardRoom:getMaximumStaffCriteria()
-  return self.maximum_staff
-end
-
 function WardRoom:commandEnteringStaff(humanoid)
-  self.staff_member_set[humanoid] = true
   self:doStaffUseCycle(humanoid)
   return Room.commandEnteringStaff(self, humanoid, true)
 end
@@ -184,18 +178,7 @@ function WardRoom:commandEnteringPatient(patient)
   return Room.commandEnteringPatient(self, patient)
 end
 
-function WardRoom:setStaffMember(staff)
-  self.staff_member_set[staff] = true
-end
-
-function WardRoom:setStaffMembersAttribute(attribute, value)
-  for staff_member, _ in pairs(self.staff_member_set) do
-    staff_member[attribute] = value
-  end
-end
-
 function WardRoom:onHumanoidLeave(humanoid)
-  self.staff_member_set[humanoid] = nil
   Room.onHumanoidLeave(self, humanoid)
   self:updateHealingAmount()
 end
@@ -254,7 +237,7 @@ function WardRoom:afterLoad(old, new)
     self:roomFinished()
     -- if there is already a nurse in the ward
     -- make her leave so she gets counted properly
-    local nurse = self.staff_member
+    local nurse = self:getStaffMember()
     if nurse then
       nurse:setNextAction(self:createLeaveAction())
       nurse:queueAction(MeanderAction())

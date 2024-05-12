@@ -119,19 +119,9 @@ function TrainingRoom:calculateTrainingFactor(objects)
   return calculateTotalEffect(training_factors)
 end
 
-function TrainingRoom:getStaffCount()
-  local count = 0
-  for humanoid in pairs(self.humanoids) do
-    if class.is(humanoid, Staff) then
-      count = count + 1
-    end
-  end
-  return count
-end
-
 function TrainingRoom:testStaffCriteria(criteria, extra_humanoid)
   if extra_humanoid and extra_humanoid.profile and
-      extra_humanoid.profile.is_consultant and self.staff_member then
+      extra_humanoid.profile.is_consultant and self:getStaffMember() then
     -- Training room can only have one consultant
     return false
   end
@@ -140,10 +130,6 @@ end
 
 function TrainingRoom:getTrainingFactor()
   return self.training_factor
-end
-
-function TrainingRoom:getMaximumStaffCriteria()
-  return self.maximum_staff
 end
 
 function TrainingRoom:doStaffUseCycle(humanoid)
@@ -199,6 +185,7 @@ end
 function TrainingRoom:commandEnteringStaff(humanoid)
   local obj, ox, oy
   local profile = humanoid.profile
+  local staff_member = self:getStaffMember()
 
   if profile.humanoid_class == "Doctor" then
     if profile.is_consultant then
@@ -206,11 +193,11 @@ function TrainingRoom:commandEnteringStaff(humanoid)
       obj, ox, oy = self.world:findObjectNear(humanoid, "projector")
       local projector = obj
       -- Check if another consultant is teaching the lecture
-      if self.staff_member then
+      if staff_member then
         -- Release projector and dismiss current lector
         projector.reserved_for = nil
-        self.staff_member:setNextAction(self:createLeaveAction(), true)
-        self.staff_member:queueAction(MeanderAction())
+        staff_member:setNextAction(self:createLeaveAction(), true)
+        staff_member:queueAction(MeanderAction())
       end
       -- Start lecture with entered consultant
       projector.reserved_for = humanoid
@@ -257,7 +244,6 @@ function TrainingRoom:onHumanoidLeave(humanoid)
         object:removeReservedUser()
       end
     end
-
   end
 
   Room.onHumanoidLeave(self, humanoid)
@@ -273,6 +259,17 @@ function TrainingRoom:afterLoad(old, new)
     end
   end
   Room.afterLoad(self, old, new)
+end
+
+--! Get the current teacher, a consultant
+--!return (staff) The selected consultant.
+function TrainingRoom:getStaffMember()
+  for staff_member, _ in pairs(self.staff_member_set) do
+    if staff_member.profile.is_consultant and not staff_member.fired and
+        not staff_member:hasLeavingAction() then
+      return staff_member
+    end
+  end
 end
 
 return room

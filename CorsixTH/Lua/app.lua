@@ -28,7 +28,7 @@ local SDL = require("sdl")
 -- and add compatibility code in afterLoad functions
 -- Recommended: Also replace/Update the summary comment
 
-local SAVEGAME_VERSION = 234 -- Overhaul training
+local SAVEGAME_VERSION = 235 -- Move all room staff to staff member sets
 
 class "App"
 

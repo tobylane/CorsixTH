@@ -83,6 +83,8 @@ function Room:initRoom(x, y, w, h, door, door2)
   self.objects = {--[[a set rather than a list]]}
   -- the set of humanoids walking to this room
   self.humanoids_enroute = {--[[a set rather than a list]]}
+  self.staff_member_set = {--[[a set rather than a list]]} -- Doctors and Nurses only
+  self.maximum_staff = { Doctor = 1 }
 
   self.world:prepareRectangleTilesForBuild(self.x, self.y, self.width, self.height)
 end
@@ -181,10 +183,9 @@ function Room:getPatientCount()
 end
 
 -- function that sets a given attribute to a given value for all staff members.
--- Should be overridden for rooms that have more than one staff member.
 function Room:setStaffMembersAttribute(attribute, value)
-  if self.staff_member then
-    self.staff_member[attribute] = value
+  for staff_member, _ in pairs(self.staff_member_set) do
+    staff_member[attribute] = value
   end
 end
 
@@ -200,7 +201,7 @@ function Room:dealtWithPatient(patient)
   end
   patient:setNextAction(self:createLeaveAction())
   patient:addToTreatmentHistory(self.room_info)
-  if self.staff_member then
+  if self:getStaffMember() then
     self:setStaffMembersAttribute("dealing_with_patient", false)
   end
 
@@ -246,14 +247,13 @@ local profile_attributes = {
 function Room:getMissingStaff(criteria)
   local result = {}
   for attribute, count in pairs(criteria) do
-    for humanoid in pairs(self.humanoids) do
-      -- check state of humanoid is appropriate for room
-      -- check they are staff and meet requirements for the room
+    for humanoid in pairs(self.staff_member_set) do
+      -- check state of staff members are appropriate for room
+      -- check they meet requirements for the room
       -- ensure not leaving (going to staff room) or fired
       -- check if answering a call to another room
-      if class.is(humanoid, Staff) and humanoid:fulfillsCriterion(attribute) and
-          not humanoid:isLeaving() and not humanoid.fired and
-          not (humanoid.on_call and humanoid.on_call.object ~= self) and
+      if humanoid:fulfillsCriterion(attribute) and not humanoid:isLeaving() and
+          not humanoid.fired and not (humanoid.on_call and humanoid.on_call.object ~= self) and
           not humanoid.going_to_staffroom then
         count = count - 1
       end
@@ -375,7 +375,7 @@ function Room:onHumanoidEnter(humanoid)
           -- Send out the previous staff and appoint new one.
           staff_in_room:setNextAction(self:createLeaveAction())
           staff_in_room:queueAction(MeanderAction())
-          self.staff_member = staff_entered
+          self:setStaffMember(staff_entered)
           staff_entered:setCallCompleted()
           self:commandEnteringStaff(staff_entered)
         else
@@ -415,7 +415,7 @@ function Room:onHumanoidEnter(humanoid)
     end
     -- Check if the staff requirements are still fulfilled (the staff might have left / been picked up meanwhile)
     if self:testStaffCriteria(self:getRequiredStaffCriteria()) then
-      if self.staff_member then
+      if self:getStaffMember() then
         self:setStaffMembersAttribute("dealing_with_patient", true)
       end
       self:commandEnteringPatient(patient_entered)
@@ -427,26 +427,34 @@ function Room:onHumanoidEnter(humanoid)
 end
 
 --! Get the current staff member.
--- In multi-occupancy rooms this returns the staff member with the minimum service quality
+-- This returns the staff member with the lowest service quality
 --!return (staff) The current staff member.
 function Room:getStaffMember()
-  if not self.staff_member_set then return self.staff_member end
-
-  local staff
+  local selected_staff
   for staff_member, _ in pairs(self.staff_member_set) do
     if not staff_member.fired and not staff_member:hasLeavingAction() then
-      if not staff or staff:getServiceQuality() > staff_member:getServiceQuality() then
-        staff = staff_member
+      if not selected_staff or selected_staff:getServiceQuality() > staff_member:getServiceQuality() then
+        selected_staff = staff_member
       end
     end
   end
-  return staff
+  return selected_staff
 end
 
 --! Set the current staff member.
 --!param staff (staff) Staff member to denote as current staff.
 function Room:setStaffMember(staff)
-  self.staff_member = staff
+  self.staff_member_set[staff] = true
+end
+
+--! Counts the number of doctors or nurses in the room
+--!return (integer) the total count
+function Room:getStaffCount()
+  local count = 0
+  for _, _ in pairs(self.staff_member_set) do
+    count = count + 1
+  end
+  return count
 end
 
 --! Does the given staff member fit in the room?
@@ -479,7 +487,7 @@ end
 -- what to do.
 function Room:commandEnteringStaff(staff, already_initialized)
   if not already_initialized then
-    self.staff_member = staff
+    self:setStaffMember(staff)
     staff:setNextAction(MeanderAction())
   end
   self:tryToFindNearbyPatients()
@@ -495,7 +503,7 @@ end
 -- and dynamic info text
 --!param activate (bool) - true to activate, false or nil to deactivate
 function Room:_staffWaitToggle(activate)
-  if not self.staff_member and not self.staff_member_set then
+  if not self.staff_member_set then
     return -- No staff in room
   end
 
@@ -507,16 +515,9 @@ function Room:_staffWaitToggle(activate)
     state = "activate"
   end
 
-  if not self.staff_member_set and self.staff_member then
-    -- single occupancy rooms (like GD, Pharmacy and etc)
-    self.staff_member:setMood("staff_wait", state)
-    self.staff_member:setDynamicInfoText(dynamic_text)
-  else
-    -- multi-occupancy rooms (like Operating Theatre)
-    for staff_member in pairs(self.staff_member_set) do
-      staff_member:setMood("staff_wait", state)
-      staff_member:setDynamicInfoText(dynamic_text)
-    end
+  for staff_member in pairs(self.staff_member_set) do
+    staff_member:setMood("staff_wait", state)
+    staff_member:setDynamicInfoText(dynamic_text)
   end
 end
 
@@ -558,10 +559,8 @@ end
 --! Handles the departure of a humanoid from the room
 --!param humanoid The subject entity
 function Room:onHumanoidLeave(humanoid)
-  if self.staff_member == humanoid then
-    self.staff_member = nil
-  end
-  humanoid.in_room = nil
+  self.staff_member_set[humanoid] = nil
+  if not self:getStaffMember() then humanoid.in_room = nil end
   if not self.humanoids[humanoid] then
     print("Warning: Humanoid leaving a room that they are not in")
     return
@@ -1075,6 +1074,15 @@ function Room:afterLoad(old, new)
     self.waiting_staff_member = nil
     self.dealt_patient_callback = nil
   end
+  if old < 235 then
+    if not self.staff_member_set then -- Convert all rooms to staff_member_set
+      self.staff_member_set = {}
+      if self.staff_member then
+        self.staff_member_set[self.staff_member] = true
+        self.staff_member = nil
+      end
+    end
+  end
 end
 
 --[[ Is the room one of the diagnosis rooms for the patient?
@@ -1098,24 +1106,18 @@ end
 --! Get the average service quality of the staff members in the room.
 --!return (float) [0-1] Average staff service quality.
 function Room:getStaffServiceQuality()
-  local quality = 0.5
-
-  if self.staff_member_set then
-    -- For rooms with multiple staff member (like operating theatre)
-    quality = 0
-    local count = 0
-    for member, _ in pairs(self.staff_member_set) do
-      quality = quality + member:getServiceQuality()
-      count = count + 1
-    end
-
-    quality = quality / count
-  elseif self.staff_member then
-    -- For rooms with one staff member
-    quality = self.staff_member:getServiceQuality()
+  local quality = 0
+  local count = 0
+  for staff, _ in pairs(self.staff_member_set) do
+    quality = quality + staff:getServiceQuality()
+    count = count + 1
   end
 
-  return quality
+  if count > 0 then
+    return quality / count
+  else
+    return 0.5
+  end
 end
 
 local window_tile = list_to_set({116, 117, 118, 119, 120, 121, 124, 125, 126, 127})
