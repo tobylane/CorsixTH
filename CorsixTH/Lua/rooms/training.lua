@@ -64,7 +64,7 @@ function TrainingRoom:roomFinished()
   end
   -- Total staff occupancy: number of lecture chairs plus projector
   self.maximum_staff = { Doctor = chairs + 1 }
-  -- factor is divided by ten so the result from new algroithm will be similar to the old algorithm
+  -- factor is divided by ten so the result from new algorithm will be similar to the old algorithm
   self.training_factor = self:calculateTrainingFactor(skeletons, bookcases) / 10.0
 
   -- Also tell the player if he/she doesn't have a consultant yet.

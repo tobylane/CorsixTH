@@ -94,7 +94,7 @@ end
 -- Call for repair
 --!param urgent Announcement should be made
 --!param manual This call should not trigger advisor for "your machine is failing"
---!param lock_room This is a minor maintence. Rooms needed not to be locked.
+--!param lock_room This is a minor maintenance. Rooms needed not to be locked.
 --  If urgent or manual is specified, lock_room will be true automatically
 function CallsDispatcher:callForRepair(object, urgent, manual, lock_room)
   lock_room = manual or lock_room
@@ -219,7 +219,7 @@ function CallsDispatcher.getPriorityForVaccination(patient, nurse)
   assert(nurse.humanoid_class == "Nurse")
   --Lower the priority "score" the more urgent it is
   --The closest nurse to the patient has the highest priority for vaccination
-  --Any nurse who cannot reach the paitient suffers a priority penalty
+  --Any nurse who cannot reach the patient suffers a priority penalty
   local score = 0
   local nil_penalty = 10000
   local x, y = patient.tile_x, patient.tile_y

@@ -24,7 +24,7 @@ class "EntityMap"
 local EntityMap = _G["EntityMap"]
 
 --[[ An entity map is a structure is a 2 dimensional structure created from a
-game map, it has the same dimensions as the game map which intitalises it.
+game map, it has the same dimensions as the game map which initialises it.
 The purpose of the map is store the location of entities in the map in
 real-time. Each cell given by an (x, y) coordinate is a
 table {humanoids ={}, objects = {}} where the tables of humanoids/objects

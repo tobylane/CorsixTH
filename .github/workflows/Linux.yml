@@ -57,7 +57,7 @@ jobs:
         run: |
           sudo apt-get install doxygen yamllint clang-format-11 clang-tidy-11
 
-          sudo pip3 install -I codespell==2.2 cmakelint==1.4
+          sudo pip3 install -I codespell==2.3 cmakelint==1.4
 
           # Build Catch2
           git clone --quiet https://github.com/catchorg/Catch2 \
@@ -110,10 +110,10 @@ jobs:
           cd ../..
           # Build and package LevelEdit
           ant -buildfile LevelEdit/build.xml dist
-          # Run codespell (temporarily not a failure, Nov 2023)
+          # Run codespell
           codespell --enable-colors --quiet-level 2 --skip="languages,corsix-th.6,*.dat" \
-            -L sav,unexpect,persistance,defin,uint,inout,currenty,blong,falsy,manuel \
-            AnimView CorsixTH CorsixTH/Lua/languages/english.lua LevelEdit libs || true
+            -L sav,unexpect,persistance,inout,blong,manuel,exemple \
+            AnimView CorsixTH CorsixTH/Lua/languages/english.lua LevelEdit libs
           # Cmake file linter
           cmakelint --filter=-linelength AnimView/CMakeLists.txt CMakeLists.txt CorsixTH/CMakeLists.txt \
             CorsixTH/CppTest/CMakeLists.txt CorsixTH/Src/CMakeLists.txt CorsixTH/SrcUnshared/CMakeLists.txt \

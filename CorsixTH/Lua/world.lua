@@ -2621,7 +2621,7 @@ function World:afterLoad(old, new)
     self.randomX = nil
     self.randomY = nil
     self.currentX = nil
-    self.currentY = nil
+    self.currentY = nil -- codespell:ignore currenty
 
     if self.next_earthquake.active then
       local rd = 0
