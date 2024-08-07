@@ -25,6 +25,6 @@ jobs:
         discussionCategory: "A VIP has entered the building"
         draft: true
         name: 'CorsixTH 0.68'
-        prerelease: $${{contains(github.event.ref_name, beta) || contains(github.event.ref_name, rc)}}
+        prerelease: $${{contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')}}
     - run: echo $${{steps.release.upload_url}}
         
