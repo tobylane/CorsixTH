@@ -1,4 +1,3 @@
-# https://github.com/marketplace/actions/create-release
 ---
 on: 
   push:
@@ -25,11 +24,7 @@ jobs:
       id: release
       with:
         bodyFile: 'body.md'
-        discussionCategory: "A VIP has entered the building"
+        discussionCategory: 'General'
         draft: true
         name: 'CorsixTH 0.68'
         prerelease: $${{(contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')) && 'false' || 'true'}}
-    - env:
-        test: ${{steps.release.upload_url}}
-      run: 'echo $test : ${{env.test}}'
-        
