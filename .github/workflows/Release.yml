@@ -1,0 +1,30 @@
+# https://github.com/marketplace/actions/create-release
+---
+on: 
+  push:
+    tags:
+    - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Fetch changelog
+      id: changelog
+      run: >
+        git diff --color-words -U0 v0.66..upstream/master changelog.txt | 
+        tail -n+9 | sed -e 's/#/##/g' >> $GITHUB_OUTPUT
+    - uses: ncipollo/release-action@v1
+      id: release
+      with:
+        body: ${{join(steps.changelog.outputs.*, '\n')}}
+        discussionCategory: "A VIP has entered the building"
+        draft: true
+        name: 'CorsixTH 0.68'
+        prerelease: $${{contains(github.event.ref_name, beta) || contains(github.event.ref_name, rc)}}
+    - run: echo $${{steps.release.upload_url}}
+        
