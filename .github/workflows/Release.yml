@@ -26,4 +26,4 @@ jobs:
         discussionCategory: 'General'
         draft: true
         name: 'CorsixTH 0.68'
-        prerelease: $${{contains(github.event.ref_name, fromJSON('["beta", "rc"]') && 'true' || ''}}
+        prerelease: $${{(contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')) && 'false' || 'true'}}
