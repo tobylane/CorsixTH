@@ -18,11 +18,11 @@ jobs:
       run: >
         git remote add upstream https://github.com/CorsixTH/CorsixTH; git fetch upstream;
         git diff --color-words -U0 v0.66..upstream/master changelog.txt | 
-        tail -n+9 | sed -e 's/#/##/g' >> $GITHUB_OUTPUT
+        tail -n+9 | sed -e 's/#/##/g' >> body.md
     - uses: ncipollo/release-action@v1
       id: release
       with:
-        body: ${{join(steps.changelog.outputs.*, '\n')}}
+        bodyFile: 'body.md'
         discussionCategory: "A VIP has entered the building"
         draft: true
         name: 'CorsixTH 0.68'
