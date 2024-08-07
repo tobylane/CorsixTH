@@ -16,6 +16,7 @@ jobs:
     - name: Fetch changelog
       id: changelog
       run: >
+        git remote add upstream https://github.com/CorsixTH/CorsixTH; git fetch upstream;
         git diff --color-words -U0 v0.66..upstream/master changelog.txt | 
         tail -n+9 | sed -e 's/#/##/g' >> $GITHUB_OUTPUT
     - uses: ncipollo/release-action@v1
@@ -25,6 +26,6 @@ jobs:
         discussionCategory: "A VIP has entered the building"
         draft: true
         name: 'CorsixTH 0.68'
-        prerelease: $${{contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')}}
+        prerelease: $${{contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc') && 'false' || 'true'}}
     - run: echo $${{steps.release.upload_url}}
         
