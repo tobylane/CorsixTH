@@ -16,14 +16,13 @@ jobs:
     - name: Fetch changelog
       id: changelog
       run: >
-        git diff -U0 v0.67..master changelog.txt | 
+        git remote add upstream https://github.com/CorsixTH/CorsixTH; git fetch upstream;
+        git diff -U0 v0.66..upstream/master changelog.txt |
         tail -n+9 | sed -e 's/#/##/g' | sed -e 's/^+//g' >> body.md
     - name: Create release
       uses: ncipollo/release-action@v1
-      id: release
       with:
         bodyFile: 'body.md'
-        discussionCategory: 'General'
         draft: true
         name: 'CorsixTH 0.68'
-        prerelease: $${{(contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')) && 'false' || 'true'}}
+        prerelease: ${{(contains(github.event.ref_name,'beta') || contains(github.event.ref_name,'rc'))&&'true'||''}}
