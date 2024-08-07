@@ -6,7 +6,8 @@ on:
     - '*'
 
 jobs:
-  build:
+  release:
+    name: Prepare release
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -30,5 +31,5 @@ jobs:
         prerelease: $${{(contains(github.event.ref_name, 'beta') || contains(github.event.ref_name, 'rc')) && 'false' || 'true'}}
     - env:
         test: ${{steps.release.upload_url}}
-      run: 'echo $test : ${env.test}'
+      run: 'echo $test : ${{env.test}}'
         
