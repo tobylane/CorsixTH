@@ -1,4 +1,5 @@
 ---
+name: Create draft Github release
 on: 
   push:
     tags:
