@@ -17,7 +17,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Fetch changelog
       id: changelog
-      run: >
+      run: |
         git tag -l --sort=-creatordate
         echo "---"
         git tag -l --sort=-creatordate | grep -v 'rc\|pre\|beta'
