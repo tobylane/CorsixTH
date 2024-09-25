@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Prepare release
-    if: github.repository == 'CorsixTH/CorsixTH'
+    if: github.repository == 'tobylane/CorsixTH'
     runs-on: ubuntu-latest
     permissions:
       contents: write
