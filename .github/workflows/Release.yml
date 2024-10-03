@@ -20,6 +20,7 @@ jobs:
     - name: Fetch changelog
       id: changelog
       run: |
+        git fetch --tags
         git tag -l --sort=-creatordate
         echo "---"
         git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta'
