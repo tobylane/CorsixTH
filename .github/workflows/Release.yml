@@ -21,13 +21,9 @@ jobs:
       id: changelog
       run: |
         git fetch --tags
-        git tag -l --sort=-creatordate
-        echo "---"
-        git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta'
-        echo "---"
-        current_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -2 | tail -1)
-        git diff -U0 $current_version..master changelog.txt |
-          tail -n+9 | sed -e 's/#/##/g' | sed -e 's/^+//g' >> body.md
+        previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -1)
+        git diff -U0 $previous_version..master changelog.txt |
+          tail -n+9 | sed -e 's/^+//g' | sed -e 's/^#/##/g' >> body.md
         echo "NEW_VERSION=$(git tag -l --sort=-creatordate | head -1 | sed -e 's/v//')" >> $GITHUB_ENV
     - name: Create release
       uses: ncipollo/release-action@v1
