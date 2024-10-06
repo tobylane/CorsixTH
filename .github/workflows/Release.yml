@@ -22,9 +22,9 @@ jobs:
       run: |
         git fetch --tags
         current_version=$(git describe --tag)
-        if [[ $current_version == [0-9]$ ]] -- Current version is a full release
+        if [[ $current_version == [0-9]$ ]] # Current version is a full release
           previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -2 | tail -1)
-        else -- Current version is a beta or prerelease
+        else # Current version is a beta or prerelease
           previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -1)
         end
         git diff -U0 $previous_version..master changelog.txt |
