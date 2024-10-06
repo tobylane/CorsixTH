@@ -8,7 +8,7 @@ on:
 jobs:
   release:
     name: Prepare release
-    if: github.repository == 'tobylane/CorsixTH'
+    #if: github.repository == 'CorsixTH/CorsixTH'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -21,13 +21,18 @@ jobs:
       id: changelog
       run: |
         git fetch --tags
-        previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -1)
+        current_version=$(git describe --tag)
+        if [[ $current_version == [0-9]$ ]] -- Current version is a full release
+          previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -2 | tail -1)
+        else -- Current version is a beta or prerelease
+          previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -1)
+        end
         git diff -U0 $previous_version..master changelog.txt |
           tail -n+9 | sed -e 's/^+//g' | sed -e 's/^#/##/g' >> body.md
-        echo "NEW_VERSION=$(git tag -l --sort=-creatordate | head -1 | sed -e 's/v//')" >> $GITHUB_ENV
+        echo "CURRENT_VERSION=${current_version:1} >> $GITHUB_ENV
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
         bodyFile: 'body.md'
         draft: true
-        name: 'CorsixTH ${{env.NEW_VERSION}}'
+        name: 'CorsixTH ${{env.CURRENT_VERSION}}'
