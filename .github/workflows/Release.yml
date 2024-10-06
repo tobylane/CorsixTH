@@ -30,6 +30,8 @@ jobs:
         git diff -U0 $previous_version..master changelog.txt |
           tail -n+9 | sed -e 's/^+//g' | sed -e 's/^#/##/g' >> body.md
         echo "CURRENT_VERSION=${current_version:1}" >> $GITHUB_ENV
+        echo $previous_version
+        git diff --name-only $previous_version..master 
     - name: Create release
       uses: ncipollo/release-action@v1
       with:
