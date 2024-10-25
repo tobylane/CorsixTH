@@ -24,13 +24,15 @@ jobs:
         current_version=$(git describe --tag)
         if [[ $current_version == [0-9]$ ]]; then # Current version is a full release
           previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -2 | tail -1)
+          echo "full release"
         else # Current version is a beta or prerelease
           previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -1)
+          echo "not full release"
         fi
         git diff -U0 $previous_version..master changelog.txt |
           tail -n+9 | sed -e 's/^+//g' | sed -e 's/^#/##/g' >> body.md
         echo "CURRENT_VERSION=${current_version:1}" >> $GITHUB_ENV
-        echo $previous_version
+        echo $previous_version : $current_version
         git diff --name-only $previous_version..master 
     - name: Create release
       uses: ncipollo/release-action@v1
