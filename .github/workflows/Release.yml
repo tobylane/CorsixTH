@@ -21,8 +21,8 @@ jobs:
       id: changelog
       run: |
         git fetch --tags
-        current_version=$(git describe --tag)
-        if [[ $current_version == [0-9]$ ]]; then # Current version is a full release
+        latest_tag=$(git tag -l --sort=-creatordate | head -1)
+        if [[ $latest_tag == [0-9]$ ]]; then # Current version is a full release
           previous_version=$(git tag -l --sort=-creatordate | grep -ve 'rc' -ve 'pre' -ve 'beta' | head -2 | tail -1)
           echo "full release"
         else # Current version is a beta or prerelease
@@ -31,8 +31,8 @@ jobs:
         fi
         git diff -U0 $previous_version..master changelog.txt |
           tail -n+9 | sed -e 's/^+//g' | sed -e 's/^#/##/g' >> body.md
-        echo "CURRENT_VERSION=${current_version:1}" >> $GITHUB_ENV
-        echo $previous_version : $current_version
+        echo "CURRENT_VERSION=${latest_tag:1}" >> $GITHUB_ENV
+        echo $previous_version : $latest_tag
         git diff --name-only $previous_version..master 
     - name: Create release
       uses: ncipollo/release-action@v1
