@@ -12,7 +12,6 @@
 #       portable (yes for Apple)
 
 #   - WITH_VLD        : Build with Visual Leak Detector (requires Visual Studio) (no)
-#   - USE_PRECOMPILED_DEPS : Use precompiled dependencies on *nix (no)
 #   - WITH_LUAROCKS : Install required luarocks in the macOS app (requires luarocks)
 
 #   - ENABLE_UNIT_TESTS : Enable Unit Testing Target (requires Catch2) (no)
@@ -77,10 +76,6 @@ option(SEARCH_LOCAL_DATADIRS
 if(MSVC)
   option(WITH_VLD "Build with Visual Leak Detector for Visual Studio" OFF)
 endif()
-# Dependency management
-if(UNIX AND CMAKE_COMPILER_IS_GNU)
-  option(USE_PRECOMPILED_DEPS "Use Precompiled Dependencies" OFF) # Make *nix systems opt in
-endif()
 
 if(APPLE)
   option(WITH_LUAROCKS "Install required luarocks in the app" OFF)
@@ -137,12 +132,6 @@ if(MSVC)
   endif()
 else()
   set(CORSIX_TH_USE_VLD OFF)
-endif()
-
-# Get precompiled dependencies before running the various find modules
-if(USE_PRECOMPILED_DEPS)
-  message("Note: Using precompiled dependencies.")
-  include(PrecompiledDeps)
 endif()
 
 include(GNUInstallDirs)
