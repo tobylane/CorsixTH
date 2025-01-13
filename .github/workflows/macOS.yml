@@ -1,0 +1,140 @@
+---
+name: macOS
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  push:
+    branches-ignore:
+      - 'gh-pages'
+    paths-ignore: ['CorsixTH/Lua/**']
+  pull_request:
+    paths-ignore: ['CorsixTH/Lua/**']
+  workflow_dispatch:
+    inputs:
+      os:
+        description: 'macOS version?'
+        type: choice
+        options:
+        - 'Sonoma (14)'
+        - 'Tahoe (26.5)'
+        default: 'Sonoma (14)'
+      animview:
+        description: 'AnimView?'
+        type: boolean
+
+jobs:
+  macOS:
+    runs-on: macos-26
+    name: macOS ${{inputs.os}} Apple Silicon vcpkg (ad-hoc signed)
+    env:
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg-bincache
+    steps:
+      - uses: actions/checkout@v7
+      - name: Store downloaded macOS 14 SDK
+        uses: actions/cache@v5
+        if: inputs.os != 'Tahoe (26.5)'
+        id: sdk
+        with:
+          path: '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.0.sdk'
+          key: macos14-sdk
+      - name: Define job
+        run: |
+          if [ "${{inputs.os}}" == "Tahoe (26.5)" ]; then
+            target="26.5"
+          else
+            target="14"
+            if [[ "${{steps.sdk.outputs.cache-hit}}" != "true" ]]; then
+              git clone https://github.com/timursavchenko/MacOSX-SDKs --no-checkout --depth 1 --filter=blob:none
+              cd MacOSX-SDKs
+              git sparse-checkout init --cone
+              git sparse-checkout set MacOSX$target.0.sdk
+              git switch master
+              mv MacOSX$target.0.sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
+            fi
+          fi
+          if [ "${{inputs.animview}}" == "true" ]; then
+            echo "ANIMVIEW=ON" >> $GITHUB_ENV
+          else
+            echo "ANIMVIEW=OFF" >> $GITHUB_ENV
+          fi
+          echo "MACOSX_DEPLOYMENT_TARGET=$target" >> $GITHUB_ENV
+          echo "CFLAGS=-O2 -pipe -mmacos-version-min=$target" >> $GITHUB_ENV
+          echo "CXXFLAGS=-O2 -pipe -mmacos-version-min=$target" >> $GITHUB_ENV
+          HOMEBREW_NO_AUTO_UPDATE=1 brew install nasm # for ffmpeg build
+          mkdir -p "$VCPKG_DEFAULT_BINARY_CACHE"
+
+      - name: Extract vcpkg baseline
+        id: vcpkg-baseline
+        run: echo "baseline=$(jq '."default-registry".baseline' vcpkg-configuration.json | tr -d \")" > $GITHUB_OUTPUT
+      - name: Checkout vcpkg
+        uses: actions/checkout@v6
+        with:
+          repository: 'microsoft/vcpkg'
+          ref: ${{ steps.vcpkg-baseline.outputs.baseline }}
+          fetch-depth: 0
+          path: vcpkg
+      - name: Bootstrap vcpkg
+        run: vcpkg/bootstrap-vcpkg.sh
+
+      - name: Setup binary cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}
+          key: macos${{env.MACOSX_DEPLOYMENT_TARGET}}-${{hashFiles('vcpkg.json','vcpkg-configuration.json')}}
+          restore-keys: macos${{env.MACOSX_DEPLOYMENT_TARGET}}
+
+      - name: Run CMake configure
+        run: |
+          cmake --preset macos-arm64-rel -DVCPKG_INSTALL_OPTIONS="--x-abi-tools-use-exact-versions" \
+            -DBUILD_ANIMVIEW=$ANIMVIEW -DFETCH_SOUNDFONT=ON -DCMAKE_INSTALL_PREFIX=/Applications \
+            -DWITH_TRACY=1
+
+      - name: Run CMake build
+        run: |
+          cmake --build --preset macos-arm64-rel --verbose
+
+      - name: Run CTest
+        run: |
+          ctest --preset macos-arm64-rel
+
+      - name: Run CMake install
+        run: |
+          cmake --install build/macos-arm64-rel --config RelWithDebInfo
+
+      - name: Sign and test CorsixTH
+        run: |
+          # Ad-hoc sign
+          codesign --deep --timestamp --sign - /Applications/CorsixTH.app/
+          codesign -dvvvv /Applications/CorsixTH.app/
+          # Test (needs lpeg/lfs built in or luarocks in place)
+          /Applications/CorsixTH.app/Contents/MacOS/CorsixTH > test & sleep 2; kill $!
+          grep -e "Welcome to CorsixTH" test
+
+      - name: Sign and test Animview
+        if: env.ANIMVIEW == 'ON'
+        run: |
+          # Ad-hoc sign
+          codesign --deep --timestamp --sign - /Applications/AnimView.app/
+          codesign -dvvvv /Applications/AnimView.app/
+          # Test (it's silent)
+          /Applications/AnimView.app/Contents/MacOS/AnimView & sleep 2; kill $!
+
+      - name: Create build artifact
+        shell: bash
+        run: |
+          repo=$(echo $GITHUB_REPOSITORY-$GITHUB_REF | sed -e 's/\//-/g' -e 's/refs-heads-//')
+          name="CTH-$(date +'%Y-%m-%d-%H-%M-%S')-$repo-${GITHUB_SHA:0:7}"
+          echo "NAME=$name" >> $GITHUB_ENV
+          cd /Applications/
+          zip $GITHUB_WORKSPACE/$name --symlinks --recurse-paths CorsixTH.app/ AnimView.app/ || true
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v6
+        with:
+          path: 'CTH*'
+          name: ${{ env.NAME }}
+        continue-on-error: true
