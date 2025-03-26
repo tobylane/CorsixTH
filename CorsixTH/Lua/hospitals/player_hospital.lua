@@ -753,7 +753,7 @@ function PlayerHospital:makeVipEndFax(vip_rating, name, cash_reward, vip_message
       {text = _S.fax.vip_visit_result.cash_grant:format(cash_reward)},
     }
   elseif vip_rating >= 8 and vip_rating < 11 then
-    -- Dont tell player about any rep change in this range
+    -- Don't tell player about any rep change in this range
     message = {
       {text = _S.fax.vip_visit_result.remarks[vip_message]},
     }

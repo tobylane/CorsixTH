@@ -112,7 +112,8 @@ jobs:
           ant -buildfile LevelEdit/build.xml dist
           # Run codespell
           codespell --enable-colors --quiet-level 2 --skip="languages,corsix-th.6,*.dat" \
-            -L sav,unexpect,persistance,uint,inout,blong,exemple,manuel \
+            -L sav,unexpect,persistance,uint,inout,blong,exemple,manuel,que,master,slave,stdio \
+            --builtin=clear,rare,informal,usage,code,names \
             AnimView CorsixTH CorsixTH/Lua/languages/english.lua LevelEdit libs
           # Cmake file linter
           cmakelint --filter=-linelength AnimView/CMakeLists.txt CMakeLists.txt CorsixTH/CMakeLists.txt \

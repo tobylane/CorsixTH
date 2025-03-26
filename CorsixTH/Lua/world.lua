@@ -2614,7 +2614,7 @@ function World:isTileExclusivelyPassable(x, y, distance)
   return true
 end
 
---! Get todays date.
+--! Get today's date.
 --!return (Date) Current game date.
 function World:date()
   return self.game_date:clone()
