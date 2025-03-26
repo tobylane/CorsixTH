@@ -433,7 +433,7 @@ local codepoints_to_cp437 = {
   -- 0xA6 and 0xA7 are ordinal indicators and not present in TH fonts
   [0xBF] = 0xA8, -- inverted question mark
   -- 0xA9 through 0xAC are not present in TH fonts
-  [0xA1] = 0xAD, -- inverted exclaimation mark
+  [0xA1] = 0xAD, -- inverted exclamation mark
   -- 0xAE through 0xE0 are not present in TH fonts
   [0xDF] = 0xE1, -- eszett / sharp-S / lowercase-beta
   -- 0xE2 through 0xFF are not present in TH fonts

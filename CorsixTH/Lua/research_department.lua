@@ -40,7 +40,7 @@ function ResearchDepartment:ResearchDepartment(hospital)
 
   -- This list contains a lot of information.
   -- Progress of object discovery, object improvement, drug improvement
-  -- dito costs and room build costs.
+  -- ditto costs and room build costs.
   self.research_progress = {}
   self:initResearch()
 end

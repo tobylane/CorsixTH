@@ -47,7 +47,7 @@ describe("A class in CorsixTH ", function()
 
   it("should be the same for many instances of the same type, including inheritance", function()
     assert.truthy(class.is(child_class, ChildClass))
-    assert.falsy(class.is(parent_class, ChildClass))
+    assert.falsy(class.is(parent_class, ChildClass)) -- codespell:ignore falsy
 
     assert.truthy(class.is(child_class, ParentClass))
     assert.truthy(class.is(parent_class, ParentClass))
