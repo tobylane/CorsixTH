@@ -24,12 +24,12 @@ jobs:
             packages: libluajit-5.1-dev luajit libwxgtk3.0-gtk3-dev
             cmakejit: '-DBUILD_ANIMVIEW=ON -DWITH_LUAJIT=ON -DLUA_LIBRARY=/usr/lib/x86_64-linux-gnu/libluajit-5.1.so'
           - static_analysis: 0
-            docs: 0
+            docs: 1
             lua: Lua 5.1
             luac: luac5.1
             packages: liblua5.1-dev lua5.1
           - static_analysis: 1
-            docs: 1
+            docs: 0
             lua: Lua 5.4
             luac: luac5.4
             packages: liblua5.4-dev lua5.4
@@ -47,15 +47,17 @@ jobs:
           sudo luarocks install luacheck
           # Required for lua unit tests
           sudo luarocks install busted
+          # Required for building lua docs
+          sudo luarocks install luafilesystem
       - name: Install CorsixTH requirements
         run: |
           sudo apt-get install libsdl2-dev libsdl2-mixer-dev \
            libavcodec-dev libavformat-dev libavutil-dev libswresample-dev \
-           libswscale-dev libcurl4-openssl-dev
+           libswscale-dev libcurl4-openssl-dev doxygen
       - name: Install static analysis requirements
         if: matrix.static_analysis
         run: |
-          sudo apt-get install doxygen yamllint clang-format-11 clang-tidy-11
+          sudo apt-get install yamllint clang-format-11 clang-tidy-11
 
           sudo pip3 install -I codespell==2.2 cmakelint==1.4
 
@@ -66,8 +68,6 @@ jobs:
           cd ../Catch2/build
           cmake .. -B.
           sudo make install
-
-          sudo luarocks --lua-version 5.4 install luafilesystem
 
       - name: Install CMake 3.14
         if: matrix.cmake
