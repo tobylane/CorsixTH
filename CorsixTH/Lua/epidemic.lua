@@ -342,7 +342,9 @@ function Epidemic:sendInitialFax()
       {text = _S.fax.epidemic.choices.cover_up, choice = "cover_up_epidemic"},
     },
   }
-  self.world.ui.bottom_panel:queueMessage("epidemy", message, self, 24*20,2)
+  -- In 20 days respond with no, unless the cheat option to auto declare an epidemy is on
+  self.world.ui.bottom_panel:queueMessage("epidemy", message, self, Date.hoursPerDay() * 20,
+      TheApp.config.auto_declare_epidemy and 1 or 2)
 end
 
 --[[ Calculate the fine for having a given number of infected patients
