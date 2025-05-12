@@ -701,8 +701,10 @@ function PlayerHospital:makeEmergencyStartFax()
       {text = _S.fax.emergency.choices.refuse, choice = "refuse_emergency"},
     },
   }
-  -- Automatically refuse after 16 days
-  self.world.ui.bottom_panel:queueMessage("emergency", message, nil, Date.hoursPerDay() * 16, 2)
+  -- Automatically refuse emergencies in 16 days,
+  -- unless the cheat option to automatically accept them is on and the room and staff are available.
+  self.world.ui.bottom_panel:queueMessage("emergency", message, nil, Date.hoursPerDay() * 16,
+      TheApp.config.auto_accept_emergencies and not room_name and staff_available and 1 or 2)
 end
 
 --! Makes the fax at the end of an emergency
