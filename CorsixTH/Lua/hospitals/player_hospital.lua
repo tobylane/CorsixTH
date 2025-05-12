@@ -730,8 +730,9 @@ function PlayerHospital:createVip()
       {text = _S.fax.vip_visit_query.choices.refuse, choice = "refuse_vip", additionalInfo = {name=vipName}}
     },
   }
-  -- Automatically refuse after 20 days
-  self.world.ui.bottom_panel:queueMessage("personality", message, nil, Date.hoursPerDay() * 20, 2)
+  -- Automatically refuse after 20 days, unless the cheat option to auto accept VIPs is on
+  self.world.ui.bottom_panel:queueMessage("personality", message, nil, Date.hoursPerDay() * 20,
+      TheApp.config.auto_accept_vips and 1 or 2)
 end
 
 --! Remove any message (fax) relating to this humanoid
