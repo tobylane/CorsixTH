@@ -722,7 +722,7 @@ bool str_endswith(const char* text, size_t text_length, const char* end_text) {
   if (end_length > text_length) {
     return false;
   }
-  return !strcasecmp(text + (text_length - end_length), end_text);
+  return !std::strcmp(text + (text_length - end_length), end_text);
 }
 
 } // namespace

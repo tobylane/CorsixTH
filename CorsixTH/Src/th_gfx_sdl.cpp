@@ -759,6 +759,7 @@ bool write_rgb_png(int width, int height, png_bytep pixels, int pitch,
   // Allocate and setup row pointers to the pixels.
   png_bytepp row_pointers = new (std::nothrow) png_bytep[height];
   if (row_pointers == nullptr) {
+    delete[] row_pointers;
     return false;
   }
   png_bytep rp = pixels;
@@ -780,7 +781,7 @@ bool write_rgb_png(int width, int height, png_bytep pixels, int pitch,
   // Cleanup, and done.
   png_destroy_write_struct(&png_write_data, &info_write_data);
   std::fclose(fp);
-  delete row_pointers;
+  delete[] row_pointers;
   return true;
 }
 
