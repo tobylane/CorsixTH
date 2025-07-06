@@ -1111,11 +1111,11 @@ function UI:makeScreenshot()
   local i = 0
   local filename
   repeat
-    filename = TheApp.screenshot_dir .. ("screenshot%i.bmp"):format(i)
+    filename = TheApp.screenshot_dir .. ("screenshot%i.png"):format(i)
     i = i + 1
   until lfs.attributes(filename, "size") == nil
   print("Taking screenshot: " .. filename)
-  local res, err = self.app.video:takeScreenshot(filename) -- Take screenshot
+  local res, err = self.app.video:takeScreenshot(filename, true) -- Take screenshot
   if not res then
     print("Screenshot failed: " .. err)
   else
