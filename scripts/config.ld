@@ -10,11 +10,25 @@ full_description = 'A reimplementation of the 1997 Bullfrog business sim Theme H
 ignore = true
 file = { 'CorsixTH/Lua/', 'CorsixTH/CorsixTH.lua',
   exclude = { 'CorsixTH/Lua/languages', 'CorsixTH/Lua/config_finder.lua', 'CorsixTH/Lua/debug_script.lua' } }
-kind_names = { topic = 'Manual', module = 'Libraries' }
+kind_names = { topic = 'Manual', module = 'Files' }
 readme = 'Readme.md'
+format = 'markdown'
 icon = 'scripts/logo.png'
-sort = true
+sort = true -- Alphabetical order
 favicon = '../CorsixTH/CorsixTH.ico'
-one = true
+one = true -- use a one-column layout
 unqualified = true
---template = scripts
+template = true -- style and template in config folder
+wrap = true
+function custom_display_name_handler(item, default_handler)
+  item.package = 'CorsixTH'
+  item.display_name = item.name:sub(23,-1)
+  return default_handler(item)
+end
+-- Ldoc puts CorsixTH/Lua in all links and names, postprocess_html needed
+-- only used here? https://github.com/mooffie/mc/blob/luatip/src/lua/doc/ldoc/config.ld#L430
+function postprocess_html(source, item)
+  if item and item.display_name then
+    source:gsub(item.name, item.display_name) end
+  return source
+end

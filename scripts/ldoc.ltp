@@ -7,23 +7,12 @@ https://github.com/lunarmodules/Penlight/blob/master/ldoc.ltp
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=$(ldoc.doc_charset)"/>
 <head>
-    <title>$(ldoc.title)</title>
-    <link rel="stylesheet" href="$(ldoc.css)" type="text/css" />
-# if ldoc.custom_css then -- add custom CSS file if configured.
-    <link rel="stylesheet" href="$(ldoc.custom_css)" type="text/css" />
-# end
+    <title>CorsixTH Lua documentation</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
 </head>
 <body>
 
 <div id="container">
-
-<div id="product">
-	<div id="product_logo"><img src="data/logo.png" /></div>
-	<div id="product_name"><big><b></b></big></div>
-	<div id="product_description"></div>
-</div> <!-- id="product" -->
-
-
 <div id="main">
 
 # local no_spaces = ldoc.no_spaces
@@ -37,15 +26,14 @@ https://github.com/lunarmodules/Penlight/blob/master/ldoc.ltp
 
 <div id="navigation">
 <br/>
-<h1>$(ldoc.project)</h1>
+<div id="product_logo"><img src="data/logo.png" /></div>
+<h1>CorsixTH</h1>
 
 <ul>
   <li><a href="https://github.com/CorsixTH/CorsixTH">GitHub Project</a></li>
-# if not ldoc.single and module then -- reference back to project index
+# -- if not homepage then link to it
   <li><a href="../$(ldoc.output).html">Documentation</a></li>
-# else
-  <li><a href="$(ldoc.output).html">Documentation</a></li>
-# end
+# --end -- link to the readme, wiki, CI
 </ul>
 
 # -------- contents of project ----------
