@@ -11,3 +11,6 @@
 --
 -- Add your code below.
 ---
+for _, room in pairs(TheApp.ui.hospital.world.rooms) do
+  print(room.room_info.id, room.room_info.maximum_staff, room.maximum_staff)
+end

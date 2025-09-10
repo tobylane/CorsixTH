@@ -72,7 +72,7 @@ function WardRoom:roomFinished()
       desks = desks + 1
     end
   end
-  self.maximum_staff = {
+  self.room_info.maximum_staff = {
     Nurse = desks,
   }
   self.maximum_patients = beds

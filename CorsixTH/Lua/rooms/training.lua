@@ -58,7 +58,7 @@ function TrainingRoom:roomFinished()
     end
   end
   -- Total staff occupancy: number of lecture chairs plus projector
-  self.maximum_staff = { Doctor = chairs + 1 }
+  self.room_info.maximum_staff = { Doctor = chairs + 1 }
   self.training_factor = self:calculateTrainingFactor(objects)
 
   -- Also tell the player if he/she doesn't have a consultant yet.

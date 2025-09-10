@@ -84,7 +84,9 @@ function Room:initRoom(x, y, w, h, door, door2)
   -- the set of humanoids walking to this room
   self.humanoids_enroute = {--[[a set rather than a list]]}
   self.staff_member_set = {--[[a set rather than a list]]} -- Doctors and Nurses only
-  self.maximum_staff = { Doctor = 1 }
+  if not self.room_info.maximum_staff then
+    self.room_info.maximum_staff = { Doctor = 1 }
+  end
 
   self.world:prepareRectangleTilesForBuild(self.x, self.y, self.width, self.height)
 end
@@ -301,8 +303,6 @@ local no_staff = {} -- Constant denoting 'no staff at all' in a room.
 --! Get the type and number of maximum staff for the room.
 --!return (table) Type and number of maximum staff.
 function Room:getMaximumStaffCriteria()
-  -- Some rooms have dynamic criteria (i.e. dependent upon the number of items
-  -- in the room), so this method is provided for such rooms to override it.
   return self.room_info.maximum_staff or self.room_info.required_staff or no_staff
 end
 
@@ -1081,6 +1081,10 @@ function Room:afterLoad(old, new)
         self.staff_member_set[self.staff_member] = true
         self.staff_member = nil
       end
+    end
+    if self.maximum_staff then -- These rooms stored maximum staff in the wrong place
+      self.room_info.maximum_staff = self.maximum_staff
+      self.maximum_staff = nil
     end
   end
 end

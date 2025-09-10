@@ -124,7 +124,7 @@ function ResearchRoom:roomFinished()
       number = number + 1
     end
   end
-  self.maximum_staff = {
+  self.room_info.maximum_staff = {
     Researcher = number,
   }
   -- Is this the first research department built?
