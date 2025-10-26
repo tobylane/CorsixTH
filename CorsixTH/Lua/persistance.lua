@@ -258,7 +258,9 @@ function SaveGameFile(filename)
   local f = TheApp:writeToFileOrTmp(filename, "wb")
   f:write(data)
   f:close()
-  TH.SyncEmscriptenFS()
+  if TheApp.os == 'emscripten' then
+    TH.SyncEmscriptenFS()
+  end
 end
 
 --! Compatibility function to work out the game's graphics set

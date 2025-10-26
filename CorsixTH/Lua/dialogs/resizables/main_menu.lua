@@ -51,8 +51,10 @@ function UIMainMenu:UIMainMenu(ui)
     {_S.main_menu.load_game,       self.buttonLoadGame,       _S.tooltip.main_menu.load_game},
     {_S.main_menu.options,         self.buttonOptions,        _S.tooltip.main_menu.options},
     {_S.main_menu.map_edit,        self.buttonMapEdit,        _S.tooltip.main_menu.map_edit},
-    -- {_S.main_menu.exit,            self.buttonExit,           _S.tooltip.main_menu.exit}
   }
+  if TheApp.os ~= 'emscripten' then
+    menu_items[#menu_items + 1] = {_S.main_menu.exit, self.buttonExit, _S.tooltip.main_menu.exit}
+  end
   self.no_menu_entries = #menu_items
 
   --! Work out the size of non-false items in array

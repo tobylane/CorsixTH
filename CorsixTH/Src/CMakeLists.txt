@@ -6,16 +6,17 @@ set(LPEG_SRC_FILES "")
 set(LPEG_HRC_FILES "")
 set(LFS_SRC_FILES "")
 set(LFS_HRC_FILES "")
-if (CMAKE_SYSTEM_NAME MATCHES "Emscripten")
+if (EMSCRIPTEN)
     include(FetchContent)
     FetchContent_Declare(lpeg
             URL  https://github.com/roberto-ieru/LPeg/archive/refs/heads/master.zip
+            DOWNLOAD_EXTRACT_TIMESTAMP false
     )
     FetchContent_Declare(lfs
             URL  https://github.com/lunarmodules/luafilesystem/archive/refs/tags/v1_8_0.zip
+            DOWNLOAD_EXTRACT_TIMESTAMP false
     )
-    FetchContent_Populate(lpeg)
-    FetchContent_Populate(lfs)
+    FetchContent_MakeAvailable(lpeg lfs)
 
     file(GLOB LPEG_SRC_FILES
             ${lpeg_SOURCE_DIR}/*.c

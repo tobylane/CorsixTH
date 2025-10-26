@@ -2142,7 +2142,9 @@ function World:dumpGameLog()
     fi:write(str .. "\n")
   end
   fi:close()
-  TH.SyncEmscriptenFS()
+  if TheApp.os == 'emscripten' then
+    TH.SyncEmscriptenFS()
+  end
 end
 
 --! Because the save file only saves one thob per tile if they are more that information
