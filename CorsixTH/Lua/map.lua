@@ -962,4 +962,11 @@ function Map:afterLoad(old, new)
   if old < 217 then
     self:_fixTiles()
   end
+  if old < 236 then
+    local gbv = self.level_config.gbv
+    gbv.RestStanding = gbv.RestStanding or 3
+    gbv.RestSofa = gbv.RestSofa or 8
+    gbv.RestGame = gbv.RestGame or 60
+    gbv.RestSnooker = gbv.RestSnooker or 40
+  end
 end

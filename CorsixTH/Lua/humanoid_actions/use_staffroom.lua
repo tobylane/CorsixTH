@@ -70,13 +70,6 @@ local generate_use_time = permanent"use_staffroom_action_generate_use_time"( fun
   end
 end)
 
--- table of how much relaxation an object gives per tick
-local relaxation = {
-  sofa = 0.001,
-  pool_table = 0.05,
-  video_game = 0.05,
-}
-
 -- main function of the staffroom action
 local function use_staffroom_action_start(action, humanoid)
   assert(class.is(humanoid, Staff), "use_staffroom action called for non-staff humanoid")
@@ -101,9 +94,16 @@ local function use_staffroom_action_start(action, humanoid)
     action.next_target_type = nil
   end
 
+  local gbv = humanoid.world.map.level_config.gbv
+  -- How much relaxation an object gives per tick
+  local relaxation = {
+    sofa = gbv.RestSofa / 8000,
+    stand = gbv.RestStanding / 8000,
+  }
   -- If no target was found, then walk around for a bit and try again later
   if not action.target_obj then
     humanoid:queueAction(MeanderAction():setCount(2), 0)
+    humanoid:wake(relaxation.stand * 36) -- Two seconds of relaxation while standing
     return
   end
 
@@ -111,8 +111,20 @@ local function use_staffroom_action_start(action, humanoid)
   -- Note: force prolonged_usage, because video_game wouldn't get it by default (because it has no begin and end animation)
   local obj_use_time = generate_use_time(action.target_type)
 
+  -- How much relaxation an object gives per use
+  local relaxation_per_use = {
+    video_game = gbv.RestGame / 1000,
+    pool_table = gbv.RestSnooker / 1000,
+  }
+  -- Convert that value to per tick
+  if relaxation_per_use[action.target_type] then
+    action.relax_value = relaxation_per_use[action.target_type] / obj_use_time
+  else
+    action.relax_value = relaxation[action.target_type]
+  end
+
   local loop_callback_use = --[[persistable:use_staffroom_action_loop_callback]] function(obj_action)
-    humanoid:wake(relaxation[action.target_type])
+    humanoid:wake(action.relax_value or relaxation[action.target_type])
     -- if staff is no longer fatigued, make them leave the staff room
     if humanoid:getAttribute("fatigue") == 0 then
       humanoid:setNextAction(humanoid:getRoom():createLeaveAction())

@@ -28,7 +28,7 @@ local SDL = require("sdl")
 -- and add compatibility code in afterLoad functions
 -- Recommended: Also replace/Update the summary comment
 
-local SAVEGAME_VERSION = 235 -- Fix staff_member_set applying to all rooms
+local SAVEGAME_VERSION = 236 -- Use level config values for staff room rest
 
 class "App"
 
