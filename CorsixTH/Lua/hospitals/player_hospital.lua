@@ -74,6 +74,11 @@ function PlayerHospital:dailyAdviceChecks()
   if day == 1 then
     self:_adviseMoney()
   end
+  if day == 2 then
+    local advice_tbl, priority_advice_tbl = self.world.endconditions:generateAdvice(self)
+    if #advice_tbl > 0 then self:giveAdvice(advice_tbl) end
+    if #priority_advice_tbl > 0 then self:giveAdvice(priority_advice_tbl) end
+  end
   if day == 3 then
     self:_adviseStaffRoom()
   end
@@ -95,6 +100,8 @@ function PlayerHospital:dailyAdviceChecks()
   end
   if day == 18 then
     self:advisePlants(false)
+    local _, priority_advice_tbl = self.world.endconditions:generateAdvice(self)
+    if #priority_advice_tbl > 0 then self:giveAdvice(priority_advice_tbl) end
   end
   if day == 20 then
     self:_adviseHeatingForStaff()
