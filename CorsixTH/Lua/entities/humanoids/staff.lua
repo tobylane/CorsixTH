@@ -66,30 +66,19 @@ function Staff:tickDay()
     self:changeAttribute("happiness", 0.006)
   end
 
+  -- Seeing various nearby objects boost your happiness, some more than others.
   -- It is nice to see plants, but dead plants make you unhappy
-  local plant = getRandomEntryFromArray(self:findObjectsInSquare(2, "plant"))
-  if plant then
-    self:changeAttribute("happiness", -0.003 + (plant:isPleasingFactor() * 0.001))
-  end
-
-  -- Seeing various nearby objects boost your happiness, some more than others
   local good_objects = {
     ["extinguisher"] = 0.002, -- Makes you feel safe
     ["bin"]          = 0.001,
     ["bookcase"]     = 0.003,
     ["skeleton"]     = 0.002,
     ["tv"]           = 0.0005,
+    plant            = function(plant) return -0.003 + (plant:isPleasingFactor() * 0.001) end,
+    --todo: litter function
   }
 
-  -- Construct an array with the object names.
-  local happy_objects = {}
-  for name, _ in pairs(good_objects) do happy_objects[#happy_objects + 1] = name end
-
-  -- Look what's around the humanoid, and adapt the happiness.
-  happy_objects = self:findObjectsInSquare(2, happy_objects)
-  for obj_name, happiness_score in pairs(good_objects) do
-    self:changeAttribute("happiness", #happy_objects[obj_name] * happiness_score)
-  end
+  self:getHappinessFromObjects(good_objects)
 
   -- List of positive rest activities and their happiness effect
   local recreation = {

@@ -1159,3 +1159,23 @@ function Humanoid:unexpectFromRoom(dest_room)
 function Humanoid:getAttribute(attribute, default_value)
   return self.attributes[attribute] or default_value or 0
 end
+
+function Humanoid:getHappinessFromObjects(objects, range)
+  if not range then range = 2 end
+  -- Construct an array with the object names.
+  local numbered_objects = {}
+  for name, _ in pairs(objects) do numbered_objects[#numbered_objects + 1] = name end
+
+  -- Look what's around the humanoid, and adapt the happiness.
+  local near_objects = self:findObjectsInSquare(range, numbered_objects)
+  for obj_name, happiness_score in pairs(objects) do
+  print(obj_name, #near_objects[obj_name], happiness_score)
+    if near_objects[obj_name][1] then
+      local score
+      if type(happiness_score) == "function" then score = happiness_score(near_objects[obj_name][1])
+      else score = happiness_score
+      end
+      self:changeAttribute("happiness", #near_objects[obj_name] * score)
+    end
+  end
+end
