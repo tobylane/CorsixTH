@@ -79,6 +79,8 @@ function Staff:tickDay()
     ["bookcase"]     = 0.003,
     ["skeleton"]     = 0.002,
     ["tv"]           = 0.0005,
+    litter           = -0.0002,
+    badlitter        = -0.0004,
   }
 
   -- Construct an array with the object names.
@@ -88,7 +90,10 @@ function Staff:tickDay()
   -- Look what's around the humanoid, and adapt the happiness.
   happy_objects = self:findObjectsInSquare(2, happy_objects)
   for obj_name, happiness_score in pairs(good_objects) do
-    self:changeAttribute("happiness", #happy_objects[obj_name] * happiness_score)
+    local score = happiness_score
+    -- May not be the exact same litter
+    if obj_name == "litter" and happy_objects.litter[1]:vomitInducing() then score = good_objects.badlitter end
+    self:changeAttribute("happiness", #happy_objects[obj_name] * score)
   end
 
   -- List of positive rest activities and their happiness effect
@@ -143,14 +148,6 @@ function Staff:tick()
     self.timer_until_raise = nil
   end
 
-  -- seeing litter will make you unhappy. If it is pee or puke it is worse
-  for _, litter in ipairs(self:findObjectsInSquare(2, "litter")) do
-    if litter:anyLitter() then
-      self:changeAttribute("happiness", -0.0002)
-    else
-      self:changeAttribute("happiness", -0.0004)
-    end
-  end
   self:updateSpeed()
 end
 
