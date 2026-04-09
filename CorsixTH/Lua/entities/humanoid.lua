@@ -543,6 +543,7 @@ end
 function Humanoid:findObjectsInSquare(size, object_spec)
   -- Prepare for the search.
   local objs_table = {}
+  if not self.world.obj_cache then self.world.obj_cache = {} end
   if type(object_spec) == "string" then
     -- Find one type of objects.
     objs_table[object_spec] = {}
@@ -563,9 +564,19 @@ function Humanoid:findObjectsInSquare(size, object_spec)
     if x >= 1 and x <= width then
       for y = self.tile_y - size, self.tile_y + size do
         if y >= 1 and y <= height and world_map:getRoomId(x, y) == self_room_id then
-          for _, obj in ipairs(entity_map:getObjectsAtCoordinate(x, y)) do
-            local entry = objs_table[obj.id]
-            if entry then entry[#entry + 1] = obj end
+          if not self.world.obj_cache[x] then self.world.obj_cache[x] = {} end
+          if self.world.obj_cache[x][y] then
+            for _, obj in ipairs(self.world.obj_cache[x][y]) do
+              local entry = objs_table[obj.id]
+              if entry then entry[#entry + 1] = obj end
+            end
+          else
+            for _, obj in ipairs(entity_map:getObjectsAtCoordinate(x, y)) do
+              local entry = objs_table[obj.id]
+              if entry then entry[#entry + 1] = obj end
+              self.world.obj_cache[x][y] = {}
+              table.insert(self.world.obj_cache[x][y], obj)
+            end
           end
         end
       end
