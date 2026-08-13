@@ -1,0 +1,7 @@
+ldoc - stuck on template
+  https://lunarmodules.github.io/ldoc/manual/manual.md.html https://tobylane.github.io/
+  switch ignore config_script.lua debug_script.lua
+  "contains no items" may be fixed in ldoc next release
+  find CorsixTH/Lua -type f -name '*lua' -exec sed -i '' 's/^--!param/-- @param/g' {} \;
+  find CorsixTH/Lua -type f -name '*lua' -exec sed -i '' 's/^--!return/-- @return/g' {} \;
+  find CorsixTH/Lua -type f -name '*lua' -exec sed -i '' 's/--!/---/g' {} \;
