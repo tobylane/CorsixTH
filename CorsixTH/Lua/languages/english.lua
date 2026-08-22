@@ -574,22 +574,25 @@ audio_window = {
   jukebox = "Jukebox",
   back = "Back",
   soundfont_location_caption = "Choose soundfont (%1%)",
+  no_soundfont_specified = "Using default soundfont",
 }
 
 tooltip.audio_window = {
   audio_button = "Turn on or off all game audio",
-  audio_toggle = "Toggle on or off",
+  audio = "Toggle on or off",
   sound_volume = "Sound volume",
   announcement_volume = "Announcement volume",
   music_volume = "Music volume",
   midi_api = "The API to use for in game music. Not used with custom music folder.",
   midi_port = "Device port to use for in game music.",
-  soundfont_location = "Location of a Soundfont file for playing MIDI music. A default Soundfont is used if not specified.",
+  soundfont = "Location of a Soundfont file for playing MIDI music. A default Soundfont is used if not specified.",
   browse = "Browse for folder location",
   browse_soundfont = "Browse for another Soundfont file (sf2, or sf3) ( Current location: %1% ) ",
   no_soundfont_specified = "Using default soundfont",
   jukebox = "Open the Jukebox to control the music",
   back = "Close the window",
+  default_midi_api = "Default (Software)",
+  default_midi_port = "Default",
 }
 
 customise_window = {
@@ -640,6 +643,7 @@ folders_window = {
   savegames_location = "Select the directory you want to use for Saves",
   music_location = "Select the directory you want to use for your Music",
   screenshots_location = "Select the directory you want to use for Screenshots",
+  not_specified = "No folder location specified yet!",
   back  = "Back",
 }
 
