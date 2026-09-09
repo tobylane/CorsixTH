@@ -15,9 +15,6 @@ on:
       animview:
         description: 'AnimView?'
         type: boolean
-      pr:
-        description: 'Build this PR (optional)'
-        type: number
 
 jobs:
   Linux-apt-get:
@@ -36,12 +33,7 @@ jobs:
     runs-on: ubuntu-26.04 # resolute raccoon
     name: Linux apt-get ${{matrix.lua}} ${{inputs.animview == 'true' && 'with AnimView' || ''}}
     steps:
-      - uses: actions/checkout@v6  # Keeps the git OAuth token after checkout
-      - name: Checkout selected PR
-        env:
-          GH_TOKEN: ${{github.token}}
-        if: inputs.PR
-        run: gh pr checkout --repo CorsixTH/CorsixTH ${{inputs.pr}}
+      - uses: actions/checkout@v7  # Keeps the git OAuth token after checkout
       - name: Install CorsixTH and lua test requirements
         run: |
           sudo apt-get update
