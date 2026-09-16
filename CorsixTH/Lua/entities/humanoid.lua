@@ -584,6 +584,33 @@ function Humanoid:findObjectsInSquare(size, object_spec)
   end
 end
 
+-- Which objects will have a function to assess the object's state for its happiness factor
+local objects_with_functions = { litter = true, plant = true }
+
+--! Find the sum total of the happiness effects of all objects within two squares
+--!param affecting_objects (table) Object names and their happiness changes in number or function form
+--!return happiness_change (number) Total effect of all objects
+--!return litter (table) All found litter
+function Humanoid:calculateHappinessFromObjects(affecting_objects)
+  local happiness_change = 0
+  -- Construct an array with the object names.
+  local objects = {}
+  for name, _ in pairs(affecting_objects) do objects[#objects + 1] = name end
+
+  -- Look what's around the humanoid, and total the happiness.
+  local near_objects = self:findObjectsInSquare(2, objects)
+  for name, tbl in pairs(near_objects) do
+    if objects_with_functions[name] then
+      for _, obj in pairs(tbl) do -- Consider each object individually
+        happiness_change = happiness_change + affecting_objects[name](obj)
+      end
+    else
+      happiness_change = happiness_change + (affecting_objects[name] * #tbl)
+    end
+  end
+  return happiness_change, near_objects.litter
+end
+
 --! Start the next (always first) action in the queue.
 function Humanoid:startAction()
   local action = self.action_queue[1]
