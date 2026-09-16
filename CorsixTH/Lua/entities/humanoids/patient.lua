@@ -775,20 +775,21 @@ function Patient:handleToiletNeed()
   end
 end
 
+-- Various optional corridor items affect happiness
+local corridor_objects = {
+  extinguisher = 0.002,
+  bin          = 0.001,
+  plant  = function(plant) return (plant:isPleasingFactor() - 3) * 0.001 end,
+  litter = function(litter) return litter:vomitInducing() and -0.0002 or -0.0004 end
+}
+
 --! Process specific objects near the patient and their effect on happiness factors.
 --!return (number) Quanitity of vomit inducing litter
 function Patient:_dailyObjectHappinessEffects()
-  -- It is nice to see plants, but dead plants make you unhappy.
-  local plant = getRandomEntryFromArray(self:findObjectsInSquare(2, "plant"))
-  if plant then
-    self:changeAttribute("happiness", -0.0003 + (plant:isPleasingFactor() * 0.0001))
-  end
+  local happiness_change, local_litter = self:calculateHappinessFromObjects(corridor_objects)
+  self:changeAttribute("happiness", happiness_change)
 
-  -- It always makes you happy to see you are in safe place.
-  local extinguisher = getRandomEntryFromArray(self:findObjectsInSquare(2, "extinguisher"))
-  if extinguisher then self:changeAttribute("happiness", 0.0002) end
-
-  -- sitting makes you happy whilst standing and walking does not
+  -- Sitting makes you happy whilst standing and walking in corridors do not
   if self:goingToUseObject("bench") then
     self:changeAttribute("happiness", 0.00002)
   else
@@ -796,16 +797,9 @@ function Patient:_dailyObjectHappinessEffects()
   end
 
   local num_vomit_inducing = 0
-  for _, litter in ipairs(self:findObjectsInSquare(2, "litter")) do
+  for _, litter in ipairs(local_litter) do
     -- Count vomit inducing litter.
     if litter:vomitInducing() then num_vomit_inducing = num_vomit_inducing + 1 end
-
-    -- Seeing litter will make you unhappy. If it is pee or puke it is worse
-    if litter:anyLitter() then
-      self:changeAttribute("happiness", -0.0002)
-    else
-      self:changeAttribute("happiness", -0.0004)
-    end
   end
   return num_vomit_inducing
 end
