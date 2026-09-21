@@ -116,5 +116,5 @@ jobs:
         if: env.PRESET != 'win-dev'
         uses: actions/upload-artifact@v6
         with:
-          path: ${{ inputs.animview && 'artifact' || 'artifact/CorsixTH' }}
+          path:  'artifact' 
           name: ${{env.NAME}}
