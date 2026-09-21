@@ -26,8 +26,6 @@ set(
   AnimView.rc
 )
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
 # Declaration of the executable
 if(APPLE)
   set(corsixth_icon_file ${CMAKE_SOURCE_DIR}/AnimView/Icon.icns)
@@ -46,7 +44,9 @@ else()
   )
 endif()
 
-target_link_libraries(AnimView RncLib)
+target_include_directories(AnimView PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+target_link_libraries(AnimView PRIVATE RncLib)
 
 # Set language standard
 set_property(TARGET AnimView PROPERTY CXX_STANDARD 17)
@@ -59,10 +59,9 @@ set_property(TARGET AnimView PROPERTY CXX_STANDARD_REQUIRED ON)
 set(wxWidgets_USE_LIBS core base) # optionally: more than wx std libs
 find_package(wxWidgets REQUIRED)
 if(wxWidgets_FOUND)
-  link_libraries(${wxWidgets_LIBRARIES})
-  include_directories(${wxWidgets_INCLUDE_DIRS})
-  include(${wxWidgets_USE_FILE})
-  target_link_libraries(AnimView ${wxWidgets_LIBRARIES})
+  target_link_libraries(AnimView PRIVATE ${wxWidgets_LIBRARIES})
+  target_include_directories(AnimView PRIVATE ${wxWidgets_INCLUDE_DIRS})
+  target_compile_definitions(AnimView PRIVATE ${wxWidgets_DEFINITIONS})
   message("  wxWidgets found")
 else()
   message(FATAL_ERROR "error: wxWidgets library not found, it is required to build")
@@ -71,7 +70,7 @@ endif()
 
 if(MSVC)
   # We want to bind against the very latest versions of the MSVC runtimes
-  add_definitions(/D "_BIND_TO_CURRENT_VCLIBS_VERSION=1")
+  target_compile_definitions(AnimView PRIVATE _BIND_TO_CURRENT_VCLIBS_VERSION=1)
 endif()
 
 if(APPLE)
