@@ -89,7 +89,7 @@ jobs:
       - name: Run CMake configure
         shell: cmd
         run: |
-          cmake --preset "%PRESET%" -DVCPKG_INSTALL_OPTIONS="--x-abi-tools-use-exact-versions" -DBUILD_ANIMVIEW=%ANIMVIEW%
+          cmake --preset "%PRESET%" -DVCPKG_INSTALL_OPTIONS="--x-abi-tools-use-exact-versions" -DBUILD_ANIMVIEW=ON -DBUILD_CORSIXTH=off
 
       - name: Run CMake build
         shell: cmd
