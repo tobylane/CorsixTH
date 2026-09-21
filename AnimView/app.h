@@ -23,6 +23,17 @@ SOFTWARE.
 #ifndef ANIMVIEW_APP_H_
 #define ANIMVIEW_APP_H_
 
+// Force wxWidgets to use vcpkg's dynamic linking conventions
+#ifndef WXUSINGDLL
+#define WXUSINGDLL
+#endif
+
+// Disable all legacy automatic linkage hooks for unused components
+#define wxNO_ADV_LIB
+#define wxNO_HTML_LIB
+#define wxNO_NET_LIB
+#define wxNO_XML_LIB
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 

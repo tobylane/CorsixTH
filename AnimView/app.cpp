@@ -20,6 +20,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+// Force vcpkg dll naming standard immediately
+#ifndef WXUSINGDLL
+#define WXUSINGDLL
+#endif
+
+// Disable all legacy automatic linkage hooks for unused components
+#define wxNO_ADV_LIB
+#define wxNO_HTML_LIB
+#define wxNO_NET_LIB
+#define wxNO_XML_LIB
+
 #include "app.h"
 
 #include "frmMain.h"
