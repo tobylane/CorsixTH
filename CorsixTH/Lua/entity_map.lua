@@ -23,8 +23,8 @@ class "EntityMap"
 ---@type EntityMap
 local EntityMap = _G["EntityMap"]
 
---[[ An entity map is a structure is a 2 dimensional structure created from a
-game map, it has the same dimensions as the game map which intitalises it.
+--[[ An entity map is a structure is a 1 dimensional structure created from a
+game map, it is the size of the height times width of the game map which intitalises it.
 The purpose of the map is store the location of entities in the map in
 real-time. Each cell given by an (x, y) coordinate is a
 table {humanoids ={}, objects = {}} where the tables of humanoids/objects
@@ -32,11 +32,8 @@ may be empty or contain the entity/entities that currently exist in that tile.]]
 function EntityMap:EntityMap(map)
   self.width, self.height = map.th:size()
   self.entity_map = {}
-  for x = 1, self.width do
-    self.entity_map[x] = {}
-    for y = 1, self.height do
-      self.entity_map[x][y] = {humanoids = {}, rats = {}, objects = {}}
-    end
+  for idx = 1, self.width * self.height do
+    self.entity_map[idx] = {humanoids = {}, rats = {}, objects = {}}
   end
 end
 
@@ -136,7 +133,8 @@ which they is no longer visually located.
 function EntityMap:getHumanoidsAtCoordinate(x, y)
   assert(x >= 1 and y >= 1 and x <= self.width and y <= self.height,
   "Coordinate requested is out of the entity map bounds")
-  return self.entity_map[x][y]["humanoids"]
+  local idx = (y - 1) * self.width + x
+  return self.entity_map[idx]["humanoids"]
 end
 
 --[[Returns a table of all rats at a specified coordinate
@@ -146,7 +144,8 @@ end
 function EntityMap:getRatsAtCoordinate(x, y)
   assert(x >= 1 and y >= 1 and x <= self.width and y <= self.height,
   "Coordinate requested is out of the entity map bounds")
-  return self.entity_map[x][y]["rats"]
+  local idx = (y - 1) * self.width + x
+  return self.entity_map[idx]["rats"]
 end
 
 --[[Returns a table of all objects at a specified coordinate
@@ -156,7 +155,8 @@ end
 function EntityMap:getObjectsAtCoordinate(x, y)
   assert(x >= 1 and y >= 1 and x <= self.width and y <= self.height,
   "Coordinate requested is out of the entity map bounds")
-  return self.entity_map[x][y]["objects"]
+  local idx = (y - 1) * self.width + x
+  return self.entity_map[idx]["objects"]
 end
 
 
@@ -240,6 +240,16 @@ function EntityMap:afterLoad(old, new)
     for x = 1, self.width do
       for y = 1, self.height do
         self.entity_map[x][y]["rats"] = self.entity_map[x][y]["rats"] or {}
+      end
+    end
+  end
+  if old < 267 then
+    local old_entity_map = self.entity_map
+    self.entity_map = {}
+    for x = 1, self.width do
+      for y = 1, self.height do
+        local idx = (y - 1) * self.width + x
+        self.entity_map[idx] = old_entity_map[x][y] or {humanoids = {}, rats = {}, objects = {}}
       end
     end
   end
