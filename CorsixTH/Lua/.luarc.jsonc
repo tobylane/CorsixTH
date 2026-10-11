@@ -1,0 +1,32 @@
+{
+    "runtime": {
+        "version": "Lua 5.1"
+    },
+    "workspace": {
+        "checkThirdParty": false
+    },
+    "workspace.ignoreDir": [
+        "languages"
+    ],
+    "diagnostics": {
+        "disable": [
+            "lowercase-global",
+            "inject-field",
+            "undefined-field", // todo: define CPP side
+            "cast-local-type", // todo: adjust Lua variables
+            "need-check-nil", // todo: decide on true positives
+            "redundant-parameter",
+            "param-type-mismatch",
+            "unbalanced-assignments", // todo: split off empty local vars
+            "duplicate-set-field",
+            "undefined-doc-name", // todo: define it
+            "missing-return", // todo: add it
+            "missing-parameter",
+            "assign-type-mismatch"
+        ],
+        "globalsRegex": [
+            "^[A-Z]", // Nearly all the globals
+            "^_[A-Z]" // _A and _S
+        ]
+    }
+}
