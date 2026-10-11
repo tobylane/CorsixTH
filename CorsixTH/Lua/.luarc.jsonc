@@ -1,0 +1,22 @@
+{
+    "runtime": {
+        "version": "Lua 5.1"
+    },
+    "workspace": {
+        "checkThirdParty": false
+    },
+    "workspace.ignoreDir": [
+        "languages"
+    ],
+    "diagnostics": {
+        "disable": [
+            "inject-field",
+            "undefined-field", // todo: define CPP side
+            "need-check-nil", // Many false positives
+        ],
+        "globalsRegex": [
+            "^[A-Z]", // Nearly all the globals
+            "^_[AS]" // _A and _S
+        ]
+    }
+}
