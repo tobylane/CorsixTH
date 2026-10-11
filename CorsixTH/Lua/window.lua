@@ -739,7 +739,7 @@ function Button:handleClick(mouse_button)
   end
   local callback = mouse_button == "left" and self.on_click or self.on_rightclick
   if callback then
-    callback(self.on_click_self, arg, self)
+    (callback --[[@as fun(...): any]])(self.on_click_self, arg, self)
   else
     if mouse_button == "left" then
       print("Warning: No handler for button click")
