@@ -2533,7 +2533,7 @@ function Hospital:msgMultiReceptionDesks()
 end
 
 --! Give advice to the user about maintenance of plants.
-function Hospital:advisePlants()
+function Hospital:advisePlants(placed)
 end
 
 --! Show the 'Gates to hell' animation.
@@ -2556,7 +2556,7 @@ function Hospital:adviseDiscoverDisease(disease)
 end
 
 --! Select a relevant message to be displayed to the user
-function Hospital:adviseBoilerBreakdown()
+function Hospital:adviseBoilerBreakdown(broken_heat)
 end
 
 --! Announces a machine needing repair

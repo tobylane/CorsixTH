@@ -134,6 +134,7 @@ else
     -- we give it an empty environment and use __[new]index metamethods on it
     -- to allow the same effect as changing the actual environment.
     local env_mt = {}
+    ---@diagnostic disable-next-line: redundant-parameter
     local result, err = load(contents, chunkname, "bt", setmetatable({}, env_mt))
     if result then
       return function(env, ...)

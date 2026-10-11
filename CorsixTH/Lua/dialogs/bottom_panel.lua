@@ -478,7 +478,7 @@ function UIBottomPanel:_initMessageWithDrawerIcon(message_info)
         -- Shift all icons that are on the right to the left
         -- The '_factoryIconWitdh()' call is used for compatibility with 0.69 saves and older
         -- where FACTORY_ICON_WIDTH was not yet declared when the closure was created.
-        icon:setXLimit(1 + (i - 2) * self._factoryIconWitdh())
+        icon:setXLimit(1 + (i - 2) * self:_factoryIconWitdh())
       elseif icon == this_icon then
         this_icon_index = i
       end
