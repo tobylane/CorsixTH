@@ -218,7 +218,7 @@ local function NameOf(obj) -- Debug aid
       to_explore[mt] = name .. ".<metatable>"
       explored[mt] = true
     end
-    mt = th_getfenv(exploring)
+    mt = th_getfenv(exploring) --[[@as table]]
     if mt and not explored[mt] then
       to_explore[mt] = name .. ".<env>"
       explored[mt] = true

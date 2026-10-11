@@ -376,7 +376,7 @@ function UI:addKeyHandler(keys, window, callback, ...)
       end
     end
 
-    local key = table.remove(temp_keys, #temp_keys):lower()
+    local key = table.remove(temp_keys --[[@as table]], #temp_keys):lower()
     local modifiers = list_to_set(temp_keys) -- SET of modifiers
     if not self.key_handlers[key] then
       -- No handlers for this key? Create a new table.
@@ -472,7 +472,7 @@ function UI:removeKeyHandler(keys, window)
       end
     end
 
-    local key = table.remove(temp_keys, #temp_keys):lower()
+    local key = table.remove(temp_keys --[[@as table]], #temp_keys):lower()
     local modifiers = list_to_set(temp_keys) -- SET of modifiers
     if self.key_handlers[key] then
       for index, info in ipairs(self.key_handlers[key]) do

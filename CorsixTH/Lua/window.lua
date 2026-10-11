@@ -188,7 +188,7 @@ function Panel:Panel()
   self.wrap_text = false
 end
 
-local panel_mt = permanent("Window.<panel_mt>", getmetatable(Panel()))
+local panel_mt = permanent("Window.<panel_mt>", getmetatable(Panel())) --[[@as table]]
 
 function Panel:makeButton(...)
   return self.window:makeButtonOnPanel(self, ...)
@@ -624,7 +624,7 @@ function Button:Button()
   self.enabled = nil
 end
 
-local button_mt = permanent("Window.<button_mt>", getmetatable(Button()))
+local button_mt = permanent("Window.<button_mt>", getmetatable(Button())) --[[@as table]]
 
 function Button:setDisabledSprite(index)
   self.sprite_index_disabled = index
@@ -915,7 +915,7 @@ function Scrollbar:setXorY(xy)
   end
 end
 
-local scrollbar_mt = permanent("Window.<scrollbar_mt>", getmetatable(Scrollbar()))
+local scrollbar_mt = permanent("Window.<scrollbar_mt>", getmetatable(Scrollbar())) --[[@as table]]
 
 --[[ Convert a static panel into a scrollbar.
 ! Scrollbars consist of a base panel (the panel given as a parameter)
@@ -973,7 +973,7 @@ function Textbox:Textbox()
   self.cursor_pos = nil
 end
 
-local textbox_mt = permanent("Window.<textbox_mt>", getmetatable(Textbox()))
+local textbox_mt = permanent("Window.<textbox_mt>", getmetatable(Textbox())) --[[@as table]]
 
 function Textbox:onTick()
   if self.active then
@@ -1372,7 +1372,7 @@ function HotkeyBox:HotkeyBox()
   self.noted_keys = {}
 end
 
-local hotkeybox_mt = permanent("Window.<hotkeybox_mt>", getmetatable(HotkeyBox()))
+local hotkeybox_mt = permanent("Window.<hotkeybox_mt>", getmetatable(HotkeyBox())) --[[@as table]]
 
 --! Set the box to not active and run confirm callback, if any
 function HotkeyBox:confirm()

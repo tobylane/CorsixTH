@@ -537,6 +537,9 @@ function inspect(value, depth)
 end
 
 -- Clones a table, but only the first level.
+---@generic T : table
+---@param tbl T The source table to copy.
+---@return T target A new shallow copy of the source table.
 function shallow_clone(tbl)
   if type(tbl) ~= "table" then return tbl end
   local meta = getmetatable(tbl)
