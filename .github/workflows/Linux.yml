@@ -43,6 +43,11 @@ jobs:
           sudo luarocks install luacheck
           # Required for lua unit tests
           sudo luarocks install busted
+          # Required for the luals check
+          curl -sL https://github.com/LuaLS/lua-language-server/releases/download/3.19.1/lua-language-server-3.19.1-linux-x64.tar.gz -o luals.tar.gz
+          tar -xzf luals.tar.gz
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+          luarocks install llscheck
       - name: Install docs and static analysis requirements
         if: matrix.static_analysis
         run: |
@@ -69,6 +74,8 @@ jobs:
       - name: Run lua tests
         if: matrix.static_analysis
         run: |
+          # Run lua-ls check
+          llscheck CorsixTH/Lua/
           # Validate lua files
           find CorsixTH -name '*.lua' -print0 | xargs -0 -I{} luac5.1 -p {}
           # Run lua lint check
