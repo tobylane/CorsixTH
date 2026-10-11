@@ -344,7 +344,7 @@ local function action_seek_room_start(action, humanoid)
           humanoid.hospital:adviseNoGPOffice()
         else
           -- No more diagnosis rooms can be found
-          action_still_valid = action_seek_room_no_diagnosis_room_found(action, humanoid)
+          action_still_valid = not not action_seek_room_no_diagnosis_room_found(action, humanoid)
         end
       end
     end
