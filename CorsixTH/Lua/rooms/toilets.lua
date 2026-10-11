@@ -36,10 +36,10 @@ room.minimum_size = 4
 room.wall_type = "green"
 room.floor_tile = 21
 
+---@class ToiletRoom
 class "ToiletRoom" (Room)
 
----@type ToiletRoom
-local ToiletRoom = _G["ToiletRoom"]
+local ToiletRoom = _G["ToiletRoom"] ---@type ToiletRoom
 
 function ToiletRoom:ToiletRoom(...)
   self:Room(...)

@@ -120,10 +120,10 @@ object.orientations = {
   },
 }
 
+---@class OperatingTable
 class "OperatingTable" (Machine)
 
----@type OperatingTable
-local OperatingTable = _G["OperatingTable"]
+local OperatingTable = _G["OperatingTable"] ---@type OperatingTable
 
 OperatingTable:slaveMixinClass()
 

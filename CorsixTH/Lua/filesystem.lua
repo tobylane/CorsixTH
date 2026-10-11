@@ -31,6 +31,8 @@ local ISO_FS = require("TH").iso_fs
 -- The FileSystem is also able to delegate operations to the ISO_FS library
 -- in the engine for reading / listing files off an ISO image instead of a
 -- file system.
+---@class FileSystem
+
 class "FileSystem"
 
 ---@type FileSystem

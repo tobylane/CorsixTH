@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class YawnAction
 class "YawnAction" (HumanoidAction)
 
----@type YawnAction
-local YawnAction = _G["YawnAction"]
+local YawnAction = _G["YawnAction"] ---@type YawnAction
 
 function YawnAction:YawnAction()
   self:HumanoidAction("yawn")

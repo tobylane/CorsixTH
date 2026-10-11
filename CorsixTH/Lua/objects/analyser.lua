@@ -56,10 +56,10 @@ object.orientations = {
   },
 }
 
+---@class AtomAnalyser
 class "AtomAnalyser" (Object)
 
----@type AtomAnalyser
-local AtomAnalyser = _G["AtomAnalyser"]
+local AtomAnalyser = _G["AtomAnalyser"] ---@type AtomAnalyser
 
 function AtomAnalyser:AtomAnalyser(...)
   self:Object(...)

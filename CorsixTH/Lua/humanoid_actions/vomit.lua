@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class VomitAction
 class "VomitAction" (HumanoidAction)
 
----@type VomitAction
-local VomitAction = _G["VomitAction"]
+local VomitAction = _G["VomitAction"] ---@type VomitAction
 
 function VomitAction:VomitAction()
   self:HumanoidAction("vomit")

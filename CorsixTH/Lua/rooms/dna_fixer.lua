@@ -43,10 +43,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd015.wav"
 room.handyman_call_sound = "maint006.wav"
 
+---@class DNAFixerRoom
 class "DNAFixerRoom" (Room)
 
----@type DNAFixerRoom
-local DNAFixerRoom = _G["DNAFixerRoom"]
+local DNAFixerRoom = _G["DNAFixerRoom"] ---@type DNAFixerRoom
 
 function DNAFixerRoom:DNAFixerRoom(...)
   self:Room(...)

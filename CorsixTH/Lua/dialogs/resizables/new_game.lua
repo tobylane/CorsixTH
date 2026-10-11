@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Class for the difficulty choice window.
+---@class UINewGame : UIResizable
 class "UINewGame" (UIResizable)
 
----@type UINewGame
-local UINewGame = _G["UINewGame"]
+local UINewGame = _G["UINewGame"] ---@type UINewGame
 
 -- Colour definitions
 local col = {

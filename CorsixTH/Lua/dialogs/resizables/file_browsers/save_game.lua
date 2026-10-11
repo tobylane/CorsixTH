@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Save Game Window
+---@class UISaveGame
 class "UISaveGame" (UIFileBrowser)
 
----@type UISaveGame
-local UISaveGame = _G["UISaveGame"]
+local UISaveGame = _G["UISaveGame"] ---@type UISaveGame
 
 local col_textbox = {
   red = 0,

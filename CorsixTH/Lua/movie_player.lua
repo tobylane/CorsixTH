@@ -23,6 +23,8 @@ SOFTWARE. --]]
 local TH = require("TH")
 local pathsep = package.config:sub(1, 1)
 
+---@class MoviePlayer
+
 class "MoviePlayer"
 
 ---@type MoviePlayer

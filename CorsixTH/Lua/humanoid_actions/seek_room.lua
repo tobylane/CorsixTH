@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class SeekRoomAction
 class "SeekRoomAction" (HumanoidAction)
 
----@type SeekRoomAction
-local SeekRoomAction = _G["SeekRoomAction"]
+local SeekRoomAction = _G["SeekRoomAction"] ---@type SeekRoomAction
 
 --! Find another room (and go to it).
 --!param room_type Type of the new room.

@@ -18,6 +18,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class Room
 class "Room"
 
 ---@type Room
@@ -25,6 +26,16 @@ local Room = _G["Room"]
 
 local COST_RECOVERY = 0.40 -- Percentage cost recovery of destroyed room items
 
+---@param x integer
+---@param y integer
+---@param w integer
+---@param h integer
+---@param id string
+---@param room_info table
+---@param world any
+---@param hospital Hospital
+---@param door any
+---@param door2 any
 function Room:Room(x, y, w, h, id, room_info, world, hospital, door, door2)
   self.id = id
   self.world = world

@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Charts fullscreen window
+---@class UIGraphs : UIFullscreen
 class "UIGraphs" (UIFullscreen)
 
----@type UIGraphs
-local UIGraphs = _G["UIGraphs"]
+local UIGraphs = _G["UIGraphs"] ---@type UIGraphs
 
 local TH = require("TH")
 

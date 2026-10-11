@@ -21,10 +21,10 @@ SOFTWARE. --]]
 local ipairs
     = ipairs
 
+---@class UIJukebox : Window
 class "UIJukebox" (Window)
 
----@type UIJukebox
-local UIJukebox = _G["UIJukebox"]
+local UIJukebox = _G["UIJukebox"] ---@type UIJukebox
 
 function UIJukebox:UIJukebox(app)
   self:Window()

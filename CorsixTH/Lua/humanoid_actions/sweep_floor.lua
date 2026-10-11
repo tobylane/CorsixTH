@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class SweepFloorAction
 class "SweepFloorAction" (HumanoidAction)
 
----@type SweepFloorAction
-local SweepFloorAction = _G["SweepFloorAction"]
+local SweepFloorAction = _G["SweepFloorAction"] ---@type SweepFloorAction
 
 function SweepFloorAction:SweepFloorAction(litter)
   assert(class.is(litter, Litter), "Invalid value for parameter 'litter'")

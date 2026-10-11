@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd016.wav"
 room.handyman_call_sound = "maint007.wav"
 
+---@class HairRestorationRoom
 class "HairRestorationRoom" (Room)
 
----@type HairRestorationRoom
-local HairRestorationRoom = _G["HairRestorationRoom"]
+local HairRestorationRoom = _G["HairRestorationRoom"] ---@type HairRestorationRoom
 
 function HairRestorationRoom:HairRestorationRoom(...)
   self:Room(...)

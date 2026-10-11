@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class QueueAction
 class "QueueAction" (HumanoidAction)
 
----@type QueueAction
-local QueueAction = _G["QueueAction"]
+local QueueAction = _G["QueueAction"] ---@type QueueAction
 
 --! Queue for something (door or reception desk).
 --!param x X position of the queue.

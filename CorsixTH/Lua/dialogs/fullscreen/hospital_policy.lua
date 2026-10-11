@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Hospital policy fullscreen window (set staff tiredness and patient cure thresholds, etc.).
+---@class UIPolicy : UIFullscreen
 class "UIPolicy" (UIFullscreen)
 
----@type UIPolicy
-local UIPolicy = _G["UIPolicy"]
+local UIPolicy = _G["UIPolicy"] ---@type UIPolicy
 
 function UIPolicy:UIPolicy(ui)
   self:UIFullscreen(ui)

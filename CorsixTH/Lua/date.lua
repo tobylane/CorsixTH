@@ -26,6 +26,8 @@ SOFTWARE. --]]
   instead of modifying the current one.
 ]]
 
+---@class Date
+
 class "Date"
 
 ---@type Date

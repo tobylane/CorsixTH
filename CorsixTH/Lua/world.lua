@@ -46,6 +46,8 @@ corsixth.require("endconditions")
 corsixth.require("earthquake")
 
 --! Manages entities, rooms, and the date.
+---@class World
+
 class "World"
 
 ---@type World

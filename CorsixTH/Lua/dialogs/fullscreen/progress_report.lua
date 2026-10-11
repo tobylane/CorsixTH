@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Progress Report fullscreen window (check level goals, competitors and alerts).
+---@class UIProgressReport : UIFullscreen
 class "UIProgressReport" (UIFullscreen)
 
----@type UIProgressReport
-local UIProgressReport = _G["UIProgressReport"]
+local UIProgressReport = _G["UIProgressReport"] ---@type UIProgressReport
 
 function UIProgressReport:UIProgressReport(ui)
   self:UIFullscreen(ui)

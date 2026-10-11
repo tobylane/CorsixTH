@@ -24,6 +24,8 @@ corsixth.require("announcer")
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
 --! A holder for all cheats in the game
+---@class Cheats
+
 class "Cheats"
 
 ---@type Cheats

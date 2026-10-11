@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class VipGoToNextRoomAction
 class "VipGoToNextRoomAction" (HumanoidAction)
 
----@type VipGoToNextRoomAction
-local VipGoToNextRoomAction = _G["VipGoToNextRoomAction"]
+local VipGoToNextRoomAction = _G["VipGoToNextRoomAction"] ---@type VipGoToNextRoomAction
 
 function VipGoToNextRoomAction:VipGoToNextRoomAction()
   self:HumanoidAction("vip_go_to_next_room")

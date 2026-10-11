@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd005.wav"
 room.handyman_call_sound = "maint004.wav"
 
+---@class SlackTongueRoom
 class "SlackTongueRoom" (Room)
 
----@type SlackTongueRoom
-local SlackTongueRoom = _G["SlackTongueRoom"]
+local SlackTongueRoom = _G["SlackTongueRoom"] ---@type SlackTongueRoom
 
 function SlackTongueRoom:SlackTongueRoom(...)
   self:Room(...)

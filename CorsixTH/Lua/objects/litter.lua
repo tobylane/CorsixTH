@@ -75,10 +75,10 @@ litter_rank["soot_floor"] = 99
 litter_rank["soot_wall"] = 99
 litter_rank["soot_window"] = 99
 
+---@class Litter
 class "Litter" (Entity)
 
----@type Litter
-local Litter = _G["Litter"]
+local Litter = _G["Litter"] ---@type Litter
 
 function Litter:Litter(hospital, object_type, x, y)
   local th = TH.animation()

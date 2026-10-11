@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd024.wav"
 room.handyman_call_sound = "maint012.wav"
 
+---@class DecontaminationRoom
 class "DecontaminationRoom" (Room)
 
----@type DecontaminationRoom
-local DecontaminationRoom = _G["DecontaminationRoom"]
+local DecontaminationRoom = _G["DecontaminationRoom"] ---@type DecontaminationRoom
 
 function DecontaminationRoom:DecontaminationRoom(...)
   self:Room(...)

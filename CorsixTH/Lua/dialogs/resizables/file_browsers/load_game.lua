@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Load Game Window
+---@class UILoadGame : UIFileBrowser
 class "UILoadGame" (UIFileBrowser)
 
----@type UILoadGame
-local UILoadGame = _G["UILoadGame"]
+local UILoadGame = _G["UILoadGame"] ---@type UILoadGame
 
 function UILoadGame:UILoadGame(ui, mode)
   local treenode = FilteredFileTreeNode(ui.app.savegame_dir, ".sav")

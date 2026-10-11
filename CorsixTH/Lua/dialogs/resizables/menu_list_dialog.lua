@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! A menu list with a scrollbar. Used by load_game, save_game and custom_game.
+---@class UIMenuList : UIResizable
 class "UIMenuList" (UIResizable)
 
----@type UIMenuList
-local UIMenuList = _G["UIMenuList"]
+local UIMenuList = _G["UIMenuList"] ---@type UIMenuList
 
 local col_caption = {
   red = 174,

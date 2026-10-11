@@ -38,10 +38,10 @@ room.wall_type = "green"
 room.floor_tile = 17
 room.has_no_queue_dialog = true
 
+---@class TrainingRoom
 class "TrainingRoom" (Room)
 
----@type TrainingRoom
-local TrainingRoom = _G["TrainingRoom"]
+local TrainingRoom = _G["TrainingRoom"] ---@type TrainingRoom
 
 function TrainingRoom:TrainingRoom(...)
   self:Room(...)

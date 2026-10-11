@@ -19,6 +19,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Interface for items within a UI tree control
+---@class TreeNode
 class "TreeNode"
 
 ---@type TreeNode
@@ -182,10 +183,10 @@ function TreeNode:getNextVisible()
 end
 
 --! A tree node representing a file (or directory) in the physical file-system.
+---@class FileTreeNode : TreeNode
 class "FileTreeNode" (TreeNode)
 
----@type FileTreeNode
-local FileTreeNode = _G["FileTreeNode"]
+local FileTreeNode = _G["FileTreeNode"] ---@type FileTreeNode
 
 local pathsep = package.config:sub(1, 1)
 
@@ -448,10 +449,10 @@ end
 
 --! A tree node which can be used as a root node to give the effect of having
 -- multiple root nodes.
+---@class DummyRootNode : TreeNode
 class "DummyRootNode" (TreeNode)
 
----@type DummyRootNode
-local DummyRootNode = _G["DummyRootNode"]
+local DummyRootNode = _G["DummyRootNode"] ---@type DummyRootNode
 
 --!param roots (array) An array of `TreeNode`s which should be displayed as
 -- root nodes.
@@ -481,10 +482,10 @@ end
 
 --! A control (to be placed on a window) which allows the user to navigate a
 -- tree of items and select one item from it.
+---@class TreeControl : Window
 class "TreeControl" (Window)
 
----@type TreeControl
-local TreeControl = _G["TreeControl"]
+local TreeControl = _G["TreeControl"] ---@type TreeControl
 
 --!param root (TreeNode) The single root node of the tree (use a `DummyRootNode`
 -- here if multiple root nodes are desired).

@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Load Map Window
+---@class UILoadMap
 class "UILoadMap" (UIFileBrowser)
 
----@type UILoadMap
-local UILoadMap = _G["UILoadMap"]
+local UILoadMap = _G["UILoadMap"] ---@type UILoadMap
 
 function UILoadMap:UILoadMap(ui, mode)
   local path = ui.app.user_level_dir

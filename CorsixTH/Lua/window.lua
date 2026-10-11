@@ -21,6 +21,8 @@ SOFTWARE. --]]
 corsixth.require("persistance")
 
 --! Base class for user-interface dialogs.
+---@class Window
+---@field ui UI user interface
 class "Window"
 
 ---@type Window
@@ -166,6 +168,8 @@ end
 -- (using `Window:addPanel`) as the common operations on panels (like drawing
 -- them and hit-testing against them) are implemented in the `Window` class,
 -- thus reducing the amount of work that each individual dialog has to do.
+---@class Panel
+
 class "Panel"
 
 ---@type Panel
@@ -592,6 +596,8 @@ function Window:getWindows(window_class)
 end
 
 --! A region of a `Panel` which causes some action when clicked.
+---@class Button
+
 class "Button"
 
 ---@type Button
@@ -832,6 +838,8 @@ function Window:makeButtonOnPanel(panel, x, y, w, h, sprite, on_click, on_click_
 end
 
 --! A window element used to scroll in lists
+---@class Scrollbar
+
 class "Scrollbar"
 
 ---@type Scrollbar
@@ -941,6 +949,8 @@ function Window:makeScrollbarOnPanel(panel, slider_colour, callback, min_value, 
 end
 
 --! A window element used to enter text
+---@class Textbox
+
 class "Textbox"
 
 ---@type Textbox
@@ -1340,6 +1350,8 @@ function Window:makeTextboxOnPanel(panel, confirm_callback, abort_callback)
 end
 
 --! A window element used to accept hotkey configurations.
+---@class HotkeyBox
+
 class "HotkeyBox"
 
 ---@type HotkeyBox

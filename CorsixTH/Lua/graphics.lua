@@ -26,6 +26,8 @@ local pathsep = package.config:sub(1, 1)
 --! The Graphics class handles loading and caching of graphics resources.
 -- It can adapt as the API to C changes, and hide these changes from most of
 -- the other Lua code.
+---@class Graphics
+
 class "Graphics"
 
 ---@type Graphics
@@ -897,6 +899,8 @@ function Graphics:updateTarget(target)
 end
 
 --! Utility class for setting animation markers and querying animation length.
+---@class AnimationManager
+
 class "AnimationManager"
 
 ---@type AnimationManager

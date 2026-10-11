@@ -28,10 +28,10 @@ local ipairs, math_floor
 local ATTACH_BLUEPRINT_TO_TILE = false
 
 --! The dialog shown when placing objects.
+---@class UIPlaceObjects : Window
 class "UIPlaceObjects" (Window)
 
----@type UIPlaceObjects
-local UIPlaceObjects = _G["UIPlaceObjects"]
+local UIPlaceObjects = _G["UIPlaceObjects"] ---@type UIPlaceObjects
 
 --[[ Constructor for the class.
 !param ui (UI) The active ui.

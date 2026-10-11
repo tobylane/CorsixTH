@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class CheckWatchAction
 class "CheckWatchAction" (HumanoidAction)
 
----@type CheckWatchAction
-local CheckWatchAction = _G["CheckWatchAction"]
+local CheckWatchAction = _G["CheckWatchAction"] ---@type CheckWatchAction
 
 function CheckWatchAction:CheckWatchAction()
   self:HumanoidAction("check_watch")

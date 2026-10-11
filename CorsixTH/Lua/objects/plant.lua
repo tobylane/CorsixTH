@@ -88,10 +88,10 @@ local days_between_states = 64
 local days_unreachable = 10
 
 --! An `Object` which needs watering now and then.
+---@class Plant
 class "Plant" (Object)
 
----@type Plant
-local Plant = _G["Plant"]
+local Plant = _G["Plant"] ---@type Plant
 
 function Plant:Plant(hospital, object_type, x, y, direction, etc)
   -- It doesn't matter which direction the plant is facing. It will be rotated so that an approaching

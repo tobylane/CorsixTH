@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Customise window used in the main menu and ingame.
+---@class UIFolder : UIResizable
 class "UIFolder" (UIResizable)
 
----@type UIFolder
-local UIFolder = _G["UIFolder"]
+local UIFolder = _G["UIFolder"] ---@type UIFolder
 
 local col = {
    bg = Colours.PanelDefault,

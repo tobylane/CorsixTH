@@ -29,6 +29,8 @@ stored for future use anyway.
 --]]
 
 --! Manages all things related to research for one hospital.
+---@class ResearchDepartment
+
 class "ResearchDepartment"
 
 ---@type ResearchDepartment

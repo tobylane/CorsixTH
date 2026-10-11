@@ -44,10 +44,10 @@ room.call_sound = "reqd002.wav"
 -- their own, more specific handyman call though
 --room.handyman_call_sound = "maint011.wav"
 
+---@class ScannerRoom
 class "ScannerRoom" (Room)
 
----@type ScannerRoom
-local ScannerRoom = _G["ScannerRoom"]
+local ScannerRoom = _G["ScannerRoom"] ---@type ScannerRoom
 
 function ScannerRoom:ScannerRoom(...)
   self:Room(...)

@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Dialog that informs the player of for example what the goals for the level are.
+---@class UIInformation : Window
 class "UIInformation" (Window)
 
----@type UIInformation
-local UIInformation = _G["UIInformation"]
+local UIInformation = _G["UIInformation"] ---@type UIInformation
 
 --! Constructor for the Information Dialog.
 --!param text The text to show, held in a table. All elements of the table will be written

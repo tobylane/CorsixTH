@@ -22,6 +22,8 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
+---@class Epidemic
+
 class "Epidemic"
 
 ---@type Epidemic

@@ -19,9 +19,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! UI display area for announcer subtitles
+---@class Subtitles : Window
 class "Subtitles" (Window)
 
----@type Subtitles
 local Subtitles = _G["Subtitles"]
 
 --! Subtitles constructor
@@ -82,9 +82,9 @@ function Subtitles:afterLoad(old, new)
 end
 
 --! First in, first out queue for concurrently displayed subtitles
+---@class Subtitles
 class "SubtitleQueue"
 
----@type SubtitleQueue
 local SubtitleQueue = _G["SubtitleQueue"]
 
 --! SubtitleQueue constructor

@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Custom Game Window
+---@class UICustomGame
 class "UICustomGame" (UIMenuList)
 
----@type UICustomGame
-local UICustomGame = _G["UICustomGame"]
+local UICustomGame = _G["UICustomGame"] ---@type UICustomGame
 
 local col_scrollbar = {
   red = 164,

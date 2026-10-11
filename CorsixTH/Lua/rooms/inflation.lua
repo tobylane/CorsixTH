@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd014.wav"
 room.handyman_call_sound = "maint013.wav"
 
+---@class InflationRoom
 class "InflationRoom" (Room)
 
----@type InflationRoom
-local InflationRoom = _G["InflationRoom"]
+local InflationRoom = _G["InflationRoom"] ---@type InflationRoom
 
 function InflationRoom:InflationRoom(...)
   self:Room(...)

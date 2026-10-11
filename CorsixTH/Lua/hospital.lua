@@ -20,6 +20,8 @@ SOFTWARE. --]]
 
 corsixth.require("announcer")
 
+---@class Hospital
+
 class "Hospital"
 
 ---@type Hospital

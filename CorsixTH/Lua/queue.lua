@@ -28,6 +28,8 @@ SOFTWARE. --]]
 -- being in use).
 -- Queues are currently implemented as normal Lua arrays, but you should access
 -- a queue via its methods rather than directly.
+---@class Queue
+
 class "Queue"
 
 ---@type Queue

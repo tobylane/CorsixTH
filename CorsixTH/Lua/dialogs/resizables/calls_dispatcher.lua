@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Calls Dispatcher Window
+---@class UICallsDispatcher
 class "UICallsDispatcher" (UIResizable)
 
----@type UICallsDispatcher
-local UICallsDispatcher = _G["UICallsDispatcher"]
+local UICallsDispatcher = _G["UICallsDispatcher"] ---@type UICallsDispatcher
 
 local col_bg = {
   red = 154,

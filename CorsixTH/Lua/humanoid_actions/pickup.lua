@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class PickupAction
 class "PickupAction" (HumanoidAction)
 
----@type PickupAction
-local PickupAction = _G["PickupAction"]
+local PickupAction = _G["PickupAction"] ---@type PickupAction
 
 -- Construct a pick-up action
 --!param ui User interface

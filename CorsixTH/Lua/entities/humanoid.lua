@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! An `Entity` which occupies a single tile and is capable of moving around the map.
+---@class Humanoid
 class "Humanoid" (Entity)
 
----@type Humanoid
-local Humanoid = _G["Humanoid"]
+local Humanoid = _G["Humanoid"] ---@type Humanoid
 
 local walk_animations = permanent"humanoid_walk_animations"({})
 local door_animations = permanent"humanoid_door_animations"({})

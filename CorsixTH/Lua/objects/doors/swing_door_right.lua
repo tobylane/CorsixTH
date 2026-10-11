@@ -30,10 +30,10 @@ object.idle_animations = {
   --west = 2050,--1998
 }
 
+---@class SwingDoor
 class "SwingDoor" (Door)
 
----@type SwingDoor
-local SwingDoor = _G["SwingDoor"]
+local SwingDoor = _G["SwingDoor"] ---@type SwingDoor
 
 function SwingDoor:SwingDoor(hospital, object_type, x, y, direction, etc)
   self.is_master = object_type == object

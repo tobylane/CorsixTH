@@ -20,10 +20,10 @@ SOFTWARE. --]]
 
 local TH = require("TH")
 
+---@class UIBuildRoom : Window
 class "UIBuildRoom" (Window)
 
----@type UIBuildRoom
-local UIBuildRoom = _G["UIBuildRoom"]
+local UIBuildRoom = _G["UIBuildRoom"] ---@type UIBuildRoom
 
 function UIBuildRoom:UIBuildRoom(ui)
   self:Window()

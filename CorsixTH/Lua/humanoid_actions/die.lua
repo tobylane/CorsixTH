@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class DieAction
 class "DieAction" (HumanoidAction)
 
----@type DieAction
-local DieAction = _G["DieAction"]
+local DieAction = _G["DieAction"] ---@type DieAction
 
 function DieAction:DieAction()
   self:HumanoidAction("die")

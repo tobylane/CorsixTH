@@ -20,10 +20,10 @@ SOFTWARE. --]]
 
 --! Dialog for "Are you sure you want to quit?" and similar yes/no questions.
 --! This dialog is also used for errors and requires some special handling
+---@class UIConfirmDialog : Window
 class "UIConfirmDialog" (Window)
 
----@type UIConfirmDialog
-local UIConfirmDialog = _G["UIConfirmDialog"]
+local UIConfirmDialog = _G["UIConfirmDialog"] ---@type UIConfirmDialog
 
 local top_frame = 357
 local top_frame_height = 22

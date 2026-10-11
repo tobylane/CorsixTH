@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Save Map Window
+---@class UISaveMap
 class "UISaveMap" (UIFileBrowser)
 
----@type UISaveMap
-local UISaveMap = _G["UISaveMap"]
+local UISaveMap = _G["UISaveMap"] ---@type UISaveMap
 
 local col_textbox = {
   red = 0,

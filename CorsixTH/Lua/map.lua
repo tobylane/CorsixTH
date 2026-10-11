@@ -19,6 +19,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Lua extensions to the C++ THMap class
+---@class Map
+
 class "Map"
 
 ---@type Map

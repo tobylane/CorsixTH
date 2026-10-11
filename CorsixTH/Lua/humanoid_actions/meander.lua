@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class MeanderAction
 class "MeanderAction" (HumanoidAction)
 
----@type MeanderAction
-local MeanderAction = _G["MeanderAction"]
+local MeanderAction = _G["MeanderAction"] ---@type MeanderAction
 
 function MeanderAction:MeanderAction()
   self:HumanoidAction("meander")

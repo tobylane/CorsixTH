@@ -22,10 +22,10 @@ local TH = require("TH")
 local lfsext = TH.lfsExt()
 
 --! Window where the user can choose a font file.
+---@class UIChooseFont
 class "UIChooseFont" (UIFileBrowser)
 
----@type UIChooseFont
-local UIChooseFont = _G["UIChooseFont"]
+local UIChooseFont = _G["UIChooseFont"] ---@type UIChooseFont
 
 function UIChooseFont:UIChooseFont(ui, mode)
   -- Create the root item (or items, on Windows).

@@ -30,6 +30,7 @@ local SDL = require("sdl")
 
 local SAVEGAME_VERSION = 268 -- Spawn changes
 
+---@class App
 class "App"
 
 ---@type App
@@ -688,6 +689,7 @@ function App:initLanguage()
   if old_S then
     TH.stringProxy.reload(old_S, _S)
   end
+
   _A = self.strings:setupAdviserMessage(_S.adviser)
 
   self.gfx:onChangeLanguage()

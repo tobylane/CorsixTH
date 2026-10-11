@@ -24,10 +24,10 @@ local iso_fs = TH.iso_fs
 local lfsext = TH.lfsExt()
 
 --! A tree node representing a directory in the physical file-system.
+---@class DirTreeNode
 class "DirTreeNode" (FileTreeNode)
 
----@type DirTreeNode
-local DirTreeNode = _G["DirTreeNode"]
+local DirTreeNode = _G["DirTreeNode"] ---@type DirTreeNode
 
 function DirTreeNode:DirTreeNode(path)
   self:FileTreeNode(path)
@@ -58,10 +58,10 @@ end
 
 
 --! This tree only shows directories and highlights valid TH directories.
+---@class InstallDirTreeNode : DirTreeNode
 class "InstallDirTreeNode" (DirTreeNode)
 
----@type InstallDirTreeNode
-local InstallDirTreeNode = _G["InstallDirTreeNode"]
+local InstallDirTreeNode = _G["InstallDirTreeNode"] ---@type InstallDirTreeNode
 
 function InstallDirTreeNode:InstallDirTreeNode(path)
   self:FileTreeNode(path)
@@ -115,10 +115,10 @@ function InstallDirTreeNode:getHighlightColour(canvas)
 end
 
 --! Prompter for Theme Hospital install directory
+---@class UIDirectoryBrowser : UIResizable
 class "UIDirectoryBrowser" (UIResizable)
 
----@type UIDirectoryBrowser
-local UIDirectoryBrowser = _G["UIDirectoryBrowser"]
+local UIDirectoryBrowser = _G["UIDirectoryBrowser"] ---@type UIDirectoryBrowser
 
 --! Creates a new directory browser window
 --!param ui The active UI to hook into.

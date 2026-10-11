@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class UISoundSettings : UIResizable
 class "UISoundSettings" (UIResizable)
 
----@type UISoundSettings
-local UISoundSettings = _G["UISoundSettings"]
+local UISoundSettings = _G["UISoundSettings"] ---@type UISoundSettings
 
 -- Constants for most button's width and height
 local LBL_X = 20

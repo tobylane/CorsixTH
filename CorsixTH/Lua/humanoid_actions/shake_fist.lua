@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class ShakeFistAction
 class "ShakeFistAction" (HumanoidAction)
 
----@type ShakeFistAction
-local ShakeFistAction = _G["ShakeFistAction"]
+local ShakeFistAction = _G["ShakeFistAction"] ---@type ShakeFistAction
 
 function ShakeFistAction:ShakeFistAction()
   self:HumanoidAction("shake_fist")

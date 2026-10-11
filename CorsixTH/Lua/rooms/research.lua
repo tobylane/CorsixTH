@@ -48,10 +48,10 @@ room.required_staff = {
 }
 room.call_sound = "reqd023.wav"
 
+---@class ResearchRoom
 class "ResearchRoom" (Room)
 
----@type ResearchRoom
-local ResearchRoom = _G["ResearchRoom"]
+local ResearchRoom = _G["ResearchRoom"] ---@type ResearchRoom
 
 function ResearchRoom:ResearchRoom(...)
   self:Room(...)

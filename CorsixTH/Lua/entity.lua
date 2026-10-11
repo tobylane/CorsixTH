@@ -19,6 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Abstraction for visible gameplay things which sit somewhere on the map.
+---@class Entity
+---@field tile_x integer The horizontal world grid tile position index.
+---@field tile_y integer The vertical world grid tile position index.
+---@field hospital Hospital The specific hospital simulation structure this entity belongs to.
 class "Entity"
 
 ---@type Entity

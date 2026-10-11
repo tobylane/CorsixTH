@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Options window used in the main menu and ingame.
+---@class UIOptions : UIResizable
 class "UIOptions" (UIResizable)
 
----@type UIOptions
-local UIOptions = _G["UIOptions"]
+local UIOptions = _G["UIOptions"] ---@type UIOptions
 
 -- Constants for most button's width and height
 local BTN_WIDTH = 135
@@ -665,10 +665,10 @@ function UIOptions:close()
 end
 
 --! A custom window size selection window
+---@class UIWindowSize : UIResizable
 class "UIWindowSize" (UIResizable)
 
----@type UIWindowSize
-local UIWindowSize = _G["UIWindowSize"]
+local UIWindowSize = _G["UIWindowSize"] ---@type UIWindowSize
 
 function UIWindowSize:UIWindowSize(ui, callback)
   self:UIResizable(ui, 200, 140, col.bg)
@@ -747,10 +747,10 @@ function UIWindowSize:close(ok)
 end
 
 --! A window for setting the scroll speed of the camera.
+---@class UIScrollSpeed : UIResizable
 class "UIScrollSpeed" (UIResizable)
 
----@type UIScrollSpeed
-local UIScrollSpeed = _G["UIScrollSpeed"]
+local UIScrollSpeed = _G["UIScrollSpeed"] ---@type UIScrollSpeed
 
 function UIScrollSpeed:UIScrollSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col.bg)
@@ -817,10 +817,10 @@ end
 
 
 --! A window for setting the scroll speed of the camera while pressing the SHIFT key..
+---@class UIShiftScrollSpeed : UIResizable
 class "UIShiftScrollSpeed" (UIResizable)
 
----@type UIShiftScrollSpeed
-local UIShiftScrollSpeed = _G["UIShiftScrollSpeed"]
+local UIShiftScrollSpeed = _G["UIShiftScrollSpeed"] ---@type UIShiftScrollSpeed
 
 function UIShiftScrollSpeed:UIShiftScrollSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col.bg)
@@ -886,10 +886,10 @@ function UIShiftScrollSpeed:close(ok)
 end
 
 --! Window to set the zoom speed of the scroll wheel while in-game.
+---@class UIZoomSpeed : UIResizable
 class "UIZoomSpeed" (UIResizable)
 
----@type UIZoomSpeed
-local UIZoomSpeed = _G["UIZoomSpeed"]
+local UIZoomSpeed = _G["UIZoomSpeed"] ---@type UIZoomSpeed
 
 function UIZoomSpeed:UIZoomSpeed(ui, callback)
   self:UIResizable(ui, 200, 140, col.bg)

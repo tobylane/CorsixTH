@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Adviser message history
+---@class UIAdviserHistory
 class "UIAdviserHistory" (UIResizable)
 
----@type UIAdviserHistory
-local UIAdviserHistory = _G["UIAdviserHistory"]
+local UIAdviserHistory = _G["UIAdviserHistory"] ---@type UIAdviserHistory
 
 
 local col_bg = Colours.AdviserPanelBackground

@@ -21,10 +21,10 @@ SOFTWARE. --]]
 --! Class for resizable windows.
 --! If resizable is set to true, the user can resize by clicking and dragging
 --any of the corners.
+---@class UIResizable : Window
 class "UIResizable" (Window)
 
----@type UIResizable
-local UIResizable = _G["UIResizable"]
+local UIResizable = _G["UIResizable"] ---@type UIResizable
 
 local border_offset_x = 9
 local border_offset_y = 9

@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd020.wav"
 room.handyman_call_sound = "maint009.wav"
 
+---@class JellyVatRoom
 class "JellyVatRoom" (Room)
 
----@type JellyVatRoom
-local JellyVatRoom = _G["JellyVatRoom"]
+local JellyVatRoom = _G["JellyVatRoom"] ---@type JellyVatRoom
 
 function JellyVatRoom:JellyVatRoom(...)
   self:Room(...)

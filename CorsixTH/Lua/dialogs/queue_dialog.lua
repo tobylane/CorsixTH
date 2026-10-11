@@ -21,10 +21,10 @@ SOFTWARE. --]]
 local TH = require("TH")
 
 --! Room / door / reception desk queue visualisation dialog.
+---@class UIQueue : Window
 class "UIQueue" (Window)
 
----@type UIQueue
-local UIQueue = _G["UIQueue"]
+local UIQueue = _G["UIQueue"] ---@type UIQueue
 
 function UIQueue:UIQueue(ui, queue)
   self:Window()
@@ -359,10 +359,11 @@ function UIQueue:afterLoad(old, new)
   Window.afterLoad(self, old, new)
 end
 
+
+---@class UIQueuePopup : Window
 class "UIQueuePopup" (Window)
 
----@type UIQueuePopup
-local UIQueuePopup = _G["UIQueuePopup"]
+local UIQueuePopup = _G["UIQueuePopup"] ---@type UIQueuePopup
 
 function UIQueuePopup:UIQueuePopup(ui, x, y, patient)
   self:Window()

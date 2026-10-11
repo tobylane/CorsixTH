@@ -18,12 +18,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
-
 --! Dialog for staff member requesting a salaray raise.
+---@class UIStaffRise : Window
 class "UIStaffRise" (Window)
 
----@type UIStaffRise
-local UIStaffRise = _G["UIStaffRise"]
+local UIStaffRise = _G["UIStaffRise"] ---@type UIStaffRise
 
 function UIStaffRise:UIStaffRise(ui, staff, rise_amount)
   self:Window()

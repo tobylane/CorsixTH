@@ -21,10 +21,10 @@ SOFTWARE. --]]
 local math_floor = math.floor
 
 --! Staff management screen
+---@class UIStaffManagement : UIFullscreen
 class "UIStaffManagement" (UIFullscreen)
 
----@type UIStaffManagement
-local UIStaffManagement = _G["UIStaffManagement"]
+local UIStaffManagement = _G["UIStaffManagement"] ---@type UIStaffManagement
 
 function UIStaffManagement:UIStaffManagement(ui)
   self:UIFullscreen(ui)

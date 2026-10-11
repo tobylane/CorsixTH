@@ -43,6 +43,7 @@ local get_custom_criteria = {
   months_played = function(hospital) return hospital.world.game_date:getProgressInMonths() end,
 }
 
+---@class EndConditions
 class "EndConditions"
 ---@type EndConditions
 local EndConditions = _G["EndConditions"]

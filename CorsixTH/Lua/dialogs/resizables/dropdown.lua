@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Dropdown "window" used for selection of one item from a list.
+---@class UIDropdown
 class "UIDropdown" (UIResizable)
 
----@type UIDropdown
-local UIDropdown = _G["UIDropdown"]
+local UIDropdown = _G["UIDropdown"] ---@type UIDropdown
 
 --! Constructor for the dropdown "window"
 --!param ui (UI) The ui the window is created in

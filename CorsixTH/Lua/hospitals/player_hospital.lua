@@ -22,10 +22,10 @@ corsixth.require("announcer")
 
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
+---@class PlayerHospital
 class "PlayerHospital" (Hospital)
 
----@type PlayerHospital
-local PlayerHospital = _G["PlayerHospital"]
+local PlayerHospital = _G["PlayerHospital"] ---@type PlayerHospital
 
 local num_sitting_ratios = 15 -- Number of stored recent sitting ratio measurements.
 local ratio_interval = 2 -- Measurement interval in days.

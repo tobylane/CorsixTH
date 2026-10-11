@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Options window used in the main menu and ingame.
+---@class UIUpdate : UIResizable
 class "UIUpdate" (UIResizable)
 
----@type UIUpdate
-local UIUpdate = _G["UIUpdate"]
+local UIUpdate = _G["UIUpdate"] ---@type UIUpdate
 
 local col_bg = {
   red = 154,

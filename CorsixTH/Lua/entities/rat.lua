@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! A `Rat` which runs from hole to hole
+---@class Rat
 class "Rat" (Entity)
 
----@type Rat
-local Rat = _G["Rat"]
+local Rat = _G["Rat"] ---@type Rat
 
 -- anims
 -- rat moving north: 1908 (4)

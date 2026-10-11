@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class AIHospital
 class "AIHospital" (Hospital)
 
----@type AIHospital
-local AIHospital = _G["AIHospital"]
+local AIHospital = _G["AIHospital"] ---@type AIHospital
 
 function AIHospital:AIHospital(competitor, world, avail_rooms, name)
   self:Hospital(world, avail_rooms, name)

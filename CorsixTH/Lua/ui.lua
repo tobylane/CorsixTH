@@ -21,10 +21,12 @@ SOFTWARE. --]]
 corsixth.require("window")
 
 --! Top-level container for all other user-interface components.
+---@class UI
+---@field app App
+---@field hospital Hospital
 class "UI" (Window)
 
----@type UI
-local UI = _G["UI"]
+local UI = _G["UI"] ---@type UI
 
 local TH = require("TH")
 local SDL = require("sdl")

@@ -21,10 +21,10 @@ SOFTWARE. --]]
 local TH = require("TH")
 
 --! An `Entity` which occupies at least a single map tile and does not move.
+---@class Object
 class "Object" (Entity)
 
----@type Object
-local Object = _G["Object"]
+local Object = _G["Object"] ---@type Object
 
 local orient_mirror = {
   north = "west",
@@ -1072,10 +1072,10 @@ function Object:setState(state)
 end
 
 --! An object that lives on the edge of a tile.
+---@class SideObject
 class "SideObject" (Object)
 
----@type SideObject
-local SideObject = _G["SideObject"]
+local SideObject = _G["SideObject"] ---@type SideObject
 
 function SideObject:SideObject(...)
   self:Object(...)

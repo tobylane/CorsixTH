@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class SpawnAction
 class "SpawnAction" (HumanoidAction)
 
----@type SpawnAction
-local SpawnAction = _G["SpawnAction"]
+local SpawnAction = _G["SpawnAction"] ---@type SpawnAction
 
 --! Spawn an entity.
 --!param mode (str) Mode of spawning: "spawn" or "despawn"

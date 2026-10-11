@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd013.wav"
 room.handyman_call_sound = "maint005.wav"
 
+---@class XRayRoom
 class "XRayRoom" (Room)
 
----@type XRayRoom
-local XRayRoom = _G["XRayRoom"]
+local XRayRoom = _G["XRayRoom"] ---@type XRayRoom
 
 function XRayRoom:XRayRoom(...)
   self:Room(...)

@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Bank manager (for loans / insurance companies) and bank statement fullscreen windows.
+---@class UIBankManager: UIFullscreen
 class "UIBankManager" (UIFullscreen)
 
----@type UIBankManager
-local UIBankManager = _G["UIBankManager"]
+local UIBankManager = _G["UIBankManager"] ---@type UIBankManager
 
 function UIBankManager:UIBankManager(ui)
   self:UIFullscreen(ui)

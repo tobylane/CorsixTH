@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class GrimReaper
 class "GrimReaper" (Humanoid)
 
----@type GrimReaper
-local GrimReaper = _G["GrimReaper"]
+local GrimReaper = _G["GrimReaper"] ---@type GrimReaper
 
 function GrimReaper:GrimReaper(...)
   self:Humanoid(...)

@@ -19,10 +19,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class UIMapEditor : UIResizable
 class "UIMapEditor" (UIResizable)
 
----@type UIMapEditor
-local UIMapEditor = _G["UIMapEditor"]
+local UIMapEditor = _G["UIMapEditor"] ---@type UIMapEditor
 
 local col_bg = {red = 154, green = 146, blue = 198}
 

@@ -23,10 +23,10 @@ corsixth.require("announcer")
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
 --! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
+---@class Staff
 class "Staff" (Humanoid)
 
----@type Staff
-local Staff = _G["Staff"]
+local Staff = _G["Staff"] ---@type Staff
 
 --!param ... Arguments to base class constructor.
 function Staff:Staff(...)

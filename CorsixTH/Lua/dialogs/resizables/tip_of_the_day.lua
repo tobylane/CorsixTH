@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Tip of the Day Window
+---@class UITipOfTheDay : UIResizable
 class "UITipOfTheDay" (UIResizable)
 
----@type UITipOfTheDay
-local UITipOfTheDay = _G["UITipOfTheDay"]
+local UITipOfTheDay = _G["UITipOfTheDay"] ---@type UITipOfTheDay
 
 local col_bg = {
   red = math.random(20, 200),

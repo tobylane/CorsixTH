@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Class for main menu window.
+---@class UIMainMenu : UIResizable
 class "UIMainMenu" (UIResizable)
 
----@type UIMainMenu
-local UIMainMenu = _G["UIMainMenu"]
+local UIMainMenu = _G["UIMainMenu"] ---@type UIMainMenu
 
 local col_bg = {
   red = 154,

@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class MultiUseObjectAction
 class "MultiUseObjectAction" (HumanoidAction)
 
----@type MultiUseObjectAction
-local MultiUseObjectAction = _G["MultiUseObjectAction"]
+local MultiUseObjectAction = _G["MultiUseObjectAction"] ---@type MultiUseObjectAction
 
 --! Construct a multi-use object action.
 --!param object (Object) Object being used.

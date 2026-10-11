@@ -26,10 +26,10 @@ local --[[persistable:staff_dialog_is_in_view_circle]] function is_in_view_circl
 end
 
 --! Individual staff information dialog
+---@class UIStaff : Window
 class "UIStaff" (Window)
 
----@type UIStaff
-local UIStaff = _G["UIStaff"]
+local UIStaff = _G["UIStaff"] ---@type UIStaff
 
 --! Callback function for handyman to change his parcel.
 function UIStaff:changeParcel()

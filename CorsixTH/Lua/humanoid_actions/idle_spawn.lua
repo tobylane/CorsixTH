@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class IdleSpawnAction
 class "IdleSpawnAction" (HumanoidAction)
 
----@type IdleSpawnAction
-local IdleSpawnAction = _G["IdleSpawnAction"]
+local IdleSpawnAction = _G["IdleSpawnAction"] ---@type IdleSpawnAction
 
 function IdleSpawnAction:IdleSpawnAction(anim, point_dir)
   assert(type(anim) == "number", "Invalid value for parameter 'anim'")

@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class StaffReceptionAction
 class "StaffReceptionAction" (HumanoidAction)
 
----@type StaffReceptionAction
-local StaffReceptionAction = _G["StaffReceptionAction"]
+local StaffReceptionAction = _G["StaffReceptionAction"] ---@type StaffReceptionAction
 
 -- Action class for the "staff reception desk" action.
 --!param desk (object) Desk to staff.

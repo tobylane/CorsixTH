@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class OnGroundAction
 class "OnGroundAction" (HumanoidAction)
 
----@type OnGroundAction
-local OnGroundAction = _G["OnGroundAction"]
+local OnGroundAction = _G["OnGroundAction"] ---@type OnGroundAction
 
 function OnGroundAction:OnGroundAction()
   self:HumanoidAction("on_ground")

@@ -31,10 +31,10 @@ object.idle_animations = {
 }
 object.supports_creation_for_map = true
 
+---@class EntranceDoor
 class "EntranceDoor" (Object)
 
----@type EntranceDoor
-local EntranceDoor = _G["EntranceDoor"]
+local EntranceDoor = _G["EntranceDoor"] ---@type EntranceDoor
 
 function EntranceDoor:EntranceDoor(hospital, object_type, x, y, direction, etc)
   self.is_master = object_type == object

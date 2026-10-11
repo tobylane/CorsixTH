@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class TapFootAction
 class "TapFootAction" (HumanoidAction)
 
----@type TapFootAction
-local TapFootAction = _G["TapFootAction"]
+local TapFootAction = _G["TapFootAction"] ---@type TapFootAction
 
 function TapFootAction:TapFootAction()
   self:HumanoidAction("tap_foot")

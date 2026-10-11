@@ -70,10 +70,10 @@ object.orientations = {
   },
 }
 
+---@class RadiationShield
 class "RadiationShield" (Object)
 
----@type RadiationShield
-local RadiationShield = _G["RadiationShield"]
+local RadiationShield = _G["RadiationShield"] ---@type RadiationShield
 
 RadiationShield:slaveMixinClass()
 

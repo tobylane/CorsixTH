@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Interactive Machine List
+---@class UIMachineMenu : UIResizable
 class "UIMachineMenu" (UIResizable)
 
----@type UIMachineMenu
-local UIMachineMenu = _G["UIMachineMenu"]
+local UIMachineMenu = _G["UIMachineMenu"] ---@type UIMachineMenu
 
 local col_bg = { red = 219, green = 81, blue = 12, }
 local col_shadow = { red = 202, green = 69, blue = 8, }

@@ -27,10 +27,10 @@ local --[[persistable:patient_window_is_in_view_circle]] function is_in_view_cir
 end
 
 --! Individual patient information dialog
+---@class UIPatient : Window
 class "UIPatient" (Window)
 
----@type UIPatient
-local UIPatient = _G["UIPatient"]
+local UIPatient = _G["UIPatient"] ---@type UIPatient
 
 function UIPatient:UIPatient(ui, patient)
   self:Window()

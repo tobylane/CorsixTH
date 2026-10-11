@@ -42,6 +42,8 @@ local default_announcement_decay_hours = {
 }
 
 --! An announcement queue based on priority
+---@class AnnouncementQueue
+
 class "AnnouncementQueue"
 
 ---@type AnnouncementQueue
@@ -104,6 +106,8 @@ end
 
 
 --! An announcement.
+---@class AnnouncementEntry
+
 class "AnnouncementEntry"
 
 ---@type AnnouncementEntry
@@ -124,6 +128,8 @@ end
 -- announcement to be played, it will be played directly if there are no announcements
 -- currently being announced. Note that announcements are only played if there is
 -- a worker at the reception desk and announcements are enabled in the settings.
+---@class Announcer
+
 class "Announcer"
 
 ---@type Announcer

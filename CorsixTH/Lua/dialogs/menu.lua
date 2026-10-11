@@ -23,10 +23,10 @@ local ipairs, math_floor, unpack, select, assert
 local TH = require("TH")
 
 --! The ingame menu bar which sits (nominally hidden) at the top of the screen.
+---@class UIMenuBar : Window
 class "UIMenuBar" (Window)
 
----@type UIMenuBar
-local UIMenuBar = _G["UIMenuBar"]
+local UIMenuBar = _G["UIMenuBar"] ---@type UIMenuBar
 
 function UIMenuBar:UIMenuBar(ui, map_editor)
   self:Window()
@@ -482,6 +482,8 @@ function UIMenuBar:calculateMenuSize(menu)
   end
 end
 
+
+---@class UIMenu
 class "UIMenu"
 
 ---@type UIMenu

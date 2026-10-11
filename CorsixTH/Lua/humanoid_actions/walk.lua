@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class WalkAction
 class "WalkAction" (HumanoidAction)
 
----@type WalkAction
-local WalkAction = _G["WalkAction"]
+local WalkAction = _G["WalkAction"] ---@type WalkAction
 
 --! Action to walk to a given position.
 --!param x (int) X coordinate of the destination tile.

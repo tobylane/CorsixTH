@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! A `Humanoid` who is in the hospital for diagnosis and/or treatment.
+---@class Patient
 class "Patient" (Humanoid)
 
----@type Patient
-local Patient = _G["Patient"]
+local Patient = _G["Patient"] ---@type Patient
 
 function Patient:Patient(...)
   self:Humanoid(...)

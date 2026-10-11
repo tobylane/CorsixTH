@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class AnswerCallAction
 class "AnswerCallAction" (HumanoidAction)
 
----@type AnswerCallAction
-local AnswerCallAction = _G["AnswerCallAction"]
+local AnswerCallAction = _G["AnswerCallAction"] ---@type AnswerCallAction
 
 function AnswerCallAction:AnswerCallAction()
   self:HumanoidAction("answer_call")

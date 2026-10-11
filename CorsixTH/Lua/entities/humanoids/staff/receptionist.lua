@@ -24,10 +24,10 @@ corsixth.require("entities.humanoids.staff")
 local AnnouncementPriority = _G["AnnouncementPriority"]
 
 --! A Doctor, Nurse, Receptionist, Handyman, or Surgeon
+---@class Receptionist
 class "Receptionist" (Staff)
 
----@type Receptionist
-local Receptionist = _G["Receptionist"]
+local Receptionist = _G["Receptionist"] ---@type Receptionist
 
 --!param ... Arguments to base class constructor.
 function Receptionist:Receptionist(...)

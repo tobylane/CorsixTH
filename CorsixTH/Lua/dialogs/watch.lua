@@ -20,10 +20,10 @@ SOFTWARE. --]]
 
 --! Timer / clock / watch / countdown dialog for emergencies / level start
 --! The timer lasts approximately 100 days, split into 13 segments
+---@class UIWatch : Window
 class "UIWatch" (Window)
 
----@type UIWatch
-local UIWatch = _G["UIWatch"]
+local UIWatch = _G["UIWatch"] ---@type UIWatch
 
 local TICK_DAYS = 100
 local TICK_DAYS_EMERGENCY = 52

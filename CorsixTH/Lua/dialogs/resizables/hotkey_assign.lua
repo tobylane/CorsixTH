@@ -19,10 +19,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
 --! Custom key bindings
+---@class UIHotkeyAssign : UIResizable
 class "UIHotkeyAssign" (UIResizable)
 
----@type UIHotkeyAssign
-local UIHotkeyAssign = _G["UIHotkeyAssign"]
+local UIHotkeyAssign = _G["UIHotkeyAssign"] ---@type UIHotkeyAssign
 
 local col_bg = {
   red = 154,
@@ -565,10 +565,10 @@ function UIHotkeyAssign:showKeyPane(pane)
 end
 
 --! Child window for setting key bindings
+---@class UIHotkeyAssignKeyPane : Window
 class "UIHotkeyAssignKeyPane" (Window)
 
----@type UIHotkeyAssignKeyPane
-local UIHotkeyAssignKeyPane = _G["UIHotkeyAssignKeyPane"]
+local UIHotkeyAssignKeyPane = _G["UIHotkeyAssignKeyPane"] ---@type UIHotkeyAssignKeyPane
 
 function UIHotkeyAssignKeyPane:UIHotkeyAssignKeyPane(x, y, ui, key_options, app_hotkeys)
   self:Window()

@@ -50,10 +50,10 @@ object.orientations = {
 -- 1926: rat entering hole west wall
 -- 1928: rat leaving hole north wall
 
+---@class Rathole
 class "Rathole" (Object)
 
----@type Rathole
-local Rathole = _G["Rathole"]
+local Rathole = _G["Rathole"] ---@type Rathole
 
 function Rathole:Rathole(hospital, oject_type, x, y, direction, etc)
   self:Object(hospital, oject_type, x, y, direction, etc)

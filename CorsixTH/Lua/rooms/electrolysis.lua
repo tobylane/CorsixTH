@@ -42,10 +42,10 @@ room.maximum_staff = room.required_staff
 room.call_sound = "reqd019.wav"
 room.handyman_call_sound = "maint008.wav"
 
+---@class ElectrolysisRoom
 class "ElectrolysisRoom" (Room)
 
----@type ElectrolysisRoom
-local ElectrolysisRoom = _G["ElectrolysisRoom"]
+local ElectrolysisRoom = _G["ElectrolysisRoom"] ---@type ElectrolysisRoom
 
 function ElectrolysisRoom:ElectrolysisRoom(...)
   self:Room(...)

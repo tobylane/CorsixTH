@@ -41,10 +41,10 @@ room.required_staff = {
 room.maximum_staff = room.required_staff
 room.call_sound = "reqd008.wav"
 
+---@class GPRoom
 class "GPRoom" (Room)
 
----@type GPRoom
-local GPRoom = _G["GPRoom"]
+local GPRoom = _G["GPRoom"] ---@type GPRoom
 
 function GPRoom:GPRoom(...)
   self:Room(...)

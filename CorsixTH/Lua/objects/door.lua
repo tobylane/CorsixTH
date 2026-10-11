@@ -32,10 +32,10 @@ object.idle_animations = {
 
 corsixth.require("queue")
 
+---@class Door
 class "Door" (Object)
 
----@type Door
-local Door = _G["Door"]
+local Door = _G["Door"] ---@type Door
 
 function Door:Door(...)
   self:Object(...)

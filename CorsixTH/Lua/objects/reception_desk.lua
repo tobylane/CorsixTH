@@ -68,10 +68,10 @@ object.orientations = {
 
 corsixth.require("queue")
 
+---@class ReceptionDesk
 class "ReceptionDesk" (Object)
 
----@type ReceptionDesk
-local ReceptionDesk = _G["ReceptionDesk"]
+local ReceptionDesk = _G["ReceptionDesk"] ---@type ReceptionDesk
 
 function ReceptionDesk:ReceptionDesk(...)
   self:Object(...)

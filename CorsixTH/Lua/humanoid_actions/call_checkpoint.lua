@@ -18,10 +18,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. --]]
 
+---@class CallCheckPointAction
 class "CallCheckPointAction" (HumanoidAction)
 
----@type CallCheckPointAction
-local CallCheckPointAction = _G["CallCheckPointAction"]
+local CallCheckPointAction = _G["CallCheckPointAction"] ---@type CallCheckPointAction
 
 function CallCheckPointAction:CallCheckPointAction(call, on_remove)
   assert(call == nil or
