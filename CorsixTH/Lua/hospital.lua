@@ -2245,6 +2245,7 @@ function Hospital:searchForHandymanTask(handyman, task_type)
   local thresholdForStopping = 3
 
   -- information about the best task found so far
+  ---@type integer|false
   local dist = 0
   local index = -1
   local priority = 0
